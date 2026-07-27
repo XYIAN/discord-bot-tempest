@@ -4,6 +4,12 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.2] - 2026-07-27
+
+- **New `/reset` command** — countdown to the next Wittle Defender daily reset, shown in your own timezone
+- Tempest AI now says clearly when the API account is out of credits (instead of a generic error)
+- Server got its storm icon ⛈️ and channels are organized under the TAI / Guild categories
+
 ## [0.1.1] - 2026-07-27
 
 🛡️ **Hardening pass** — 25 findings from a full multi-agent code review, all fixed:

@@ -106,7 +106,13 @@ export async function handleAiMessage(
     });
   } catch (error) {
     log.error('LLM completion failed', error);
-    await message.reply('Storm interference — I could not reach my brain. Try again in a minute. ⛈️');
+    const detail = error instanceof Error ? error.message : String(error);
+    const outOfCredits = detail.includes('insufficient_quota') || detail.includes('credit balance');
+    await message.reply(
+      outOfCredits
+        ? 'Tempest AI is out of energy — the API account needs credits. The storm council has been notified. ⚡'
+        : 'Storm interference — I could not reach my brain. Try again in a minute. ⛈️',
+    );
     return;
   }
   if (!answer) return;

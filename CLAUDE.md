@@ -9,6 +9,7 @@ Discord hub bot for the **Tempest** guild in **Wittle Defender** (Habby). TypeSc
 - **All state is persisted** via `ctx.stores.store<T>(name, defaults)` (atomic JSON files under `DATA_DIR`, one file per store). Never keep state that matters in module-level variables — redeploys are frequent. In-memory is OK only for throwaway rate-limit maps.
 - **package.json is the single version source.** The releases feature posts deploy notices + changelog automatically on boot (dedupe is persisted). To ship release notes, add a `## [x.y.z]` section to CHANGELOG.md and bump the version — no manual posting.
 - Interaction/handler errors are caught by the registry/scheduler — don't crash-guard every handler, but do keep independent steps (role grant vs message send) in separate try/catches when one shouldn't block the other.
+- **All messaging goes through the bot token (single identity)** — never per-channel webhooks (Kyle's explicit preference over the archero2 bot's webhook spaghetti). The one exception: the lobby relay creates webhooks to impersonate relayed users' names/avatars across servers.
 
 ## Commands
 

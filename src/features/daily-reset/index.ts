@@ -69,10 +69,42 @@ const resetNow = {
   },
 };
 
+/** Next occurrence of the configured reset hour in the reset timezone. */
+export function nextResetUnix(now: Date, hour: number, timezone: string): number {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: timezone,
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: false,
+  }).formatToParts(now);
+  const get = (type: string) => Number(parts.find((p) => p.type === type)?.value ?? 0);
+  const secondsIntoDay = (get('hour') % 24) * 3600 + get('minute') * 60 + get('second');
+  const target = hour * 3600;
+  let delta = target - secondsIntoDay;
+  if (delta <= 0) delta += 24 * 3600;
+  return Math.floor(now.getTime() / 1000) + delta;
+}
+
+const resetCountdown = {
+  data: new SlashCommandBuilder().setName('reset').setDescription('Time until the next daily reset').toJSON(),
+  async execute(interaction: import('discord.js').ChatInputCommandInteraction, ctx: BotContext) {
+    const unix = nextResetUnix(new Date(), ctx.guild.dailyReset.hour, ctx.guild.dailyReset.timezone);
+    await interaction.reply({
+      embeds: [
+        stormEmbed(
+          '🌀 Daily reset',
+          `Next ${ctx.guild.identity.gameName} reset: <t:${unix}:R> (<t:${unix}:t> your time)`,
+        ),
+      ],
+    });
+  },
+};
+
 export function dailyResetFeature(): FeatureModule {
   return {
     name: 'daily-reset',
-    commands: [resetNow],
+    commands: [resetNow, resetCountdown],
     jobs: [
       {
         name: 'post-reset',
