@@ -10,6 +10,7 @@ Discord hub bot for the **Tempest** guild in **Wittle Defender** (Habby). TypeSc
 - **package.json is the single version source.** The releases feature posts deploy notices + changelog automatically on boot (dedupe is persisted). To ship release notes, add a `## [x.y.z]` section to CHANGELOG.md and bump the version — no manual posting.
 - Interaction/handler errors are caught by the registry/scheduler — don't crash-guard every handler, but do keep independent steps (role grant vs message send) in separate try/catches when one shouldn't block the other.
 - **All messaging goes through the bot token (single identity)** — never per-channel webhooks (Kyle's explicit preference over the archero2 bot's webhook spaghetti). The one exception: the lobby relay creates webhooks to impersonate relayed users' names/avatars across servers.
+- **Notifications are additive — never replace a public announcement with a DM (or vice versa).** Kyle's explicit rule after an agent once swapped the #general welcome post for a DM on the old bot. Public post + `safeDm` (src/lib/discord/dm.ts) live side by side in separate try/catches.
 
 ## Commands
 
