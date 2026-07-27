@@ -4,6 +4,15 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.6] - 2026-07-27
+
+🌫️ **Everyone starts a Storm Watcher** — new identity for the base member role:
+
+- New members are auto-granted **Storm Watcher** on join (was "Defender"); the Tempest name stays reserved for actual guild members
+- The whole ladder is now color-graded from misty gray to electric cyan — watch the member list light up as people climb
+- Eye of the Storm and Tempest Guild members display in their own sidebar sections
+- Welcome messages now tell the journey: Storm Watcher → storm ranks → inside the storm (the guild)
+
 ## [0.1.5] - 2026-07-27
 
 🔄 **Weekly knowledge sync** — the old bot's manual sync-facts ritual is now fully automatic:

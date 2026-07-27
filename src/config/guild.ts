@@ -97,7 +97,7 @@ export const guildConfig: GuildConfig = {
     botLogs: { name: 'bot-logs' },
   },
   roles: {
-    member: { name: 'Defender' },
+    member: { name: 'Storm Watcher' },
     guildMember: { name: 'Tempest Guild' },
     officer: { name: 'Officer' },
     admin: { name: 'Admin' },
