@@ -4,6 +4,14 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.5] - 2026-07-27
+
+🔄 **Weekly knowledge sync** — the old bot's manual sync-facts ritual is now fully automatic:
+
+- Every Saturday 10am PT, a sync report posts to #bot-logs: new facts, pending reviews, top contributors — with the complete knowledge base attached as a JSON backup
+- Skips itself quietly when nothing changed that week
+- `/fact sync` (moderators) runs it on demand anytime
+
 ## [0.1.4] - 2026-07-27
 
 💌 **Personal touch** — DMs now accompany (never replace!) public announcements:

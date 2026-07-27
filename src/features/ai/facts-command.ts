@@ -13,6 +13,7 @@ import {
   removeFact,
   setFactStatus,
 } from './knowledge.js';
+import { runSyncReport } from './sync-report.js';
 
 function isModerator(interaction: ChatInputCommandInteraction, ctx: BotContext): boolean {
   if (interaction.user.id === ctx.config.ownerId) return true;
@@ -112,6 +113,9 @@ export const factCommand: SlashCommand = {
         .setDescription('Moderator: delete a fact entirely')
         .addIntegerOption((o) => o.setName('id').setDescription('Fact id').setRequired(true)),
     )
+    .addSubcommand((s) =>
+      s.setName('sync').setDescription('Moderator: post the knowledge sync report + backup now'),
+    )
     .toJSON(),
 
   async execute(interaction, ctx) {
@@ -177,9 +181,16 @@ export const factCommand: SlashCommand = {
       return;
     }
 
-    // approve / reject / remove — moderators only
+    // approve / reject / remove / sync — moderators only
     if (!isModerator(interaction, ctx)) {
       await interaction.reply({ content: 'Moderators only.', flags: MessageFlags.Ephemeral });
+      return;
+    }
+
+    if (sub === 'sync') {
+      await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+      const summary = await runSyncReport(ctx, true);
+      await interaction.editReply({ content: summary });
       return;
     }
     const id = interaction.options.getInteger('id', true);

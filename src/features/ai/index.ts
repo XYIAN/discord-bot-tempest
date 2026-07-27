@@ -1,10 +1,11 @@
 import type { AppConfig } from '../../config/env.js';
-import type { FeatureModule } from '../../core/types.js';
+import type { BotContext, FeatureModule } from '../../core/types.js';
 import { defineEvent } from '../../core/types.js';
 import { createLlmClient } from '../../lib/llm/index.js';
 import { handleAiMessage } from './chat.js';
 import { factCommand } from './facts-command.js';
 import { runMemorySync } from './memory-sync.js';
+import { runSyncReport } from './sync-report.js';
 
 /**
  * Tempest AI: answers game questions in the AI channel using the community
@@ -25,16 +26,27 @@ export function aiFeature(config: AppConfig): FeatureModule {
           }),
         ]
       : [],
-    jobs: llm
-      ? [
-          {
-            name: 'memory-sync',
-            // Nightly at 04:00 UTC — quiet hours for a mostly-US guild.
-            cron: '0 4 * * *',
-            run: (ctx) => runMemorySync(ctx, llm),
-          },
-        ]
-      : [],
+    jobs: [
+      ...(llm
+        ? [
+            {
+              name: 'memory-sync',
+              // Nightly at 04:00 UTC — quiet hours for a mostly-US guild.
+              cron: '0 4 * * *',
+              run: (ctx: BotContext) => runMemorySync(ctx, llm),
+            },
+          ]
+        : []),
+      {
+        name: 'weekly-sync-report',
+        // Saturday 10:00 Pacific; skips itself when nothing changed.
+        cron: '0 10 * * 6',
+        timezone: 'America/Los_Angeles',
+        run: async (ctx: BotContext) => {
+          await runSyncReport(ctx);
+        },
+      },
+    ],
     init(ctx) {
       if (llm) ctx.logger.info(`Tempest AI online via ${llm.providerName}`);
       else ctx.logger.warn('Tempest AI disabled — set ANTHROPIC_API_KEY (or OPENAI_API_KEY)');
