@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, type ChatInputCommandInteraction } from 'discord.js';
+import { MessageFlags, SlashCommandBuilder, type ChatInputCommandInteraction } from 'discord.js';
 import type { BotContext, FeatureModule } from '../../core/types.js';
 import { recordGuildJoin } from '../../lib/achievements/service.js';
 import { getHomeGuild } from '../../lib/discord/home-guild.js';
@@ -15,6 +15,9 @@ import { COLORS, sendToChannel, stormEmbed } from '../../lib/discord/send.js';
 interface RecruitingState {
   lastPostedAt: number;
 }
+
+const APPLY_COOLDOWN_MS = 15 * 60 * 1000;
+const applyCooldowns = new Map<string, number>();
 
 function recruitingEmbed(ctx: BotContext) {
   const { identity } = ctx.guild;
@@ -81,10 +84,21 @@ const guildCommand = {
     }
 
     if (sub === 'apply') {
-      const ign = interaction.options.getString('ign', true);
-      const power = interaction.options.getString('power', true);
+      const ign = interaction.options.getString('ign', true).slice(0, 50);
+      const power = interaction.options.getString('power', true).slice(0, 20);
       const guild = interaction.guild;
       if (!guild) return;
+
+      // Throwaway rate-limit map: one application ping per user per 15 min.
+      const lastApply = applyCooldowns.get(interaction.user.id) ?? 0;
+      if (Date.now() - lastApply < APPLY_COOLDOWN_MS) {
+        await interaction.reply({
+          content: 'You already applied recently — give the officers a bit to respond!',
+          flags: MessageFlags.Ephemeral,
+        });
+        return;
+      }
+
       const officerRole = resolveRole(guild, ctx.guild.roles.officer);
       const recruiting = resolveTextChannel(guild, ctx.guild.channels.recruiting);
       const embed = stormEmbed('📥 New guild application', [
@@ -94,15 +108,35 @@ const guildCommand = {
         '',
         'Officers: invite them in game, then run `/guild verify` to grant the guild role.',
       ].join('\n')).setColor(COLORS.warning);
-      await recruiting?.send(
-        officerRole
-          ? { content: `<@&${officerRole.id}>`, embeds: [embed], allowedMentions: { roles: [officerRole.id] } }
-          : { embeds: [embed] },
-      );
-      await interaction.reply({
-        content: `Application sent! An officer will reach out. Make sure your in-game power is ${ctx.guild.identity.requiredPower}+ and you can play daily.`,
-        ephemeral: true,
-      });
+
+      let posted = false;
+      if (recruiting) {
+        try {
+          await recruiting.send(
+            officerRole
+              ? { content: `<@&${officerRole.id}>`, embeds: [embed], allowedMentions: { roles: [officerRole.id] } }
+              : { embeds: [embed] },
+          );
+          posted = true;
+        } catch (error) {
+          ctx.logger.child('guild').error('Failed to post application', error);
+        }
+      } else {
+        ctx.logger.child('guild').warn(`Recruiting channel #${ctx.guild.channels.recruiting.name} not found — application dropped`);
+      }
+
+      if (posted) {
+        applyCooldowns.set(interaction.user.id, Date.now());
+        await interaction.reply({
+          content: `Application sent! An officer will reach out. Make sure your in-game power is ${ctx.guild.identity.requiredPower}+ and you can play daily.`,
+          flags: MessageFlags.Ephemeral,
+        });
+      } else {
+        await interaction.reply({
+          content: 'Something went wrong sending your application — please ping an officer directly.',
+          flags: MessageFlags.Ephemeral,
+        });
+      }
       return;
     }
 
@@ -113,14 +147,14 @@ const guildCommand = {
         memberHasAnyRole(interaction.member, [ctx.guild.roles.officer, ctx.guild.roles.admin]) ||
         interaction.user.id === ctx.config.ownerId;
       if (!canVerify) {
-        await interaction.reply({ content: 'Officers only.', ephemeral: true });
+        await interaction.reply({ content: 'Officers only.', flags: MessageFlags.Ephemeral });
         return;
       }
       const user = interaction.options.getUser('user', true);
       const member = await guild.members.fetch(user.id);
       const role = resolveRole(guild, ctx.guild.roles.guildMember);
       if (!role) {
-        await interaction.reply({ content: `Role "${ctx.guild.roles.guildMember.name}" not found on this server.`, ephemeral: true });
+        await interaction.reply({ content: `Role "${ctx.guild.roles.guildMember.name}" not found on this server.`, flags: MessageFlags.Ephemeral });
         return;
       }
       await member.roles.add(role);

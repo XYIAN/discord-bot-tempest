@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
+import { MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { guildConfig } from '../../config/guild.js';
 import type { BotContext, FeatureModule } from '../../core/types.js';
 import { sendToChannel, stormEmbed } from '../../lib/discord/send.js';
@@ -65,7 +65,7 @@ const resetNow = {
   async execute(interaction: import('discord.js').ChatInputCommandInteraction, ctx: BotContext) {
     await ctx.stores.store<ResetState>('daily-reset', { lastPostedDate: '' }).set({ lastPostedDate: '' });
     await postReset(ctx);
-    await interaction.reply({ content: 'Daily reset message posted.', ephemeral: true });
+    await interaction.reply({ content: 'Daily reset message posted.', flags: MessageFlags.Ephemeral });
   },
 };
 

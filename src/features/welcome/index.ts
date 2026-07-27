@@ -17,26 +17,39 @@ function channelMention(ctx: BotContext, member: GuildMember, ref: { name: strin
 }
 
 async function handleJoin(ctx: BotContext, member: GuildMember): Promise<void> {
+  // The bot can sit in partner servers for the lobby relay — only welcome
+  // joins to the home guild.
+  if (member.guild.id !== ctx.config.guildId) return;
   const log = ctx.logger.child('welcome');
+
+  // Role grants run on EVERY join (idempotent): a rejoining member lost
+  // their roles on leave and must get them back even if already welcomed.
+  for (const ref of [ctx.guild.roles.member, ctx.guild.roles.aiEnabled]) {
+    try {
+      const role = resolveRole(member.guild, ref);
+      if (role) await member.roles.add(role);
+      else log.warn(`Role "${ref.name}" not found`);
+    } catch (error) {
+      log.error(`Failed to auto-assign role "${ref.name}"`, error);
+    }
+  }
+
+  // Dedupe (welcome post + DM only) — membership check and insert happen
+  // atomically inside one update so gateway replays can't double-post.
   const store = ctx.stores.store<WelcomeState>('welcome', { welcomed: [] });
-  const state = await store.get();
-  if (state.welcomed.includes(member.id)) return;
+  let alreadyWelcomed = false;
   await store.update((s) => {
-    s.welcomed.push(member.id);
-    if (s.welcomed.length > MAX_TRACKED) s.welcomed = s.welcomed.slice(-MAX_TRACKED);
+    if (s.welcomed.includes(member.id)) {
+      alreadyWelcomed = true;
+    } else {
+      s.welcomed.push(member.id);
+      if (s.welcomed.length > MAX_TRACKED) s.welcomed = s.welcomed.slice(-MAX_TRACKED);
+    }
     return s;
   });
+  if (alreadyWelcomed) return;
 
   const { identity } = ctx.guild;
-
-  // Each step is independent — a failure in one never blocks the others.
-  try {
-    const role = resolveRole(member.guild, ctx.guild.roles.member);
-    if (role) await member.roles.add(role);
-    else log.warn(`Member role "${ctx.guild.roles.member.name}" not found`);
-  } catch (error) {
-    log.error('Failed to auto-assign member role', error);
-  }
 
   await sendToChannel(
     member.guild,

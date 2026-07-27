@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, type ChatInputCommandInteraction } from 'discord.js';
+import { MessageFlags, SlashCommandBuilder, type ChatInputCommandInteraction } from 'discord.js';
 import type { BotContext, SlashCommand } from '../../core/types.js';
 import { recordFactApproved } from '../../lib/achievements/service.js';
 import { memberHasAnyRole, resolveRole } from '../../lib/discord/resolve.js';
@@ -25,20 +25,27 @@ async function creditContributor(ctx: BotContext, interaction: ChatInputCommandI
   const count = await approvedFactCountByUser(ctx, userId);
   const guild = interaction.guild;
   if (!guild) return;
+  const member = await guild.members.fetch(userId).catch(() => undefined);
+  if (!member) return;
+  // >= plus a has-role check: a missed exact threshold (concurrent approvals,
+  // deleted facts) still promotes on the next approval.
   for (const tier of ctx.guild.contributionTiers) {
-    if (count === tier.threshold) {
-      const role = resolveRole(guild, tier.role);
-      const member = await guild.members.fetch(userId).catch(() => undefined);
-      if (role && member) {
-        await member.roles.add(role).catch((e) => ctx.logger.child('ai').error('tier role grant failed', e));
-        await interaction.followUp({
-          embeds: [
-            stormEmbed('🎓 Contributor rank up!', `<@${userId}> is now **${tier.role.name}** (${count} approved facts)!`).setColor(COLORS.success),
-          ],
-        });
-      }
-    }
+    if (count < tier.threshold) continue;
+    const role = resolveRole(guild, tier.role);
+    if (!role || member.roles.cache.has(role.id)) continue;
+    await member.roles.add(role).catch((e) => ctx.logger.child('ai').error('tier role grant failed', e));
+    await interaction.followUp({
+      embeds: [
+        stormEmbed('🎓 Contributor rank up!', `<@${userId}> is now **${tier.role.name}** (${count} approved facts)!`).setColor(COLORS.success),
+      ],
+      allowedMentions: { parse: [] },
+    });
   }
+}
+
+/** Facts are inlined into the AI prompt — keep them single-line and markdown-flat. */
+function sanitizeFactText(text: string): string {
+  return text.replace(/\s+/g, ' ').replace(/[`#]/g, '').trim();
 }
 
 export const factCommand: SlashCommand = {
@@ -98,11 +105,15 @@ export const factCommand: SlashCommand = {
     const sub = interaction.options.getSubcommand();
 
     if (sub === 'add') {
-      const text = interaction.options.getString('text', true).trim();
+      const text = sanitizeFactText(interaction.options.getString('text', true));
       const category = interaction.options.getString('category') ?? 'general';
+      if (text.length < 5) {
+        await interaction.reply({ content: 'That fact is too short.', flags: MessageFlags.Ephemeral });
+        return;
+      }
       const state = await knowledgeStore(ctx).get();
       if (isDuplicate(state, text)) {
-        await interaction.reply({ content: 'The AI already knows something very similar to that.', ephemeral: true });
+        await interaction.reply({ content: 'The AI already knows something very similar to that.', flags: MessageFlags.Ephemeral });
         return;
       }
       // Moderators' facts are trusted immediately; others queue for review.
@@ -138,7 +149,7 @@ export const factCommand: SlashCommand = {
         .filter((f) => f.status === status && (!category || f.category === category))
         .slice(-25);
       if (facts.length === 0) {
-        await interaction.reply({ content: `No ${status} facts${category ? ` in ${category}` : ''} yet.`, ephemeral: true });
+        await interaction.reply({ content: `No ${status} facts${category ? ` in ${category}` : ''} yet.`, flags: MessageFlags.Ephemeral });
         return;
       }
       await interaction.reply({
@@ -148,30 +159,35 @@ export const factCommand: SlashCommand = {
             facts.map((f) => `**#${f.id}** [${f.category}] ${f.text}`).join('\n').slice(0, 3900),
           ),
         ],
-        ephemeral: status === 'pending',
+        ...(status === 'pending' ? { flags: MessageFlags.Ephemeral } : {}),
       });
       return;
     }
 
     // approve / reject / remove — moderators only
     if (!isModerator(interaction, ctx)) {
-      await interaction.reply({ content: 'Moderators only.', ephemeral: true });
+      await interaction.reply({ content: 'Moderators only.', flags: MessageFlags.Ephemeral });
       return;
     }
     const id = interaction.options.getInteger('id', true);
 
     if (sub === 'remove') {
       const removed = await removeFact(ctx, id);
-      await interaction.reply({ content: removed ? `Fact #${id} deleted.` : `No fact #${id}.`, ephemeral: true });
+      await interaction.reply({ content: removed ? `Fact #${id} deleted.` : `No fact #${id}.`, flags: MessageFlags.Ephemeral });
       return;
     }
 
     const status = sub === 'approve' ? 'approved' : 'rejected';
-    const fact = await setFactStatus(ctx, id, status, interaction.user.id);
-    if (!fact) {
-      await interaction.reply({ content: `No fact #${id}.`, ephemeral: true });
+    const result = await setFactStatus(ctx, id, status, interaction.user.id);
+    if (!result) {
+      await interaction.reply({ content: `No fact #${id}.`, flags: MessageFlags.Ephemeral });
       return;
     }
+    if (!result.changed) {
+      await interaction.reply({ content: `Fact #${id} is already ${status}.`, flags: MessageFlags.Ephemeral });
+      return;
+    }
+    const fact = result.fact;
     await interaction.reply({
       embeds: [
         stormEmbed(
@@ -179,6 +195,7 @@ export const factCommand: SlashCommand = {
           `#${fact.id} [${fact.category}] ${fact.text}${fact.addedBy ? `\nBy <@${fact.addedBy}>` : ''}`,
         ).setColor(status === 'approved' ? COLORS.success : COLORS.danger),
       ],
+      allowedMentions: { parse: [] },
     });
     if (status === 'approved' && fact.addedBy) {
       await creditContributor(ctx, interaction, fact.addedBy);

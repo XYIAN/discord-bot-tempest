@@ -17,6 +17,8 @@ export interface Store<T> {
 
 export interface StoreProvider {
   store<T>(name: string, defaults: T): Store<T>;
+  /** Await all in-flight writes across every store (graceful shutdown). */
+  flushAll(): Promise<void>;
 }
 
 class JsonFileStore<T> implements Store<T> {
@@ -64,8 +66,9 @@ class JsonFileStore<T> implements Store<T> {
 
   set(value: T): Promise<void> {
     return this.enqueue(async () => {
-      this.cache = value;
+      // Persist first: a failed write must not leave the cache ahead of disk.
       await this.persist(value);
+      this.cache = value;
     });
   }
 
@@ -73,10 +76,18 @@ class JsonFileStore<T> implements Store<T> {
     return this.enqueue(async () => {
       const current = await this.load();
       const next = await mutate(structuredClone(current));
-      this.cache = next;
       await this.persist(next);
+      this.cache = next;
       return next;
     });
+  }
+
+  /** Resolves once all queued operations have settled. */
+  flush(): Promise<void> {
+    return this.chain.then(
+      () => undefined,
+      () => undefined,
+    );
   }
 }
 
@@ -90,6 +101,9 @@ export function createStoreProvider(dataDir: string, logger: Logger): StoreProvi
         stores.set(name, existing);
       }
       return existing as unknown as Store<T>;
+    },
+    async flushAll(): Promise<void> {
+      await Promise.all([...stores.values()].map((s) => s.flush()));
     },
   };
 }

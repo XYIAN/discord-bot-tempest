@@ -56,11 +56,30 @@ async function main(): Promise<void> {
     scheduler.start();
   });
 
+  // If the bot gets invited to the home guild after boot, register commands
+  // then too — otherwise they'd wait for the next redeploy.
+  client.on('guildCreate', async (guild) => {
+    if (guild.id !== config.guildId) return;
+    logger.info(`Joined home guild ${guild.name}; registering slash commands`);
+    try {
+      await registry.registerSlashCommands();
+    } catch (error) {
+      logger.error('Slash command registration failed', error);
+    }
+  });
+
   const shutdown = (signal: string) => {
     logger.info(`${signal} received; shutting down`);
     scheduler.stop();
-    void client.destroy();
-    process.exit(0);
+    void (async () => {
+      // Flush queued store writes before exiting so the last moments of
+      // activity/achievement state aren't lost on redeploys.
+      await Promise.race([
+        Promise.allSettled([client.destroy(), ctx.stores.flushAll()]),
+        new Promise((resolve) => setTimeout(resolve, 5_000)),
+      ]);
+      process.exit(0);
+    })();
   };
   process.on('SIGINT', () => shutdown('SIGINT'));
   process.on('SIGTERM', () => shutdown('SIGTERM'));

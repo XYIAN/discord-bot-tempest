@@ -30,6 +30,15 @@ function optional(name: string): string | undefined {
   return value ? value : undefined;
 }
 
+const LOG_LEVELS = ['debug', 'info', 'warn', 'error'] as const;
+
+function parseLogLevel(value: string | undefined, problems: string[]): AppConfig['logLevel'] {
+  if (value === undefined) return 'info';
+  if ((LOG_LEVELS as readonly string[]).includes(value)) return value as AppConfig['logLevel'];
+  problems.push(`LOG_LEVEL must be one of ${LOG_LEVELS.join(', ')} (got "${value}")`);
+  return 'info';
+}
+
 /**
  * Parse and validate all environment configuration up front so a
  * misconfigured deploy fails at boot with every problem listed at once.
@@ -50,7 +59,7 @@ export function loadConfig(): AppConfig {
       .split(',')
       .map((id) => id.trim())
       .filter(Boolean),
-    logLevel: (optional('LOG_LEVEL') as AppConfig['logLevel']) ?? 'info',
+    logLevel: parseLogLevel(optional('LOG_LEVEL'), problems),
     railway: {
       commitSha: optional('RAILWAY_GIT_COMMIT_SHA'),
       commitMessage: optional('RAILWAY_GIT_COMMIT_MESSAGE'),

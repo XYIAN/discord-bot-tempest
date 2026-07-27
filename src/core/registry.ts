@@ -17,6 +17,7 @@ export class FeatureRegistry {
 
   async registerSlashCommands(): Promise<void> {
     const log = this.ctx.logger.child('registry');
+    this.commands.clear(); // safe to call again (e.g. on late guild join)
     const body = [];
     for (const mod of this.modules) {
       for (const command of mod.commands ?? []) {

@@ -20,6 +20,7 @@ import { extractVersionNotes } from './changelog.js';
 
 interface ReleaseState {
   lastAnnouncedVersion: string;
+  lastAnnouncedDeployment: string;
 }
 
 const FLUSH_INTERVAL_MS = 15_000;
@@ -30,25 +31,31 @@ async function announceDeploy(ctx: BotContext, version: string): Promise<void> {
   if (!guild) return;
   const log = ctx.logger.child('releases');
   const { railway } = ctx.config;
-
-  const shortSha = railway.commitSha?.slice(0, 7);
-  await sendToChannel(
-    guild,
-    ctx.guild.channels.botLogs,
-    {
-      embeds: [
-        stormEmbed('🚀 Deployed', [
-          `**Version:** v${version}`,
-          shortSha ? `**Commit:** \`${shortSha}\` ${railway.commitMessage ?? ''}` : '**Commit:** local/dev run',
-          railway.deploymentId ? `**Deployment:** ${railway.deploymentId}` : null,
-        ].filter(Boolean).join('\n')).setColor(COLORS.success),
-      ],
-    },
-    log,
-  );
-
-  const store = ctx.stores.store<ReleaseState>('releases', { lastAnnouncedVersion: '' });
+  const store = ctx.stores.store<ReleaseState>('releases', { lastAnnouncedVersion: '', lastAnnouncedDeployment: '' });
   const state = await store.get();
+
+  // Dedupe the deploy notice per deployment (or per version when running
+  // outside Railway) so crash-loop restarts don't spam bot-logs.
+  const deployKey = railway.deploymentId ?? `local:${version}`;
+  if (state.lastAnnouncedDeployment !== deployKey) {
+    const shortSha = railway.commitSha?.slice(0, 7);
+    const sent = await sendToChannel(
+      guild,
+      ctx.guild.channels.botLogs,
+      {
+        embeds: [
+          stormEmbed('🚀 Deployed', [
+            `**Version:** v${version}`,
+            shortSha ? `**Commit:** \`${shortSha}\` ${railway.commitMessage ?? ''}` : '**Commit:** local/dev run',
+            railway.deploymentId ? `**Deployment:** ${railway.deploymentId}` : null,
+          ].filter(Boolean).join('\n')).setColor(COLORS.success),
+        ],
+      },
+      log,
+    );
+    if (sent) await store.update((s) => ({ ...s, lastAnnouncedDeployment: deployKey }));
+  }
+
   if (state.lastAnnouncedVersion === version) return;
 
   let notes: string | undefined;
@@ -69,7 +76,7 @@ async function announceDeploy(ctx: BotContext, version: string): Promise<void> {
     },
     log,
   );
-  if (sent) await store.set({ lastAnnouncedVersion: version });
+  if (sent) await store.update((s) => ({ ...s, lastAnnouncedVersion: version }));
 }
 
 function startLogForwarding(ctx: BotContext): void {
@@ -88,13 +95,23 @@ function startLogForwarding(ctx: BotContext): void {
       const lines = buffer.splice(0, buffer.length);
       const extra = dropped > 0 ? `\n…and ${dropped} more` : '';
       dropped = 0;
-      const content = `\`\`\`\n${lines.join('\n').slice(0, 1800)}${extra}\n\`\`\``;
+      // Log lines can embed user/API content: neutralize code-fence escapes,
+      // mask long token-like strings, and never allow mentions.
+      const safe = lines
+        .join('\n')
+        .replaceAll('```', "'''")
+        .replace(/[A-Za-z0-9_-]{35,}/g, (m) => `${m.slice(0, 6)}…[redacted]`)
+        .slice(0, 1800);
       // Send directly (not via logger-aware helpers) to avoid feedback loops:
       // a failed forward must not log a warn that gets forwarded again.
       const channel = guild.channels.cache.find(
         (c) => c.isTextBased() && 'name' in c && c.name === ctx.guild.channels.botLogs.name,
       );
-      if (channel?.isTextBased()) await channel.send(content).catch(() => undefined);
+      if (channel?.isTextBased()) {
+        await channel
+          .send({ content: `\`\`\`\n${safe}${extra}\n\`\`\``, allowedMentions: { parse: [] } })
+          .catch(() => undefined);
+      }
     })();
   }, FLUSH_INTERVAL_MS).unref();
 }

@@ -53,24 +53,33 @@ export async function addFact(
   return created;
 }
 
+export interface FactStatusChange {
+  fact: Fact;
+  /** false when the fact was already in the requested status (no-op). */
+  changed: boolean;
+}
+
 export async function setFactStatus(
   ctx: BotContext,
   id: number,
   status: FactStatus,
   reviewerId: string,
-): Promise<Fact | undefined> {
-  let updated: Fact | undefined;
+): Promise<FactStatusChange | undefined> {
+  let result: FactStatusChange | undefined;
   await knowledgeStore(ctx).update((state) => {
     const fact = state.facts.find((f) => f.id === id);
     if (fact) {
-      fact.status = status;
-      fact.reviewedBy = reviewerId;
-      fact.reviewedAt = new Date().toISOString();
-      updated = fact;
+      const changed = fact.status !== status;
+      if (changed) {
+        fact.status = status;
+        fact.reviewedBy = reviewerId;
+        fact.reviewedAt = new Date().toISOString();
+      }
+      result = { fact, changed };
     }
     return state;
   });
-  return updated;
+  return result;
 }
 
 export async function removeFact(ctx: BotContext, id: number): Promise<boolean> {

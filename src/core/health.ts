@@ -18,7 +18,9 @@ export function startHealthServer(
   const server = createServer((req, res) => {
     if (req.url === '/health' || req.url === '/') {
       const degraded = getDegradedReason();
-      res.writeHead(200, { 'Content-Type': 'application/json' });
+      // 503 when login has permanently failed so the deploy is visibly
+      // unhealthy instead of a green-but-zombie service.
+      res.writeHead(degraded ? 503 : 200, { 'Content-Type': 'application/json' });
       res.end(
         JSON.stringify({
           status: degraded ? 'degraded' : 'ok',

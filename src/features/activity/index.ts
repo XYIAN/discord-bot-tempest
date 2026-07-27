@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, type ChatInputCommandInteraction, type Message } from 'discord.js';
+import { MessageFlags, SlashCommandBuilder, type ChatInputCommandInteraction, type Message } from 'discord.js';
 import type { BotContext, FeatureModule } from '../../core/types.js';
 import { defineEvent } from '../../core/types.js';
 import { resolveRole } from '../../lib/discord/resolve.js';
@@ -109,7 +109,7 @@ const leaderboard = {
       .sort(([, a], [, b]) => b.points - a.points)
       .slice(0, 10);
     if (top.length === 0) {
-      await interaction.reply({ content: 'No activity recorded yet — start chatting!', ephemeral: true });
+      await interaction.reply({ content: 'No activity recorded yet — start chatting!', flags: MessageFlags.Ephemeral });
       return;
     }
     const medals = ['🥇', '🥈', '🥉'];

@@ -2,6 +2,7 @@ import type { Message } from 'discord.js';
 import type { BotContext } from '../../core/types.js';
 import type { ChatTurn, LlmClient } from '../../lib/llm/index.js';
 import { recordAiQuestion } from '../../lib/achievements/service.js';
+import { memberHasRole, resolveRole, resolveTextChannel } from '../../lib/discord/resolve.js';
 import { knowledgeStore } from './knowledge.js';
 import { buildSystemPrompt } from './prompt.js';
 
@@ -9,10 +10,14 @@ const COOLDOWN_MS = 20_000;
 const MEMORY_TURNS = 6; // 3 exchanges
 const MEMORY_TTL_MS = 15 * 60 * 1000;
 const MAX_ANSWER_TOKENS = 700;
+const MAX_QUESTION_CHARS = 600;
+const DAILY_QUESTION_LIMIT = 40;
 
 interface ConversationState {
   /** Per-user rolling history — persisted so redeploys don't wipe context. */
   users: Record<string, { turns: ChatTurn[]; lastAt: number }>;
+  /** Per-user daily question counts, keyed by YYYY-MM-DD. */
+  daily: { date: string; counts: Record<string, number> };
 }
 
 export interface QaLogEntry {
@@ -27,6 +32,7 @@ interface QaLogState {
 }
 
 const MAX_QA_LOG = 200;
+const EMPTY_CONVERSATIONS: ConversationState = { users: {}, daily: { date: '', counts: {} } };
 
 export function qaLogStore(ctx: BotContext) {
   return ctx.stores.store<QaLogState>('qa-log', { entries: [] });
@@ -34,16 +40,29 @@ export function qaLogStore(ctx: BotContext) {
 
 const cooldowns = new Map<string, number>();
 
+function today(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
 export async function handleAiMessage(
   ctx: BotContext,
   llm: LlmClient,
   message: Message,
 ): Promise<void> {
   if (message.author.bot || !message.inGuild() || message.guildId !== ctx.config.guildId) return;
-  const channelName = 'name' in message.channel ? (message.channel.name ?? '') : '';
-  if (channelName !== ctx.guild.channels.aiChat.name) return;
-  const question = message.content.trim();
+  // Resolve the configured channel by id, not raw name comparison, so a
+  // renamed impostor channel can't route traffic to the LLM.
+  const aiChannel = resolveTextChannel(message.guild, ctx.guild.channels.aiChat);
+  if (!aiChannel || message.channelId !== aiChannel.id) return;
+  const question = message.content.trim().slice(0, MAX_QUESTION_CHARS);
   if (!question || question.startsWith('/')) return;
+
+  // The aiEnabled role is the per-user kill switch. It's auto-granted on
+  // join; if the role doesn't exist on the server, the gate is open.
+  const aiRole = resolveRole(message.guild, ctx.guild.roles.aiEnabled);
+  if (aiRole && message.member && !memberHasRole(message.member, ctx.guild.roles.aiEnabled)) {
+    return;
+  }
 
   const last = cooldowns.get(message.author.id) ?? 0;
   if (Date.now() - last < COOLDOWN_MS) {
@@ -53,9 +72,24 @@ export async function handleAiMessage(
   cooldowns.set(message.author.id, Date.now());
 
   const log = ctx.logger.child('ai');
+  const conversations = ctx.stores.store<ConversationState>('conversations', EMPTY_CONVERSATIONS);
+
+  // Daily budget check+increment inside one atomic update.
+  let overBudget = false;
+  await conversations.update((s) => {
+    if (s.daily.date !== today()) s.daily = { date: today(), counts: {} };
+    const count = s.daily.counts[message.author.id] ?? 0;
+    if (count >= DAILY_QUESTION_LIMIT) overBudget = true;
+    else s.daily.counts[message.author.id] = count + 1;
+    return s;
+  });
+  if (overBudget) {
+    await message.react('🌙').catch(() => undefined);
+    return;
+  }
+
   await message.channel.sendTyping().catch(() => undefined);
 
-  const conversations = ctx.stores.store<ConversationState>('conversations', { users: {} });
   const state = await conversations.get();
   const existing = state.users[message.author.id];
   const history = existing && Date.now() - existing.lastAt < MEMORY_TTL_MS ? existing.turns : [];
@@ -77,12 +111,15 @@ export async function handleAiMessage(
   }
   if (!answer) return;
 
-  await message.reply(answer.slice(0, 1990));
+  // Model output is user-influenced — never let it ping anyone.
+  await message.reply({ content: answer.slice(0, 1990), allowedMentions: { parse: [] } });
 
   await conversations.update((s) => {
-    const turns = [...history, { role: 'user' as const, content: question }, { role: 'assistant' as const, content: answer }];
+    // Append onto the state as it is NOW (not the pre-LLM snapshot).
+    const current = s.users[message.author.id];
+    const base = current && Date.now() - current.lastAt < MEMORY_TTL_MS ? current.turns : [];
+    const turns = [...base, { role: 'user' as const, content: question }, { role: 'assistant' as const, content: answer.slice(0, 1500) }];
     s.users[message.author.id] = { turns: turns.slice(-MEMORY_TURNS), lastAt: Date.now() };
-    // Prune expired users so the file doesn't grow forever.
     for (const [userId, record] of Object.entries(s.users)) {
       if (Date.now() - record.lastAt > MEMORY_TTL_MS) delete s.users[userId];
     }
