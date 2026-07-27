@@ -4,6 +4,10 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.3] - 2026-07-27
+
+- Daily reset reminder now fires at the correct time — 9am Pacific (was 5pm)
+
 ## [0.1.2] - 2026-07-27
 
 - **New `/reset` command** — countdown to the next Wittle Defender daily reset, shown in your own timezone

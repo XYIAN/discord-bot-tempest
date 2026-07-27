@@ -7,7 +7,7 @@ The Discord hub for the **Tempest** guild in **Wittle Defender** (Habby / Gorill
 | Feature | What it does |
 |---|---|
 | **Welcome** | Auto-role + welcome embed in #general + DM tour for every new member |
-| **Daily reset** | Reset checklist posted to #general at the in-game reset (5pm PT) |
+| **Daily reset** | Reset checklist posted to #general at the in-game reset (9am PT) |
 | **Activity ranks** | Chat to earn points; tier roles from Storm Recruit → Eye of the Storm. `/rank`, `/leaderboard` |
 | **Achievements** | Milestones for chatting, daily streaks, AI contributions, joining the guild. `/achievements` |
 | **Guild tools** | `/guild info`, `/guild apply` (pings officers), `/guild verify`; recruiting post every 2 days (persisted cadence) |

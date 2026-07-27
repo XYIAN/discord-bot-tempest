@@ -120,7 +120,7 @@ export const guildConfig: GuildConfig = {
     excludedChannels: ['bot-logs', 'changelog', 'recruiting'],
   },
   dailyReset: {
-    hour: 17,
+    hour: 9,
     timezone: 'America/Los_Angeles',
   },
   recruiting: {
