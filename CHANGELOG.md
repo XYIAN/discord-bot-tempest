@@ -4,6 +4,15 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.4] - 2026-07-27
+
+💌 **Personal touch** — DMs now accompany (never replace!) public announcements:
+
+- Fact approved/rejected → the contributor gets a DM (rejections can include a moderator reason via the new `reason` option)
+- Activity rank-ups → DM alongside the #general shout-out
+- Contributor tier-ups → DM alongside the channel announcement
+- `/guild verify` → welcome-to-the-guild DM alongside the channel post
+
 ## [0.1.3] - 2026-07-27
 
 - Daily reset reminder now fires at the correct time — 9am Pacific (was 5pm)

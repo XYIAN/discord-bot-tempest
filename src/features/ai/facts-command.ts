@@ -1,6 +1,7 @@
 import { MessageFlags, SlashCommandBuilder, type ChatInputCommandInteraction } from 'discord.js';
 import type { BotContext, SlashCommand } from '../../core/types.js';
 import { recordFactApproved } from '../../lib/achievements/service.js';
+import { safeDm } from '../../lib/discord/dm.js';
 import { memberHasAnyRole, resolveRole } from '../../lib/discord/resolve.js';
 import { COLORS, stormEmbed } from '../../lib/discord/send.js';
 import {
@@ -34,12 +35,21 @@ async function creditContributor(ctx: BotContext, interaction: ChatInputCommandI
     const role = resolveRole(guild, tier.role);
     if (!role || member.roles.cache.has(role.id)) continue;
     await member.roles.add(role).catch((e) => ctx.logger.child('ai').error('tier role grant failed', e));
+    // Public announcement AND a personal DM — additive, never either/or.
     await interaction.followUp({
       embeds: [
         stormEmbed('🎓 Contributor rank up!', `<@${userId}> is now **${tier.role.name}** (${count} approved facts)!`).setColor(COLORS.success),
       ],
       allowedMentions: { parse: [] },
     });
+    await safeDm(
+      ctx,
+      userId,
+      stormEmbed(
+        `🎓 You're now ${tier.role.name}!`,
+        `Your knowledge contributions to ${ctx.guild.identity.botName} earned you the **${tier.role.name}** role (${count} approved facts). Thanks for making the AI smarter — keep them coming with \`/fact add\`!`,
+      ).setColor(COLORS.success),
+    );
   }
 }
 
@@ -91,7 +101,10 @@ export const factCommand: SlashCommand = {
       s
         .setName('reject')
         .setDescription('Moderator: reject a pending fact')
-        .addIntegerOption((o) => o.setName('id').setDescription('Fact id').setRequired(true)),
+        .addIntegerOption((o) => o.setName('id').setDescription('Fact id').setRequired(true))
+        .addStringOption((o) =>
+          o.setName('reason').setDescription('Why (DMed to the contributor)').setMaxLength(200),
+        ),
     )
     .addSubcommand((s) =>
       s
@@ -188,15 +201,34 @@ export const factCommand: SlashCommand = {
       return;
     }
     const fact = result.fact;
+    const reason = sub === 'reject' ? interaction.options.getString('reason') : null;
     await interaction.reply({
       embeds: [
         stormEmbed(
           status === 'approved' ? '✅ Fact approved' : '🚫 Fact rejected',
-          `#${fact.id} [${fact.category}] ${fact.text}${fact.addedBy ? `\nBy <@${fact.addedBy}>` : ''}`,
+          `#${fact.id} [${fact.category}] ${fact.text}${fact.addedBy ? `\nBy <@${fact.addedBy}>` : ''}${reason ? `\n**Reason:** ${reason}` : ''}`,
         ).setColor(status === 'approved' ? COLORS.success : COLORS.danger),
       ],
       allowedMentions: { parse: [] },
     });
+
+    // DM the contributor about the review outcome — in addition to the
+    // channel post above, and never when they reviewed their own fact.
+    if (fact.addedBy && fact.addedBy !== interaction.user.id) {
+      await safeDm(
+        ctx,
+        fact.addedBy,
+        status === 'approved'
+          ? stormEmbed(
+              '✅ Your fact was approved!',
+              `"${fact.text}"\n\nIt's now part of ${ctx.guild.identity.botName}'s verified knowledge. Thanks for contributing!`,
+            ).setColor(COLORS.success)
+          : stormEmbed(
+              '🚫 Your fact was not approved',
+              `"${fact.text}"${reason ? `\n\n**Reason:** ${reason}` : ''}\n\nFeel free to refine it and \`/fact add\` again.`,
+            ).setColor(COLORS.danger),
+      );
+    }
     if (status === 'approved' && fact.addedBy) {
       await creditContributor(ctx, interaction, fact.addedBy);
     }

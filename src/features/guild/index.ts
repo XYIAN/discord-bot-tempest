@@ -1,6 +1,7 @@
 import { MessageFlags, SlashCommandBuilder, type ChatInputCommandInteraction } from 'discord.js';
 import type { BotContext, FeatureModule } from '../../core/types.js';
 import { recordGuildJoin } from '../../lib/achievements/service.js';
+import { safeDm } from '../../lib/discord/dm.js';
 import { getHomeGuild } from '../../lib/discord/home-guild.js';
 import { memberHasAnyRole, resolveRole, resolveTextChannel } from '../../lib/discord/resolve.js';
 import { COLORS, sendToChannel, stormEmbed } from '../../lib/discord/send.js';
@@ -159,11 +160,20 @@ const guildCommand = {
       }
       await member.roles.add(role);
       await recordGuildJoin(ctx, user.id);
+      // Channel announcement AND a welcome DM — additive, never either/or.
       await interaction.reply({
         embeds: [
           stormEmbed('⚔️ Guild member verified', `<@${user.id}> is now **${ctx.guild.identity.guildName}** — welcome to the storm!`).setColor(COLORS.success),
         ],
       });
+      await safeDm(
+        ctx,
+        user.id,
+        stormEmbed(
+          `⚔️ Welcome to ${ctx.guild.identity.guildName}!`,
+          `You're officially in the guild — the **${ctx.guild.roles.guildMember.name}** role unlocks the guild-hall section. See you in there! ⛈️`,
+        ).setColor(COLORS.success),
+      );
     }
   },
 };

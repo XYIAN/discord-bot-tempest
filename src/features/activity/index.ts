@@ -1,6 +1,7 @@
 import { MessageFlags, SlashCommandBuilder, type ChatInputCommandInteraction, type Message } from 'discord.js';
 import type { BotContext, FeatureModule } from '../../core/types.js';
 import { defineEvent } from '../../core/types.js';
+import { safeDm } from '../../lib/discord/dm.js';
 import { resolveRole } from '../../lib/discord/resolve.js';
 import { sendToChannel, stormEmbed } from '../../lib/discord/send.js';
 import type { Tier } from '../../config/guild.js';
@@ -64,6 +65,7 @@ async function onMessage(ctx: BotContext, message: Message): Promise<void> {
     } catch (error) {
       log.error(`Failed to grant tier role ${promoted.role.name}`, error);
     }
+    // Public shout-out in #general AND a personal DM — additive, never either/or.
     await sendToChannel(
       message.guild,
       ctx.guild.channels.general,
@@ -76,6 +78,14 @@ async function onMessage(ctx: BotContext, message: Message): Promise<void> {
         ],
       },
       log,
+    );
+    await safeDm(
+      ctx,
+      message.author.id,
+      stormEmbed(
+        `⚡ You reached ${promoted.role.name}!`,
+        `Your activity in the ${ctx.guild.identity.guildName} server just earned you the **${promoted.role.name}** role (${promoted.threshold} points). Check your progress anytime with \`/rank\`. ⛈️`,
+      ),
     );
   }
 }
