@@ -18,8 +18,8 @@ function channelMention(ctx: BotContext, member: GuildMember, ref: { name: strin
 
 async function handleJoin(ctx: BotContext, member: GuildMember): Promise<void> {
   // The bot can sit in partner servers for the lobby relay — only welcome
-  // joins to the home guild.
-  if (member.guild.id !== ctx.config.guildId) return;
+  // human joins to the home guild (bots welcome no one, least of all themselves).
+  if (member.guild.id !== ctx.config.guildId || member.user.bot) return;
   const log = ctx.logger.child('welcome');
 
   // Role grants run on EVERY join (idempotent): a rejoining member lost
