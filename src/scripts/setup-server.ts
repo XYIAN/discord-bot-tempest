@@ -34,13 +34,29 @@ async function ensureRole(guild: Guild, ref: RoleRef, color?: number): Promise<R
   return guild.roles.create({ name: ref.name, ...(color !== undefined ? { color } : {}), reason: 'Tempest bot setup' });
 }
 
-async function ensureCategory(guild: Guild, name: string): Promise<CategoryChannel | undefined> {
+async function ensureCategory(
+  guild: Guild,
+  name: string,
+  /** When set, the whole category (and channels that sync to it) is hidden from @everyone. */
+  restrictToRoles?: Role[],
+): Promise<CategoryChannel | undefined> {
   const existing = guild.channels.cache.find(
     (c) => c.type === ChannelType.GuildCategory && c.name === name,
   ) as CategoryChannel | undefined;
   if (existing) return existing;
-  if (!plan(`create category "${name}"`)) return undefined;
-  return guild.channels.create({ name, type: ChannelType.GuildCategory });
+  if (!plan(`create category "${name}"${restrictToRoles ? ' (private)' : ''}`)) return undefined;
+
+  const overwrites = [];
+  if (restrictToRoles && restrictToRoles.length > 0) {
+    overwrites.push({ id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] });
+    for (const role of restrictToRoles) {
+      overwrites.push({ id: role.id, allow: [PermissionFlagsBits.ViewChannel] });
+    }
+    if (guild.members.me) {
+      overwrites.push({ id: guild.members.me.id, allow: [PermissionFlagsBits.ViewChannel] });
+    }
+  }
+  return guild.channels.create({ name, type: ChannelType.GuildCategory, permissionOverwrites: overwrites });
 }
 
 interface ChannelSpec {
@@ -133,9 +149,15 @@ async function main(): Promise<void> {
     restrictToRoles: null,
   });
 
-  // Guild-only category
-  const guildOnly = await ensureCategory(guild, '⚔️ GUILD HALL');
+  // Guild-only category — PRIVATE at the category level (hidden from non-members).
+  // Note: #recruiting deliberately lives in the PUBLIC community category above,
+  // not here — recruiting only works if everyone can see it.
   const restricted = [guildMember, officer, admin].filter((r): r is Role => Boolean(r));
+  const guildOnly = await ensureCategory(
+    guild,
+    '⚔️ GUILD HALL',
+    restricted.length > 0 ? restricted : undefined,
+  );
   await ensureTextChannel(guild, guildOnly, {
     name: g.channels.guildHall.name,
     topic: 'Guild members only — strategy, boss timing, and shenanigans.',
