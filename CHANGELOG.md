@@ -4,6 +4,10 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.9] - 2026-07-29
+
+⚙️ Faster, cleaner shutdown — retired containers now flush state and exit promptly on redeploy instead of lingering, which was causing spurious Railway "deployment crashed" emails during normal deploys. (The bot was never actually down.)
+
 ## [0.1.8] - 2026-07-29
 
 🧹 Deploy notices in #bot-logs now show only the commit's first line — no more commit-body/trailer noise cluttering the channel.

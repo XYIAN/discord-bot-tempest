@@ -68,15 +68,23 @@ async function main(): Promise<void> {
     }
   });
 
+  // Exit fast and cleanly on shutdown. Railway sends SIGTERM when retiring a
+  // container during a redeploy and SIGKILLs it if it lingers past the grace
+  // window — a SIGKILL reads as a "crash". So: flush persisted state (the only
+  // thing worth waiting for, with a tight cap), fire the gateway teardown
+  // without blocking on it, and exit(0) promptly. Idempotent against repeat
+  // signals.
+  let shuttingDown = false;
   const shutdown = (signal: string) => {
+    if (shuttingDown) return;
+    shuttingDown = true;
     logger.info(`${signal} received; shutting down`);
     scheduler.stop();
+    void client.destroy();
     void (async () => {
-      // Flush queued store writes before exiting so the last moments of
-      // activity/achievement state aren't lost on redeploys.
       await Promise.race([
-        Promise.allSettled([client.destroy(), ctx.stores.flushAll()]),
-        new Promise((resolve) => setTimeout(resolve, 5_000)),
+        ctx.stores.flushAll(),
+        new Promise((resolve) => setTimeout(resolve, 2_000)),
       ]);
       process.exit(0);
     })();
