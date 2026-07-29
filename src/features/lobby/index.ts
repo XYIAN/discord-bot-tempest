@@ -15,7 +15,7 @@ import { defineEvent } from '../../core/types.js';
 async function relay(ctx: BotContext, message: Message): Promise<void> {
   const ids = ctx.config.lobbyChannelIds;
   if (ids.length < 2) return;
-  if (message.author.bot || message.webhookId) return;
+  if (message.author.bot || message.webhookId || message.system) return;
   if (!ids.includes(message.channelId)) return;
   const log = ctx.logger.child('lobby');
 

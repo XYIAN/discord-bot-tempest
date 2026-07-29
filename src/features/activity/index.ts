@@ -2,6 +2,7 @@ import { MessageFlags, SlashCommandBuilder, type ChatInputCommandInteraction, ty
 import type { BotContext, FeatureModule } from '../../core/types.js';
 import { defineEvent } from '../../core/types.js';
 import { safeDm } from '../../lib/discord/dm.js';
+import { isHumanGuildMessage } from '../../lib/discord/message.js';
 import { resolveRole } from '../../lib/discord/resolve.js';
 import { sendToChannel, stormEmbed } from '../../lib/discord/send.js';
 import type { Tier } from '../../config/guild.js';
@@ -35,7 +36,7 @@ function progressBar(current: number, target: number, width = 12): string {
 }
 
 async function onMessage(ctx: BotContext, message: Message): Promise<void> {
-  if (message.author.bot || !message.inGuild() || message.guildId !== ctx.config.guildId) return;
+  if (!isHumanGuildMessage(message, ctx.config.guildId)) return;
   const channelName = 'name' in message.channel ? (message.channel.name ?? '') : '';
   if (ctx.guild.activity.excludedChannels.includes(channelName)) return;
 

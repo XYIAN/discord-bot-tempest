@@ -2,6 +2,7 @@ import type { Message } from 'discord.js';
 import type { BotContext } from '../../core/types.js';
 import type { ChatTurn, LlmClient } from '../../lib/llm/index.js';
 import { recordAiQuestion } from '../../lib/achievements/service.js';
+import { isHumanGuildMessage } from '../../lib/discord/message.js';
 import { memberHasRole, resolveRole, resolveTextChannel } from '../../lib/discord/resolve.js';
 import { knowledgeStore } from './knowledge.js';
 import { buildSystemPrompt } from './prompt.js';
@@ -49,7 +50,7 @@ export async function handleAiMessage(
   llm: LlmClient,
   message: Message,
 ): Promise<void> {
-  if (message.author.bot || !message.inGuild() || message.guildId !== ctx.config.guildId) return;
+  if (!isHumanGuildMessage(message, ctx.config.guildId)) return;
   // Resolve the configured channel by id, not raw name comparison, so a
   // renamed impostor channel can't route traffic to the LLM.
   const aiChannel = resolveTextChannel(message.guild, ctx.guild.channels.aiChat);

@@ -2,10 +2,11 @@ import { SlashCommandBuilder, type ChatInputCommandInteraction, type Message } f
 import type { BotContext, FeatureModule } from '../../core/types.js';
 import { defineEvent } from '../../core/types.js';
 import { getUserAchievements, recordMessage } from '../../lib/achievements/service.js';
+import { isHumanGuildMessage } from '../../lib/discord/message.js';
 import { stormEmbed } from '../../lib/discord/send.js';
 
 async function onMessage(ctx: BotContext, message: Message): Promise<void> {
-  if (message.author.bot || !message.inGuild() || message.guildId !== ctx.config.guildId) return;
+  if (!isHumanGuildMessage(message, ctx.config.guildId)) return;
   await recordMessage(ctx, message.author.id);
 }
 
