@@ -1,5 +1,21 @@
 import { describe, expect, it } from 'vitest';
-import { extractVersionNotes } from './changelog.js';
+import { commitSubject, extractVersionNotes } from './changelog.js';
+
+describe('commitSubject', () => {
+  it('returns the first line only, dropping body and trailers', () => {
+    const msg = 'v0.1.7 — fix the thing\n\nLonger explanation here.\n\nCo-Authored-By: Someone <x@y.z>';
+    expect(commitSubject(msg)).toBe('v0.1.7 — fix the thing');
+  });
+
+  it('handles a one-line message', () => {
+    expect(commitSubject('just a subject')).toBe('just a subject');
+  });
+
+  it('handles undefined / empty', () => {
+    expect(commitSubject(undefined)).toBe('');
+    expect(commitSubject('')).toBe('');
+  });
+});
 
 const SAMPLE = `# Changelog
 

@@ -4,7 +4,7 @@ import { addLogListener } from '../../core/logger.js';
 import { getHomeGuild } from '../../lib/discord/home-guild.js';
 import { COLORS, sendToChannel, stormEmbed } from '../../lib/discord/send.js';
 import { readVersion } from '../../lib/version.js';
-import { extractVersionNotes } from './changelog.js';
+import { commitSubject, extractVersionNotes } from './changelog.js';
 
 /**
  * Autonomous release + debug-log pipeline:
@@ -46,7 +46,7 @@ async function announceDeploy(ctx: BotContext, version: string): Promise<void> {
         embeds: [
           stormEmbed('🚀 Deployed', [
             `**Version:** v${version}`,
-            shortSha ? `**Commit:** \`${shortSha}\` ${railway.commitMessage ?? ''}` : '**Commit:** local/dev run',
+            shortSha ? `**Commit:** \`${shortSha}\` ${commitSubject(railway.commitMessage)}` : '**Commit:** local/dev run',
             railway.deploymentId ? `**Deployment:** ${railway.deploymentId}` : null,
           ].filter(Boolean).join('\n')).setColor(COLORS.success),
         ],
@@ -64,7 +64,7 @@ async function announceDeploy(ctx: BotContext, version: string): Promise<void> {
   } catch {
     // no changelog file — fall through to commit message
   }
-  notes ??= railway.commitMessage;
+  notes ??= commitSubject(railway.commitMessage) || undefined;
 
   const sent = await sendToChannel(
     guild,

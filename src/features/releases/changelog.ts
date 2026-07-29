@@ -6,6 +6,15 @@
  * (a recurring failure in the reference bot, where the changelog file was
  * the version source of truth).
  */
+/**
+ * The subject line of a commit message — first line only, so commit body
+ * and trailers (Co-Authored-By, Signed-off-by, etc.) never leak into the
+ * deploy notice or the changelog fallback.
+ */
+export function commitSubject(message: string | undefined): string {
+  return (message ?? '').split('\n')[0]?.trim() ?? '';
+}
+
 export function extractVersionNotes(changelog: string, version: string): string | undefined {
   const lines = changelog.split('\n');
   const headerPattern = new RegExp(`^##\\s*\\[?${version.replaceAll('.', '\\.')}\\]?`);

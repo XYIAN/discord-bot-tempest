@@ -4,6 +4,10 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.8] - 2026-07-29
+
+🧹 Deploy notices in #bot-logs now show only the commit's first line — no more commit-body/trailer noise cluttering the channel.
+
 ## [0.1.7] - 2026-07-29
 
 🐛 **Fix: "First Words" no longer fires the instant you join** — Discord's member-join system message was being counted as a real message. All message-counting features now share one `isHumanGuildMessage` guard that excludes bots and system messages (joins, boosts, pins), so achievements and activity points only count actual human messages.
