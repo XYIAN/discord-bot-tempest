@@ -3,6 +3,7 @@ import type { BotContext, FeatureModule } from '../../core/types.js';
 import { addLogListener } from '../../core/logger.js';
 import { getHomeGuild } from '../../lib/discord/home-guild.js';
 import { COLORS, sendToChannel, stormEmbed } from '../../lib/discord/send.js';
+import { checkStoreIntegrity } from '../../lib/store/integrity.js';
 import { readVersion } from '../../lib/version.js';
 import { commitSubject, extractVersionNotes } from './changelog.js';
 
@@ -79,6 +80,48 @@ async function announceDeploy(ctx: BotContext, version: string): Promise<void> {
   if (sent) await store.update((s) => ({ ...s, lastAnnouncedVersion: version }));
 }
 
+/**
+ * Post a loud alert if persisted state shrank since the last boot. A detached
+ * or recreated volume makes every store silently fall back to its defaults;
+ * on the archero2 bot an equivalent silent emptying wiped months of member
+ * standing before anyone noticed.
+ */
+async function warnOnDataLoss(ctx: BotContext): Promise<void> {
+  const log = ctx.logger.child('integrity');
+  try {
+    const knowledge = await ctx.stores.store<{ facts: unknown[] }>('knowledge', { nextId: 1, facts: [] } as never).get();
+    const achievements = await ctx.stores
+      .store<{ stats: Record<string, unknown> }>('achievements', { stats: {}, unlocked: {} } as never)
+      .get();
+    const activity = await ctx.stores.store<Record<string, unknown>>('activity', {}).get();
+
+    const warnings = await checkStoreIntegrity(ctx, [
+      { name: 'knowledge facts', count: knowledge.facts?.length ?? 0 },
+      { name: 'achievement records', count: Object.keys(achievements.stats ?? {}).length },
+      { name: 'activity records', count: Object.keys(activity ?? {}).length },
+    ]);
+    if (warnings.length === 0) return;
+
+    for (const w of warnings) log.error(`Data-loss warning: ${w.replace(/\*\*/g, '')}`);
+    const guild = getHomeGuild(ctx);
+    if (!guild) return;
+    await sendToChannel(
+      guild,
+      ctx.guild.channels.botLogs,
+      {
+        embeds: [
+          stormEmbed('🚨 Possible data loss', [...warnings, '', 'Check that the data volume is still attached.'].join('\n')).setColor(
+            COLORS.danger,
+          ),
+        ],
+      },
+      log,
+    );
+  } catch (error) {
+    log.error('Integrity check failed', error);
+  }
+}
+
 function startLogForwarding(ctx: BotContext): void {
   const buffer: string[] = [];
   let dropped = 0;
@@ -122,6 +165,7 @@ export function releasesFeature(): FeatureModule {
     async init(ctx) {
       startLogForwarding(ctx);
       await announceDeploy(ctx, readVersion());
+      await warnOnDataLoss(ctx);
     },
   };
 }

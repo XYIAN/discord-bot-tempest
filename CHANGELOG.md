@@ -4,6 +4,12 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.10] - 2026-07-30
+
+🚨 **Data-loss alarm** — if persisted state (knowledge, achievements, activity) comes back empty or sharply smaller than a previous boot, the bot now posts a loud alert to #bot-logs instead of carrying on silently.
+
+Ported from a real failure on the Archero 2 bot: its contribution ledger was silently emptied by a storage-volume change and, because "missing" was treated as "empty", nobody noticed for months — members quietly lost every rank they'd earned. Tempest isn't vulnerable to that same cause, but a detached volume would look identical, so it now watches for it.
+
 ## [0.1.9] - 2026-07-29
 
 ⚙️ Faster, cleaner shutdown — retired containers now flush state and exit promptly on redeploy instead of lingering, which was causing spurious Railway "deployment crashed" emails during normal deploys. (The bot was never actually down.)
