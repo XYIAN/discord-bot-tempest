@@ -5,6 +5,7 @@ import { createLlmClient } from '../../lib/llm/index.js';
 import { handleAiMessage } from './chat.js';
 import { factCommand } from './facts-command.js';
 import { runMemorySync } from './memory-sync.js';
+import { applySeedFacts } from './seed.js';
 import { runSyncReport } from './sync-report.js';
 
 /**
@@ -47,9 +48,16 @@ export function aiFeature(config: AppConfig): FeatureModule {
         },
       },
     ],
-    init(ctx) {
+    async init(ctx) {
       if (llm) ctx.logger.info(`Tempest AI online via ${llm.providerName}`);
       else ctx.logger.warn('Tempest AI disabled — set ANTHROPIC_API_KEY (or OPENAI_API_KEY)');
+
+      const seeded = await applySeedFacts(ctx);
+      if (seeded.added || seeded.updated) {
+        ctx.logger.info(
+          `Seed knowledge applied: ${seeded.added} added, ${seeded.updated} updated, ${seeded.retired} retired`,
+        );
+      }
     },
   };
 }

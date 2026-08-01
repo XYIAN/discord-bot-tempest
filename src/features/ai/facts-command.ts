@@ -56,7 +56,9 @@ async function creditContributor(ctx: BotContext, interaction: ChatInputCommandI
 
 /** Facts are inlined into the AI prompt — keep them single-line and markdown-flat. */
 function sanitizeFactText(text: string): string {
-  return text.replace(/\s+/g, ' ').replace(/[`#]/g, '').trim();
+  // Strip markdown before collapsing whitespace, not after — otherwise a
+  // removed "# " leaves a double space behind.
+  return text.replace(/[`#]/g, '').replace(/\s+/g, ' ').trim();
 }
 
 export const factCommand: SlashCommand = {

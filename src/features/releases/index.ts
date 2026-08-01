@@ -89,14 +89,20 @@ async function announceDeploy(ctx: BotContext, version: string): Promise<void> {
 async function warnOnDataLoss(ctx: BotContext): Promise<void> {
   const log = ctx.logger.child('integrity');
   try {
-    const knowledge = await ctx.stores.store<{ facts: unknown[] }>('knowledge', { nextId: 1, facts: [] } as never).get();
+    const knowledge = await ctx.stores
+      .store<{ facts: { source?: string }[] }>('knowledge', { nextId: 1, facts: [] } as never)
+      .get();
+    // Seeded facts are committed to the repo and reapplied on every boot, so
+    // they always come back — counting them would mask exactly the volume loss
+    // this check exists to catch. Only community-contributed facts are at risk.
+    const contributedFacts = (knowledge.facts ?? []).filter((f) => f?.source !== 'seed');
     const achievements = await ctx.stores
       .store<{ stats: Record<string, unknown> }>('achievements', { stats: {}, unlocked: {} } as never)
       .get();
     const activity = await ctx.stores.store<Record<string, unknown>>('activity', {}).get();
 
     const warnings = await checkStoreIntegrity(ctx, [
-      { name: 'knowledge facts', count: knowledge.facts?.length ?? 0 },
+      { name: 'knowledge facts', count: contributedFacts.length },
       { name: 'achievement records', count: Object.keys(achievements.stats ?? {}).length },
       { name: 'activity records', count: Object.keys(activity ?? {}).length },
     ]);

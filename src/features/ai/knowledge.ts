@@ -12,14 +12,21 @@ export interface Fact {
   addedBy: string;
   addedByName: string;
   addedAt: string;
-  source: 'command' | 'memory-sync';
+  source: 'command' | 'memory-sync' | 'seed';
   reviewedBy?: string;
   reviewedAt?: string;
+  /** Set only on seeded facts — links back to the entry in seed-facts.ts. */
+  seedKey?: string;
 }
 
 export interface KnowledgeState {
   nextId: number;
   facts: Fact[];
+  /**
+   * Every seed key ever applied. Kept separately from `facts` so deleting a
+   * seeded fact is permanent — the next boot must not resurrect it.
+   */
+  seededKeys?: string[];
 }
 
 export const CATEGORIES = [
