@@ -5,3 +5,12 @@ dist/
 data/
 *.log
 .DS_Store
+
+# Game-capture screenshots must never land in the repo — they are working
+# material for the knowledge base, often show account state, and are large.
+screenshots/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
