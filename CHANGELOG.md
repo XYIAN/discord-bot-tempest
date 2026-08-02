@@ -4,6 +4,14 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.15] - 2026-08-01
+
+🔁 **Swapping heroes is free** — Tempest AI now knows that hero level follows your main deployed five, not the individual hero.
+
+Own a hero but never deployed them? They show Level 1. Swap them into your main five and the level comes with them. So you can rebuild toward any of the recommended lineups without re-levelling anything.
+
+Stars work the opposite way: they come from that specific hero's shards and stay with them permanently. Star investment locks you into a hero, level investment doesn't.
+
 ## [0.1.14] - 2026-08-01
 
 ⚔️ **"What team should I run?"** — Tempest AI now knows Habby's own 13 recommended lineups, straight from the in-game Recommended screen.

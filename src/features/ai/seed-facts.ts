@@ -1922,4 +1922,21 @@ export const SEED_FACTS: SeedFact[] = [
     category: 'heroes',
     text: 'Elemental Invoker (character name Omnis) is a Xenoscape-element Support in Wittle Defender who appears in Habby\'s Top Xenoscape Lineup, where the card credits it with damage amplifications and powerful mechanisms across all dimensions. Its skill kit has not been captured, so nothing else about its abilities is known yet.',
   },
+
+  // ── Hero level mechanic (Kyle) ──────────────────────────────────────────
+  {
+    key: 'hero-level-belongs-to-deployed-slot',
+    category: 'heroes',
+    text: 'In Wittle Defender a hero\'s LEVEL is not permanently tied to that hero — it belongs to your main deployed five. Heroes you own but have not deployed show as Level 1. If you swap a benched hero into your main five, the level transfers to them when equipped.',
+  },
+  {
+    key: 'hero-level-swapping-is-free',
+    category: 'strategy',
+    text: 'Because hero level follows your main five rather than the individual hero, swapping heroes in and out of your Wittle Defender team costs you no level progress. You can rebuild toward a different recommended lineup without re-levelling from scratch, so experimenting with team compositions is cheap.',
+  },
+  {
+    key: 'hero-level-vs-stars',
+    category: 'strategy',
+    text: 'Wittle Defender has two separate hero progressions and only one of them is per-hero: LEVEL follows your main deployed five and transfers when you swap, while STARS come from that specific hero\'s shards and stay with them permanently. So star investment is the one that locks you into a hero; level investment does not.',
+  },
 ];
