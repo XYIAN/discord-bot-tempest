@@ -1705,4 +1705,24 @@ export const SEED_FACTS: SeedFact[] = [
     category: 'gear',
     text: 'Windborne Ranger\'s skins give flat bonuses to all deployed heroes: Aerial Hunter (Legendary, Wind\'s Prelude event) +1% ATK/HP/DEF, Snowborne Sprite (Legendary, Frost Festival event) +2% ATK/HP/DEF, and Argent Windborne Ranger (Mythic, Event Market exchange) +1% ATK/HP/DEF. Her default skin carries no bonus at all.',
   },
+
+  // ── Explicit knowledge gaps ─────────────────────────────────────────────
+  // Seeded deliberately: on the first live test the AI invented an EX-Weapon
+  // name ("Frostbite") for a hero. Stating the gap out loud is more reliable
+  // than hoping the model stays silent about it.
+  {
+    key: 'gap-ex-weapons',
+    category: 'general',
+    text: 'Tempest AI does not yet have data on EX-Weapons (Exclusive Weapons) — their names, stats or effects — even though several hero Ascend upgrades reference EX-Weapon damage and energy. If asked about a specific hero\'s EX-Weapon, say the data has not been captured yet rather than guessing a name.',
+  },
+  {
+    key: 'gap-runes-treasures-pantheon',
+    category: 'general',
+    text: 'Tempest AI does not yet have data on runes, treasures or the pantheon system in Wittle Defender. Say so plainly if asked, and invite the member to teach it with /fact add rather than guessing.',
+  },
+  {
+    key: 'gap-meta-and-tier-lists',
+    category: 'general',
+    text: 'Tempest AI has no data on the current competitive meta, patch notes, or any official tier list for Wittle Defender. It can compare heroes using their captured skills and team buffs, but it should not claim to know what is strongest in the current patch.',
+  },
 ];

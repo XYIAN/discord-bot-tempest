@@ -4,6 +4,14 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.12] - 2026-08-01
+
+🔒 **Tempest AI stops guessing** — it now answers game questions only from its verified facts, and says "I don't have that yet" instead of inventing details.
+
+Caught on the first live test of v0.1.11: asked about a hero's EX-Weapon (data we deliberately haven't captured), the bot confidently made up a weapon name. The old prompt invited it to fill gaps with general Habby knowledge, which was reasonable when it knew almost nothing and actively harmful now that it knows the whole roster.
+
+It still reasons freely — comparing heroes, suggesting comps, explaining trade-offs — but every name, number and mechanic it states has to come from the knowledge base. Known gaps (EX-Weapons, runes, treasures, pantheon, current meta) are now stated outright, so it points you at `/fact add` rather than filling the silence.
+
 ## [0.1.11] - 2026-08-01
 
 📚 **Tempest AI knows the game now** — the knowledge base ships with **328 verified facts** covering all **42 heroes**, captured screen by screen from the Hero Gallery.
