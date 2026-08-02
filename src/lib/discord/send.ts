@@ -40,3 +40,39 @@ export async function sendToChannel(
     return undefined;
   }
 }
+
+/** Discord API error code for a message that no longer exists. */
+const UNKNOWN_MESSAGE = 10008;
+
+/**
+ * Delete a message the bot posted earlier, by id. Used to replace recurring
+ * posts instead of letting them pile up.
+ *
+ * Never throws: a message someone already deleted by hand is the normal case,
+ * not an error, and a failed cleanup must never stop the caller from posting.
+ * Returns whether the message was actually deleted.
+ */
+export async function deleteMessageById(
+  guild: Guild,
+  channelId: string | undefined,
+  messageId: string | undefined,
+  logger: Logger,
+): Promise<boolean> {
+  if (!channelId || !messageId) return false;
+  try {
+    const channel =
+      guild.channels.cache.get(channelId) ?? (await guild.channels.fetch(channelId).catch(() => null));
+    if (!channel || !channel.isTextBased()) return false;
+    const message = await channel.messages.fetch(messageId);
+    await message.delete();
+    return true;
+  } catch (error) {
+    if ((error as { code?: number }).code === UNKNOWN_MESSAGE) {
+      // Already gone — someone cleaned it up manually. Expected, not a problem.
+      logger.info(`Previous message ${messageId} was already deleted`);
+      return false;
+    }
+    logger.warn(`Could not delete message ${messageId}`, error);
+    return false;
+  }
+}

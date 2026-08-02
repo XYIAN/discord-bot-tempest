@@ -4,7 +4,7 @@ import { recordGuildJoin } from '../../lib/achievements/service.js';
 import { safeDm } from '../../lib/discord/dm.js';
 import { getHomeGuild } from '../../lib/discord/home-guild.js';
 import { memberHasAnyRole, resolveRole, resolveTextChannel } from '../../lib/discord/resolve.js';
-import { COLORS, sendToChannel, stormEmbed } from '../../lib/discord/send.js';
+import { COLORS, deleteMessageById, sendToChannel, stormEmbed } from '../../lib/discord/send.js';
 
 /**
  * Guild membership: info, applications, officer verification, and the
@@ -15,6 +15,10 @@ import { COLORS, sendToChannel, stormEmbed } from '../../lib/discord/send.js';
 
 interface RecruitingState {
   lastPostedAt: number;
+  /** The recruiting post currently up, so the next cycle replaces it instead of stacking. */
+  lastMessageId?: string;
+  /** Stored alongside the id — the configured recruiting channel can change. */
+  lastChannelId?: string;
 }
 
 const APPLY_COOLDOWN_MS = 15 * 60 * 1000;
@@ -44,14 +48,31 @@ async function postRecruiting(ctx: BotContext, force = false): Promise<boolean> 
   const state = await store.get();
   const intervalMs = ctx.guild.recruiting.intervalDays * 24 * 60 * 60 * 1000;
   if (!force && Date.now() - state.lastPostedAt < intervalMs) return false;
+  const log = ctx.logger.child('guild');
   const sent = await sendToChannel(
     guild,
     ctx.guild.channels.recruiting,
     { embeds: [recruitingEmbed(ctx)] },
-    ctx.logger.child('guild'),
+    log,
   );
-  if (sent) await store.set({ lastPostedAt: Date.now() });
-  return Boolean(sent);
+  if (!sent) return false;
+
+  // Replace rather than accumulate. Deliberately post-then-delete, not
+  // delete-then-post: if the send fails the old post stays up, so the channel
+  // is never left with no recruiting message at all. The brief overlap is a
+  // better failure mode than a gap that lasts until the next interval.
+  // Only the recurring post is tracked by id, so `/guild apply` submissions in
+  // the same channel are never touched.
+  if (await deleteMessageById(guild, state.lastChannelId, state.lastMessageId, log)) {
+    log.info('Replaced the previous recruiting post');
+  }
+
+  await store.set({
+    lastPostedAt: Date.now(),
+    lastMessageId: sent.id,
+    lastChannelId: sent.channelId,
+  });
+  return true;
 }
 
 const guildCommand = {

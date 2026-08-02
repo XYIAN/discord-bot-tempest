@@ -4,6 +4,12 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.17] - 2026-08-02
+
+🧹 **The recruiting post now replaces itself** instead of piling up — #recruiting keeps exactly one, always the newest.
+
+The bot remembers the post it made and removes it once the replacement is safely up. Applications from `/guild apply` in the same channel are never touched, and a post someone deleted by hand is handled quietly.
+
 ## [0.1.16] - 2026-08-02
 
 🗡️ **EX-Weapons, all 26 of them** — Tempest AI can finally answer what a hero's EX-Weapon is and what it does, instead of saying it doesn't know.
