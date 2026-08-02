@@ -1,6 +1,7 @@
 import type { Message } from 'discord.js';
 import type { BotContext } from '../../core/types.js';
-import type { ChatTurn, LlmClient } from '../../lib/llm/index.js';
+import type { ChatTurn, ContentPart, LlmClient } from '../../lib/llm/index.js';
+import { collectImageAttachments } from '../../lib/llm/attachments.js';
 import { recordAiQuestion } from '../../lib/achievements/service.js';
 import { isHumanGuildMessage } from '../../lib/discord/message.js';
 import { memberHasRole, resolveRole, resolveTextChannel } from '../../lib/discord/resolve.js';
@@ -56,7 +57,11 @@ export async function handleAiMessage(
   const aiChannel = resolveTextChannel(message.guild, ctx.guild.channels.aiChat);
   if (!aiChannel || message.channelId !== aiChannel.id) return;
   const question = message.content.trim().slice(0, MAX_QUESTION_CHARS);
-  if (!question || question.startsWith('/')) return;
+  if (question.startsWith('/')) return;
+  // A screenshot with no caption is a perfectly normal question ("here's my
+  // roster") — so only bail when there's neither text nor an attachment.
+  const hasAttachments = message.attachments.size > 0;
+  if (!question && !hasAttachments) return;
 
   // The aiEnabled role is the per-user kill switch. It's auto-granted on
   // join; if the role doesn't exist on the server, the gate is open.
@@ -96,13 +101,27 @@ export async function handleAiMessage(
   const history = existing && Date.now() - existing.lastAt < MEMORY_TTL_MS ? existing.turns : [];
 
   const knowledge = await knowledgeStore(ctx).get();
-  const system = buildSystemPrompt(ctx.guild, knowledge.facts, question);
+  const system = buildSystemPrompt(ctx.guild, knowledge.facts, question, hasAttachments);
+
+  // Screenshots are the most common way members ask about their own roster.
+  const { images, skipped } = hasAttachments
+    ? await collectImageAttachments(message, log)
+    : { images: [], skipped: [] as string[] };
+  if (images.length > 0 && !llm.supportsImages) {
+    await message.reply("I can't read screenshots on my current model — describe it in text and I'll help. ⛈️");
+    return;
+  }
+
+  const userContent: string | ContentPart[] =
+    images.length > 0
+      ? [{ type: 'text', text: question || 'What can you tell me about this screenshot?' }, ...images]
+      : question;
 
   let answer: string;
   try {
     answer = await llm.complete({
       system,
-      turns: [...history, { role: 'user', content: question }],
+      turns: [...history, { role: 'user', content: userContent }],
       maxTokens: MAX_ANSWER_TOKENS,
     });
   } catch (error) {
@@ -118,14 +137,20 @@ export async function handleAiMessage(
   }
   if (!answer) return;
 
+  // Tell the member when an attachment was ignored, so a missing answer
+  // doesn't look like the bot silently failed.
+  const note = skipped.length > 0 ? `\n\n-# Skipped: ${skipped.join('; ')}` : '';
+
   // Model output is user-influenced — never let it ping anyone.
-  await message.reply({ content: answer.slice(0, 1990), allowedMentions: { parse: [] } });
+  await message.reply({ content: (answer + note).slice(0, 1990), allowedMentions: { parse: [] } });
 
   await conversations.update((s) => {
     // Append onto the state as it is NOW (not the pre-LLM snapshot).
     const current = s.users[message.author.id];
     const base = current && Date.now() - current.lastAt < MEMORY_TTL_MS ? current.turns : [];
-    const turns = [...base, { role: 'user' as const, content: question }, { role: 'assistant' as const, content: answer.slice(0, 1500) }];
+    // Persist the TEXT form only — base64 images would bloat the store on disk.
+    const historyText = images.length > 0 ? `${question || '(screenshot)'} [${images.length} screenshot(s)]` : question;
+    const turns = [...base, { role: 'user' as const, content: historyText }, { role: 'assistant' as const, content: answer.slice(0, 1500) }];
     s.users[message.author.id] = { turns: turns.slice(-MEMORY_TURNS), lastAt: Date.now() };
     for (const [userId, record] of Object.entries(s.users)) {
       if (Date.now() - record.lastAt > MEMORY_TTL_MS) delete s.users[userId];

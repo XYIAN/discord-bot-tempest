@@ -69,7 +69,12 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'elements-list',
     category: 'heroes',
-    text: 'Wittle Defender has five hero elements: Frost, Fire, Electric, Wind and Xenoscape. Xenoscape is the element used by Sublime-tier heroes.',
+    text: 'Wittle Defender has five hero elements: Frost (also called Ice), Fire, Electric (called Electro in skill text), Wind, and Xenoscape. Xenoscape is the element used by Sublime-tier heroes. The in-game lineup filter labels them Ice-themed, Fire, Electro, Wind and Xenoscape, so members may use either name for the same element.',
+  },
+  {
+    key: 'element-naming-variants',
+    category: 'heroes',
+    text: 'Wittle Defender is inconsistent about element names: hero skill descriptions say "Electro DMG" and "Electro RES" while players often say Electric, and the game calls the Frost element "Ice-themed" in its lineup filter. Treat Electro and Electric as the same element, and Frost and Ice as the same element.',
   },
   {
     key: 'roles-list',

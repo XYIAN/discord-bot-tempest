@@ -3,7 +3,16 @@ import { createAnthropicClient } from './anthropic.js';
 import { createOpenAiClient } from './openai.js';
 import type { LlmClient } from './types.js';
 
-export type { ChatTurn, CompletionRequest, LlmClient } from './types.js';
+export type {
+  ChatTurn,
+  CompletionRequest,
+  ContentPart,
+  ImagePart,
+  LlmClient,
+  SupportedImageType,
+  TextPart,
+} from './types.js';
+export { isSupportedImageType, SUPPORTED_IMAGE_TYPES, turnToText } from './types.js';
 
 /** Anthropic preferred when both keys exist; undefined when neither does. */
 export function createLlmClient(config: AppConfig): LlmClient | undefined {

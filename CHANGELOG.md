@@ -4,6 +4,17 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.13] - 2026-08-01
+
+📸 **Tempest AI can see your screenshots** — post a picture of your roster, a hero page or any in-game screen in the AI channel and it will actually look at it.
+
+Members were already doing this and getting "I can't see your current list of characters" back. Now a screenshot with no caption is a perfectly good question on its own.
+
+- Up to 3 images per message (PNG, JPEG, GIF, WebP), 4MB each
+- If an attachment is skipped — too big, wrong file type, failed download — it says which one and why, instead of quietly ignoring it
+- Anything it reads off your screenshot stays yours: your levels, power and star tiers are treated as your account, never added to its general game knowledge
+- Text inside an image is treated as untrusted, same as community-submitted facts, so a screenshot can't be used to feed it instructions
+
 ## [0.1.12] - 2026-08-01
 
 🔒 **Tempest AI stops guessing** — it now answers game questions only from its verified facts, and says "I don't have that yet" instead of inventing details.
