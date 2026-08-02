@@ -1308,7 +1308,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'hero-polar-captain-identity',
     category: 'heroes',
-    text: 'Polar Captain (in-game name Sarashed) is a Mythic Frost Fighter, male, and his EX-Weapon is [Ghost Fleet]. He is a standard Mythic, not an S-tier Mythic.',
+    text: 'Polar Captain (in-game name Sarashed) is a Mythic Frost Fighter, male. He is a standard Mythic, not an S-tier Mythic. His EX-Weapon is [Sunken Engulfer], which teaches the skill Ghost Fleet.',
   },
   {
     key: 'hero-polar-captain-main-skill',
@@ -1718,12 +1718,12 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'gap-ex-weapons',
     category: 'general',
-    text: 'Tempest AI does not yet have data on EX-Weapons (Exclusive Weapons) — their names, stats or effects — even though several hero Ascend upgrades reference EX-Weapon damage and energy. If asked about a specific hero\'s EX-Weapon, say the data has not been captured yet rather than guessing a name.',
+    text: 'Tempest AI now has verified EX-Weapon data for all 26 Mythic and Sublime heroes — names, their activation skill, and their upgrade ladders. It does NOT have EX-Weapon data for Legendary, Epic or Common heroes, and does not know the enhancement material names.',
   },
   {
     key: 'gap-runes-treasures-pantheon',
     category: 'general',
-    text: 'Tempest AI does not yet have data on runes, treasures or the pantheon system in Wittle Defender. Say so plainly if asked, and invite the member to teach it with /fact add rather than guessing.',
+    text: 'Tempest AI has no data yet on runes, treasures, sigils, gear, emblems or the pantheon system in Wittle Defender. It knows they exist — runes are a four-socket ring on the EX-Weapon screen, and Sigil, Gear, Rune, Emblem and Pantheon are buttons on every hero page — but nothing about their contents. Say so and invite /fact add rather than guessing.',
   },
   {
     key: 'gap-meta-and-tier-lists',
@@ -1938,5 +1938,242 @@ export const SEED_FACTS: SeedFact[] = [
     key: 'hero-level-vs-stars',
     category: 'strategy',
     text: 'Wittle Defender has two separate hero progressions and only one of them is per-hero: LEVEL follows your main deployed five and transfers when you swap, while STARS come from that specific hero\'s shards and stay with them permanently. So star investment is the one that locks you into a hero; level investment does not.',
+  },
+
+  // ── EX-Weapons and the three Xenoscape heroes ──
+  {
+    key: 'exweapon-what-it-is',
+    category: 'gear',
+    text: 'An EX-Weapon (Exclusive Weapon) in Wittle Defender is a separately named weapon belonging to one hero, opened from the hexagonal bubble at the bottom-left of that hero\'s page. It is not the hero\'s main skill: it teaches the hero one extra skill that casts automatically on a timer, and it grants flat ATK%, HP% and DEF%. Its screen also carries a 4-slot rune socket ring that has never been captured.',
+  },
+  {
+    key: 'exweapon-node-ladder',
+    category: 'gear',
+    text: 'Every EX-Weapon in Wittle Defender has the same 11-row enhance ladder: [Activation], then [+10] through [+100] in steps of 10. [Activation] teaches the weapon\'s skill, and everything that makes a weapon interesting lives between [+10] and [+50]. Which of those nodes carry real mechanics varies per weapon, so read [+10] through [+50] rather than assuming [+20] and [+40] are the interesting ones.',
+  },
+  {
+    key: 'exweapon-tail-nodes',
+    category: 'gear',
+    text: 'On all 26 EX-Weapons captured in Wittle Defender the [+60] to [+100] nodes are identical filler: damage, a +12% stat, damage, a +12% stat, damage. Only which stat appears varies. [+70] is ATK on 25 of 26 (Robot is the lone Max HP exception), while [+90] is a genuine coin flip between ATK and Max HP that does not track the hero\'s role. Never recite the tail when asked what a weapon does.',
+  },
+  {
+    key: 'exweapon-node-unlock-rule',
+    category: 'gear',
+    text: 'In Wittle Defender an EX-Weapon node [+N] unlocks exactly when the weapon reaches level +N, and [Activation] unlocks at +1. Nothing unlocks early. That makes the +N badge on the hero page\'s weapon bubble a complete description of what the weapon is doing: a badge of 20 or higher means the [+20] mechanic is live, and a badge under 10 means only the base skill is running.',
+  },
+  {
+    key: 'exweapon-activation-at-plus-1',
+    category: 'strategy',
+    text: 'An EX-Weapon sitting at +0 in Wittle Defender is doing nothing at all: [Activation] is padlocked, the weapon\'s ATK%, HP% and DEF% all read 0%, and the hero does not have the extra skill. [Activation] is bought at exactly +1, so taking a weapon from +0 to +1 is the single highest-value enhance in the whole system. Every level after that is incremental.',
+  },
+  {
+    key: 'exweapon-cadence',
+    category: 'gear',
+    text: 'EX-Weapon cast interval is a hidden per-weapon stat in Wittle Defender and the enhance ladder never mentions it. Across all 26 captured weapons, 18 cast every 25s, 7 cast every 20s (Robot, Sword Saint, Night Baron, Blazing Archer, Swordmaster, Thunder Pharaoh, Demon Spawn) and 1 casts every 15s (Ice Queen). Never state a generic EX-Weapon cooldown - it must be looked up per weapon.',
+  },
+  {
+    key: 'exweapon-energy',
+    category: 'gear',
+    text: 'EX-Weapon Energy in Wittle Defender is a per-hero meter, not a shared team pool: each hero fills their own meter to fire their weapon skill. It is a niche subsystem - 22 of the 26 captured weapons never mention it. Starlight Weaver\'s [Starseer Staff] feeds 5 Energy to a random ally every 0.5s, and Draconic Empress drains Energy from the enemy with the highest ATK.',
+  },
+  {
+    key: 'exweapon-energy-arena-start',
+    category: 'gear',
+    text: 'Arena starting EX-Weapon Energy in Wittle Defender is set per hero, which is the clearest proof the meter is not a shared team pool. Monkey King\'s [Golden Staff] [+50] starts him with 70 Energy in Arena Mode, Starlight Weaver\'s [Starseer Staff] [+10] starts her with 20, and Draconic Empress\'s MAX Ascend grants her 30 on entering PvP. Different heroes, different starting values.',
+  },
+  {
+    key: 'exweapon-star-gate',
+    category: 'strategy',
+    text: 'EX-Weapon enhancement in Wittle Defender is hard-gated by the hero\'s star tier: when the hero is too low the Enhance button is replaced outright by a message like "Star Up Hero to 3 stars to continue enhancement". A 0-star Mythic can be blocked while the weapon is still at +0, meaning it gives 0% stats and no skill until the hero is starred up. Starring up and enhancing are the same question.',
+  },
+  {
+    key: 'exweapon-material',
+    category: 'gear',
+    text: 'EX-Weapon enhancement in Wittle Defender consumes a material shown as a stock/cost chip above the Enhance button. The stock is shared across heroes, but the cost per enhance is per hero - 300, 600, 900, 1200, 1800 and 2400 have all been seen. At least one hero (Cheffy) shows a visibly different material icon with its own separate stock, so check the icon before assuming one currency covers everyone.',
+  },
+  {
+    key: 'exweapon-material-chip-colour',
+    category: 'gear',
+    text: 'The material chip above an EX-Weapon\'s Enhance button in Wittle Defender is green when your stock covers the cost and red when it does not, and while red it cross-fades to the words "Can Be Composed" - the material is craftable, not gacha-only. A red chip is a different blocker from a star gate: with a star gate the Enhance button is replaced entirely, with a red chip it is still there and merely unaffordable.',
+  },
+  {
+    key: 'exweapon-damage-scaling',
+    category: 'gear',
+    text: 'EX-Weapon skill damage in Wittle Defender uses three distinct scaling phrases that are not synonyms. "Scales with character level in battle" means the wielder\'s own level and covers about 22 of 26 weapons. "Scales with combat level" is an account-wide power concept and appears on Night Baron, Demon Spawn and Blazing Archer. "Scales with the sum of all ally character levels" appears on Monkey King and Phoenix Dancer.',
+  },
+  {
+    key: 'exweapon-name-vs-skill-name',
+    category: 'gear',
+    text: 'In Wittle Defender an EX-Weapon\'s name and the skill it teaches are two different names, and a bracketed name appearing in Ascend text, skin-skill text or Passive text is always the SKILL name, never the weapon\'s. Polar Captain\'s [Ghost Fleet] was long believed to be his weapon; the weapon is actually [Sunken Engulfer] and [Ghost Fleet] is the skill it teaches.',
+  },
+  {
+    key: 'exweapon-names-not-guessable',
+    category: 'gear',
+    text: 'EX-Weapon names in Wittle Defender cannot be guessed from a hero\'s theme or element. Blazing Archer is a fire archer whose weapon is [Skeletal Virtuoso] and fires rockets, Frost Lich\'s is [Frostbane Egg], and Swordmaster\'s is [Gloom Whisperer]. Every name inferred from flavour before the screens were read turned out to be wrong, so never reconstruct a weapon name you have not seen - say you do not know it.',
+  },
+  {
+    key: 'exweapon-ui-dialects',
+    category: 'gear',
+    text: 'EX-Weapon screens in Wittle Defender use three cosmetic label dialects for the identical ladder: [Activation] / [+10] on most weapons, [Unlock] / [+10 Unlock] on Ice Queen, Night Baron, Blazing Archer and Demon Spawn, and [Activation Unlock] / [+10 Unlock] on God Ruler alone, who also writes "Directly learn skill" and "Every 25 seconds" in full words. A new label style is not a new mechanic.',
+  },
+  {
+    key: 'exweapon-rarity-scope',
+    category: 'gear',
+    text: 'All 26 EX-Weapons captured in Wittle Defender belong to Mythic and Sublime heroes. No Legendary, Epic or Common hero\'s page has ever been opened to check whether the EX-Weapon bubble even exists there, so whether heroes below Mythic have EX-Weapons at all is genuinely unknown. Do not claim it either way.',
+  },
+  {
+    key: 'exweapon-fire-res-shred',
+    category: 'strategy',
+    text: 'In Wittle Defender enemy Fire RES reduction lives on the EX-Weapon layer rather than on any hero skill: Draconic Empress\'s [Blazing Bond] cuts it 20% at [+20], and Fiery Vanguard\'s [Divine Ignition] cuts 10% at [+20] and another 10% at [+50]. A Fire team\'s damage ceiling is therefore set by weapon enhance levels, so "get those two weapons to +20" beats "level your Fire heroes".',
+  },
+  {
+    key: 'exweapon-weapon-is-the-kit',
+    category: 'strategy',
+    text: 'Several Wittle Defender heroes carry their real value on the EX-Weapon rather than their listed skills. Robot is a Fighter whose [Iron Berserker] gives the whole team a shield plus 30% DMG Reduction, rising to 40% at [+40]. Panda Brewmaster\'s [Vintage Staff] hands the team CRIT RES and CRIT DMG RES from activation alone, and Archon Armor\'s [Thunder Core] shields the team off his own Max HP.',
+  },
+  {
+    key: 'exweapon-random-targeting',
+    category: 'strategy',
+    text: 'Two Wittle Defender EX-Weapons explicitly fire "at random enemies": Thunder Pharaoh\'s Skyfall Laser and Blazing Archer\'s Blazing Rockets. Neither aims, which makes both strong against packed waves and unreliable against a single boss or a priority target. No stat on the enhance screen expresses this, so it is worth saying out loud before recommending either weapon.',
+  },
+  {
+    key: 'exweapon-frostwolf-king',
+    category: 'gear',
+    text: 'Northern Tyrant\'s "Frostwolf King" and "Frost Shred" are NOT EX-Weapon content in Wittle Defender. Four capture passes covering all 26 EX-Weapon screens, including his own [Glacial War Axe], found neither name anywhere. They appear only in his tier-3 Ascend and in the Tropical Wanderer skin skill, so they belong to one of the uncaptured systems - Sigil, Gear, Rune, Emblem or Pantheon.',
+  },
+  {
+    key: 'exweapon-frost-lich-two-dragons',
+    category: 'heroes',
+    text: 'Frost Lich (Necrym) in Wittle Defender has two separate dragons and they are not the same summon. His Main Skill summons a Frost Wyvern every 10s, treated as a hero unit, while his EX-Weapon [Frostbane Egg] summons a Cursed Dragon every 25s. Nothing on either screen links them, so any answer to "what does Frost Lich summon" that names only one of the two is wrong.',
+  },
+  {
+    key: 'exweapon-draconic-empress',
+    category: 'gear',
+    text: 'Draconic Empress (Drakaina) wields the EX-Weapon [Blazing Bond], which teaches Wyrmfall Disaster: every 25s a dragon takes off and bombards enemies with fireballs twice. [+20] makes the takeoff AoE cut enemy Fire RES by 20%, [+30] widens the bombardment, [+40] raises it to three passes, and [+50] adds a brief stun on the bombardment.',
+  },
+  {
+    key: 'exweapon-levin-archangel',
+    category: 'gear',
+    text: 'Levin Archangel (Elettra) wields the EX-Weapon [Storm Gemini], which teaches Divine Sentence: every 25s lightning arrays strike enemies and a massive thunderbolt lands. Its damage scales with the [Unity Grace] target\'s level, not her own. [+20] gives the team 15% CRIT Rate for 12s and [+50] instantly grants [Unity Grace] to ALL other allies for 4s on every cast.',
+  },
+  {
+    key: 'exweapon-panda-brewmaster',
+    category: 'gear',
+    text: 'Panda Brewmaster (Bambrew) wields the EX-Weapon [Vintage Staff], which teaches Verdant Tempest: every 25s heavy damage over time plus team CRIT RES +15% and CRIT DMG RES +30% for 6s from activation alone. [+20] and [+40] add Green Thorns cutting enemy DMG RES and Wind RES, and [+50] summons 5 [Verdant Bamboo], each adding 10% team total HP for 12s.',
+  },
+  {
+    key: 'exweapon-northern-tyrant',
+    category: 'gear',
+    text: 'Northern Tyrant (Ulfric) wields the EX-Weapon [Glacial War Axe], which teaches Tyrant Roar: every 25s multiple AoE hits that inspire him and all summoned units with greatly increased ATK SPD and Skill CD SPD for 7s. [+20] also boosts all summoned unit damage, [+40] enhances the buff on summons, [+50] extends it to 12s. The axe is what makes his kit a summoner kit.',
+  },
+  {
+    key: 'exweapon-monkey-king',
+    category: 'gear',
+    text: 'Monkey King (Sun Wukong) wields the EX-Weapon [Golden Staff], which teaches Golden Cudgel: every 25s the cudgel descends for heavy area damage. [+20] summons 4 spinning Golden Staves, [+40] raises them to 8, and [+50] makes him start Arena Mode with 70 EX-Weapon Energy. Its damage scales with the sum of all ally character levels rather than his own level.',
+  },
+  {
+    key: 'exweapon-starlight-weaver',
+    category: 'gear',
+    text: 'Starlight Weaver (Stella) wields the EX-Weapon [Starseer Staff], which teaches Stellar Domain: every 25s a massive meteor lands and a domain pulls enemies in, cutting their CRIT RES 15% and CRIT DMG RES 30% for 6s. [+20] restores 5 EX-Weapon Energy to a random ally every 0.5s, [+30] also heals that ally 3% of Max HP, and [+50] adds 3 satellites that drain enemy Energy.',
+  },
+  {
+    key: 'exweapon-fabled-lyra',
+    category: 'gear',
+    text: 'Fabled Lyra (Roxy) wields the EX-Weapon [Orchestral Chapter], which teaches Crowned Concerto: every 25s three waves of sound pulses knock enemies back and grant allies 8% Dodge, healing worth 8% of her ATK, and a 15% all-DMG bonus for 10s. The ladder upgrades one wave each - [+20] Dodge to 16%, [+40] healing to 15%, [+50] DMG bonus to 30%.',
+  },
+  {
+    key: 'exweapon-polar-captain',
+    category: 'gear',
+    text: 'Polar Captain (Sarashed) wields the EX-Weapon [Sunken Engulfer], which teaches the skill Ghost Fleet: every 25s a ghost fleet rams enemies for high damage. [+20] summons large tentacles when the fleet sinks, [+40] greatly increases the tentacle count, and [+50] increases the fleet\'s size. [Ghost Fleet] is the skill, not the weapon - an earlier note had that backwards.',
+  },
+  {
+    key: 'exweapon-phoenix-dancer',
+    category: 'gear',
+    text: 'Phoenix Dancer (Xiluan) wields the EX-Weapon [Divine Phoenix Plume], which teaches Soaring Phoenix: every 25s the Divine Phoenix radiates a heatwave then charges through enemies. [+20] adds rapid flame tornadoes, [+40] doubles them, and [+50] gives all allies +50% CRIT DMG for 12s on every cast. Her MAX Ascend refreshes EX-Weapon skills on revival, re-firing it instantly.',
+  },
+  {
+    key: 'exweapon-valkyrie',
+    category: 'gear',
+    text: 'Valkyrie (Thrud) wields the EX-Weapon [Skofnung], which teaches Valkyrie\'s Wraith: every 25s multiple thunder slashes followed by a thunder wave for massive damage. It is the plainest EX-Weapon in the game - no team buffs, debuffs or summons. [+10] and [+30] only raise the slash count and [+50] boosts the final wave; every other node is a straight damage increase.',
+  },
+  {
+    key: 'exweapon-windborne-ranger',
+    category: 'gear',
+    text: 'Windborne Ranger (Aeralyn) wields the EX-Weapon [Hallowed Antler], which teaches Airborn Echo: every 25s summon 5 Elemental Deer to charge across the field, followed by 1 Giant Deer that hits hard. The whole ladder is one number going up - [+10] makes it 6 deer, [+30] 7 and [+50] 8 plus a large Giant Deer damage bump. Its mechanic nodes sit at [+10]/[+30]/[+50].',
+  },
+  {
+    key: 'exweapon-frost-lich',
+    category: 'gear',
+    text: 'Frost Lich (Necrym) wields the EX-Weapon [Frostbane Egg], which teaches Cursed Dragon: every 25s summon a Cursed Dragon whose attacks cut enemy DMG REDUC by 12%, with giant icicles falling on summon. The ladder is a debuff stack - [+10] freeze chance, [+20] a further -10% DMG REDUC, [+30] a [Cryo Surge] damage aura, [+40] enemy healing taken -60%, [+50] enemy Ice RES -12%.',
+  },
+  {
+    key: 'exweapon-archon-armor',
+    category: 'gear',
+    text: 'Archon Armor (Aegis) wields the EX-Weapon [Thunder Core], which teaches Plasma Field: every 25s large-area damage plus a shield for all allies worth 8% of Archon Armor\'s own Max HP for 12s. [+10] adds paralysis, [+20] cuts enemy DMG RES 20%, [+30] raises the shield to 12% of his Max HP, [+40] cuts enemy Skill CD SPD 30%, and [+50] releases 3 Minor Plasma Fields.',
+  },
+  {
+    key: 'exweapon-scarlet-reaper',
+    category: 'gear',
+    text: 'Scarlet Reaper (Promethea) wields the EX-Weapon [Soulflare Blaze Blade], which teaches Hellfire Twinblades: every 25s she enters Hellfire form for a giant flaming cross-slash. It is the only self-sustain EX-Weapon - [+10], [+30] and [+50] restore 10%, 15% then 20% of her own HP per cast, while [+20] and [+40] each add a slash at slightly reduced damage per slash.',
+  },
+  {
+    key: 'exweapon-cheffy',
+    category: 'gear',
+    text: 'Cheffy (Aromi) wields the EX-Weapon [Delectable Feast], which teaches Epicurean Delight: every 25s summon a Supreme Bun dealing area damage over time and healing allies. [+20] makes each heal grant 1.5% team DMG for 5s up to 12 stacks, [+40] raises that to 3% per stack (up to +36% team DMG), and [+50] makes the team invincible for 2s on summon. [+10]/[+30]/[+50] extend the bun\'s duration.',
+  },
+  {
+    key: 'exweapon-ice-queen',
+    category: 'gear',
+    text: 'Ice Queen (Shiva) wields the EX-Weapon [Glacial Seer], which teaches Frigid Breath, cast around herself every 15s - the fastest cadence of any EX-Weapon, firing about 1.7 times as often as a 25s weapon. Her own ladder text calls the same skill "Winter\'s Breath", an in-game alias. [+10] adds knockback and [+30] and [+40] each add a projectile; there are no team effects on it.',
+  },
+  {
+    key: 'exweapon-fiery-vanguard',
+    category: 'gear',
+    text: 'Fiery Vanguard (Kilonek) wields the EX-Weapon [Divine Ignition], which teaches Drone Swarm: every 25s release a drone swarm for high-damage area bombardment. [+20] adds drones and cuts enemy Fire RES 10% for 12s, [+40] extends drone duration, and [+50] greatly increases the drone count and cuts Fire RES another 10%, for 20% total shred.',
+  },
+  {
+    key: 'exweapon-robot',
+    category: 'gear',
+    text: 'Robot (Fystron) wields the EX-Weapon [Iron Berserker], which teaches Arc Barrier: every 20s it shields ALL allies and gives them 30% DMG Reduction for 6s while shocking nearby enemies. [+20] heavily slows nearby enemies and [+40] raises the DMG Reduction to 40%. Robot is listed as a Fighter, but the strongest team-defence effect in the game sits on this weapon, not on its skills.',
+  },
+  {
+    key: 'exweapon-sword-saint',
+    category: 'gear',
+    text: 'Sword Saint (Lark) wields the EX-Weapon [Ethereal Ravager], which teaches Sword Unbound, cast every 20s for high damage. [+10] is its only mechanic node, adding a chance to inflict Armor Break, while [+20] and [+40] simply add more flying swords and every other node is damage. The weapon is a straight extension of her Flying Sword main skill.',
+  },
+  {
+    key: 'exweapon-night-baron',
+    category: 'gear',
+    text: 'Night Baron (Vesper) wields the EX-Weapon [Wraith Piercer], which teaches Raging Storm Thrust: every 20s, 3 thrusts across a wide area. The ladder buys coverage rather than power - [+10] and [+30] each add a thrust direction and [+50] doubles the number of attacks at reduced per-hit damage. Its damage scales with combat level rather than with hero level.',
+  },
+  {
+    key: 'exweapon-god-ruler',
+    category: 'gear',
+    text: 'God Ruler (Odin) wields the EX-Weapon [Wrathful Smiter], which teaches Thunder Strike: every 25 seconds it summons Thor\'s Hammer to deal massive damage across a wide range of enemies. [+20] adds continuous lightning strikes after the strike lands and [+40] increases their number; the rest of the ladder is damage. Thor\'s Hammer belongs to the EX-Weapon, not to his main skill.',
+  },
+  {
+    key: 'exweapon-blazing-archer',
+    category: 'gear',
+    text: 'Blazing Archer (Parody) wields the EX-Weapon [Skeletal Virtuoso], which teaches Blazing Rockets: every 20s fire 5 rockets at random enemies. [+10] adds knockback, [+30] fires 2 more sideways, [+40] adds 2 more rockets, and [+50] makes the rockets split into homing missiles at max range. Its damage scales with combat level rather than hero level.',
+  },
+  {
+    key: 'exweapon-swordmaster',
+    category: 'gear',
+    text: 'Swordmaster (Miyamoto) wields the EX-Weapon [Gloom Whisperer], which teaches Bladewind Barrier: every 20s cast a row of Wind Barriers that block ranged projectiles and damage nearby enemies. It is the only EX-Weapon whose primary job is defence rather than damage. [+10] adds an Armor Break chance and [+20] widens the barrier; [+40] onward has not been captured yet.',
+  },
+  {
+    key: 'exweapon-thunder-pharaoh',
+    category: 'gear',
+    text: 'Thunder Pharaoh (Osyle) wields the EX-Weapon [Judging Stormbearer], which teaches Skyfall Laser: a laser cannon fired at random enemies every 20s. [+10] bolts a strong Slow onto the cannon, [+20] adds a ring of secondary cannons around it, and [+40] adds more secondary cannons and extends the cannon\'s range. Random targeting makes it better on crowds than on a boss.',
+  },
+  {
+    key: 'exweapon-ice-demon',
+    category: 'gear',
+    text: 'Ice Demon (Floss) wields the EX-Weapon [Icy Conqueror], which teaches Bear Descent: every 25s large area damage that freezes enemies for 3s. [+20] takes the freeze to 4s and [+40] to 5s. It is the only EX-Weapon in the game with hard crowd control, and a 5s AoE freeze on a 25s timer is roughly 20% uptime - worth far more in Arena than its damage nodes suggest.',
+  },
+  {
+    key: 'exweapon-demon-spawn',
+    category: 'gear',
+    text: 'Demon Spawn (Zain) wields the EX-Weapon [Fiery Executioner], which teaches Hell Void Slash: every 20s, consecutive Hell Void Slashes. It is a pure damage ladder with no mechanic nodes - [+30] adds 5 attacks to the multi-hit flurry its ladder calls Hell Severance and [+40] gives that flurry bonus damage per hit. Its damage scales with combat level rather than hero level.',
   },
 ];

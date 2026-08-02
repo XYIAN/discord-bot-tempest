@@ -4,6 +4,18 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.16] - 2026-08-02
+
+🗡️ **EX-Weapons, all 26 of them** — Tempest AI can finally answer what a hero's EX-Weapon is and what it does, instead of saying it doesn't know.
+
+- Every Mythic and Sublime hero's EX-Weapon: its name, the skill it teaches, and what its upgrade nodes actually change
+- How the system works: a weapon teaches one extra active skill that auto-casts every 25 seconds, EX-Weapon Energy is per-hero rather than a shared pool, and enhancement is gated behind that hero's star tier — so "should I star up?" and "should I enhance?" are the same question
+- Three heroes from the recommended lineups are now fully captured: Void Witch, Peacekeeper and Elemental Invoker
+
+**Corrections.** Every EX-Weapon name previously guessed from skill text was wrong — a weapon and the skill it teaches have different names. Polar Captain's weapon is Sunken Engulfer; Ghost Fleet is the skill it grants. All the guessed names have been replaced with ones read off the screen.
+
+Still unknown, and still said out loud: runes, treasures, sigils, gear, emblems and the pantheon.
+
 ## [0.1.15] - 2026-08-01
 
 🔁 **Swapping heroes is free** — Tempest AI now knows that hero level follows your main deployed five, not the individual hero.
