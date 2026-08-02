@@ -1730,4 +1730,196 @@ export const SEED_FACTS: SeedFact[] = [
     category: 'general',
     text: 'Tempest AI has no data on the current competitive meta, patch notes, or any official tier list for Wittle Defender. It can compare heroes using their captured skills and team buffs, but it should not claim to know what is strongest in the current patch.',
   },
+
+  // ── Habby's official Recommended lineups (in-game team comps) ──
+  {
+    key: 'lineup-recommended-screen-source',
+    category: 'strategy',
+    text: 'Wittle Defender has an official Recommended lineups screen: on the Hero screen, tap the blue Recommended button next to Deployed Hero. It lists 13 team cards of five heroes each, filtered by Ice-themed, Electro, Wind, Fire, Xenoscape or All, and each card\'s Details button expands Habby\'s own Lineup Core, Feature and Recommendation text. These are Habby\'s official recommendations, not community tier lists, and any member can check them in game.',
+  },
+  {
+    key: 'lineup-tiers-explained',
+    category: 'strategy',
+    text: 'Habby\'s recommended lineups in Wittle Defender come in three tiers per element. Basic is the early-game version and leans on Legendary heroes, Advanced upgrades the supporting cast to Mythics, and Top is the aspirational endgame comp that loads S-rank Mythics and ignores element purity. Wind, Fire, Ice and Electro each have all three tiers; Xenoscape has only a single Top lineup.',
+  },
+  {
+    key: 'lineup-xenoscape-top',
+    category: 'strategy',
+    text: 'Habby\'s only official Xenoscape lineup in Wittle Defender is the card titled New Xenoscape Hero - Top Xenoscape Lineup. Its Lineup Core is Void Witch, and the five slots are Void Witch, Sun Wukong (whose hero page is titled Monkey King), Peacekeeper, Starlight Weaver and Elemental Invoker. Xenoscape is the one element with no Advanced or Basic tier, so this comp has no cheaper stepping stone.',
+  },
+  {
+    key: 'lineup-xenoscape-top-why',
+    category: 'strategy',
+    text: 'The Top Xenoscape Lineup\'s stated Feature is extremely high DMG scaling and massive DPS in all environments. Habby\'s reasoning: Sun Wukong brings both high Dodge and burst DMG, Peacekeeper can share DMG and provide tons of shields, Starlight Weaver provides EX-Weapon Energy and EX-Weapon DMG bonus, and Elemental Invoker provides damage amplifications across all dimensions, which the game says makes it the strongest Xenoscape lineup so far.',
+  },
+  {
+    key: 'lineup-wind-top',
+    category: 'strategy',
+    text: 'The Top Wind Lineup is Habby\'s aspirational endgame Wind comp in Wittle Defender, above the Wind Advanced and Wind Basic tiers. Its Lineup Core is Windborne Ranger, and the five slots are Windborne Ranger, Starlight Weaver, Levin Archangel, Fabled Lyra and Panda Brewmaster. Only three of the five are actually Wind heroes: Starlight Weaver is Xenoscape and Levin Archangel is Electro.',
+  },
+  {
+    key: 'lineup-wind-top-why',
+    category: 'strategy',
+    text: 'The Top Wind Lineup\'s Feature is that Windborne Ranger enters Gale Force after enough CRITs, gaining high DMG and Dodge bonuses. Habby\'s reasoning: Starlight Weaver provides EX-Weapon Energy and EX-Weapon DMG bonus, Levin Archangel greatly boosts the main DPS in both offense and survival, Fabled Lyra provides multiple stat bonuses, and Panda Brewmaster strengthens survival and DMG - the game calls it the goat Wind lineup so far.',
+  },
+  {
+    key: 'lineup-wind-advanced',
+    category: 'strategy',
+    text: 'The Wind Advanced Lineup is the mid-game step between Wind Basic and Top Wind in Wittle Defender. Its Lineup Core is Sword Saint, and the five slots are Sword Saint, Void Witch, Blazing Archer, Cheffy and Demon Hunter. It shares its core and Feature text with Wind Basic and differs only in the four supporting heroes.',
+  },
+  {
+    key: 'lineup-wind-advanced-why',
+    category: 'strategy',
+    text: 'The Wind Advanced Lineup\'s Feature is ideal AoE and single-target DPS with no DMG overflow. Habby\'s reasoning: Void Witch provides Mage DMG Bonus for Sword Saint, Blazing Archer grants CRIT DMG bonus, and Demon Hunter increases Wind hero DMG; those three provide strong DMG bonuses, and with the ample healing from Cheffy it is a powerful and stable Wind formation.',
+  },
+  {
+    key: 'lineup-wind-basic',
+    category: 'strategy',
+    text: 'The Wind Basic Lineup is Habby\'s early-game Wind comp in Wittle Defender, the entry tier below Wind Advanced and Top Wind. Its Lineup Core is Sword Saint - the same core as Wind Advanced - and the five slots are Sword Saint, Night Baron, Demon Hunter, Cat Assassin and Seraph. Four of the five are Wind heroes; only the healer Seraph is off-element.',
+  },
+  {
+    key: 'lineup-wind-basic-why',
+    category: 'strategy',
+    text: 'The Wind Basic Lineup\'s Feature is ideal AoE and single-target DPS with no DMG overflow, the same line as Wind Advanced. Habby\'s reasoning: Demon Hunter increases Wind hero DMG, Cat Assassin lowers enemies\' resistance, Night Baron delivers high-rate single-target DPS and Seraph offers healing, and the game says this team smoothly transitions through the beginner phase.',
+  },
+  {
+    key: 'lineup-fire-top',
+    category: 'strategy',
+    text: 'The Top Fire Lineup is Habby\'s aspirational endgame Fire comp in Wittle Defender, above Fire Advanced and Fire Basic. Its Lineup Core is the hero the card calls Draco Queen, whose own hero page reads Draconic Empress (Drakaina). The five slots are Draconic Empress, Starlight Weaver, Phoenix Dancer, Levin Archangel and Panda Brewmaster - only two of them are actually Fire heroes.',
+  },
+  {
+    key: 'lineup-fire-top-why',
+    category: 'strategy',
+    text: 'The Top Fire Lineup\'s Feature is that its core boasts massive personal DMG, significantly buffs Fire-element heroes, and can pinpoint the enemy\'s main DPS. Habby\'s reasoning: Starlight Weaver provides EX-Weapon Energy and EX-Weapon DMG bonus, Phoenix Dancer provides high CRIT Rate while dealing massive DMG, Levin Archangel boosts the main DPS in offense and survival, and Panda Brewmaster strengthens survival and DPS for easy stage clearing.',
+  },
+  {
+    key: 'lineup-fire-advanced',
+    category: 'strategy',
+    text: 'The Fire Advanced Lineup is the mid-game step between Fire Basic and Top Fire in Wittle Defender. Its Lineup Core is Demon Spawn, and the five slots are Demon Spawn, Fiery Vanguard, Sword Saint, Blazing Archer and Cheffy. It shares its core and Feature text with Fire Basic, and its last three slots are the same Sword Saint, Blazing Archer and Cheffy shell every Advanced lineup uses.',
+  },
+  {
+    key: 'lineup-fire-advanced-why',
+    category: 'strategy',
+    text: 'The Fire Advanced Lineup\'s Feature is a berserker bloodline that greatly increases ATK when HP drops below a threshold. Habby\'s reasoning: Fiery Vanguard boosts Fire DMG, Sword Saint offers CRIT Rate bonus and Blazing Archer grants CRIT DMG bonus; those three provide strong DMG bonuses, and with the ample healing from Cheffy the formation easily clears battles with high BP (Battle Power).',
+  },
+  {
+    key: 'lineup-fire-basic',
+    category: 'strategy',
+    text: 'The Fire Basic Lineup is Habby\'s early-game Fire comp in Wittle Defender, the entry tier below Fire Advanced and Top Fire. Its Lineup Core is Demon Spawn - the same core as Fire Advanced - and the five slots are Demon Spawn, Blazing Archer, Fire Mage, Fire Witch and Seraph. Four of the five are Fire heroes; only the healer Seraph is off-element.',
+  },
+  {
+    key: 'lineup-fire-basic-why',
+    category: 'strategy',
+    text: 'The Fire Basic Lineup\'s Feature is a berserker bloodline that greatly increases ATK when HP drops below a threshold, the same line as Fire Advanced. Habby\'s reasoning: Blazing Archer grants CRIT DMG bonus, Fire Mage lowers enemies\' Fire Resistance, Fire Witch increases team HP and Seraph offers healing, making what the game calls a strong Fire squad with a high DMG ceiling.',
+  },
+  {
+    key: 'lineup-ice-top',
+    category: 'strategy',
+    text: 'The Top Ice Lineup is Habby\'s aspirational endgame comp for the Frost element in Wittle Defender (the lineup filter calls it Ice-themed and the cards call it Ice). Its Lineup Core is Northern Tyrant, and the five slots are Northern Tyrant, Starlight Weaver, Polar Captain, Frost Lich and Levin Archangel. It sits above the Ice Advanced and Ice Basic tiers.',
+  },
+  {
+    key: 'lineup-ice-top-why',
+    category: 'strategy',
+    text: 'The Top Ice Lineup\'s Feature is that its core commands beasts, and more summons mean higher team DMG. Habby\'s reasoning: Starlight Weaver provides EX-Weapon Energy and EX-Weapon DMG bonus, Polar Captain summons tentacles for massive DMG, Frost Lich greatly increases summons\' DMG, and Levin Archangel boosts the main DPS in offense and survival, for what the game calls a high-burst Ice lineup. It is a summon comp built around three summoners.',
+  },
+  {
+    key: 'lineup-ice-advanced',
+    category: 'strategy',
+    text: 'The Ice Advanced Lineup is the mid-game step between Ice Basic and Top Ice in Wittle Defender. Its Lineup Core is Polar Captain, and the five slots are Polar Captain, Ice Queen, Sword Saint, Blazing Archer and Cheffy. Only two of the five are Frost heroes, because slots three to five are the cross-element Sword Saint, Blazing Archer and Cheffy shell shared by every Advanced lineup.',
+  },
+  {
+    key: 'lineup-ice-advanced-why',
+    category: 'strategy',
+    text: 'The Ice Advanced Lineup\'s Feature is that its core summons tentacles when allies fall and sacrifices them to deal burst DMG, particularly powerful in arena gameplay - the only Feature in the whole Recommended screen that names a game mode. Habby\'s reasoning: Ice Queen provides Ice DMG bonus, Sword Saint offers CRIT Rate bonus, Blazing Archer grants CRIT DMG bonus, and with the ample healing from Cheffy it grows into a nuke-level Ice squad.',
+  },
+  {
+    key: 'lineup-ice-basic',
+    category: 'strategy',
+    text: 'The Ice Basic Lineup is Habby\'s early-game Frost comp in Wittle Defender, the entry tier below Ice Advanced and Top Ice. Its Lineup Core is Polar Captain - the same core as Ice Advanced - and the five slots are Polar Captain, Ice Queen, Ice Witch, Ice Mage and Seraph. Four of the five are Frost heroes; only the healer Seraph is off-element.',
+  },
+  {
+    key: 'lineup-ice-basic-why',
+    category: 'strategy',
+    text: 'The Ice Basic Lineup\'s Feature is that its core summons tentacles when allies fall and sacrifices them to deal burst DMG, particularly powerful in arena gameplay. Habby\'s reasoning: Ice Queen provides Ice DMG bonus, Ice Witch lowers enemies\' Ice Resistance, Ice Mage freezes enemies and Seraph grants healing, which the game calls a well-rounded offense and defense team.',
+  },
+  {
+    key: 'lineup-electro-top',
+    category: 'strategy',
+    text: 'Habby\'s aspirational endgame Electro comp in Wittle Defender is titled Top Thunder Lineup - the only card in the Recommended screen that uses the word Thunder, though it sits under the Electro filter. Its Lineup Core is Valkyrie, and the five slots are Valkyrie, Starlight Weaver, Levin Archangel, Panda Brewmaster and Archon Armor. It sits above the Electro Advanced and Electro Basic tiers.',
+  },
+  {
+    key: 'lineup-electro-top-why',
+    category: 'strategy',
+    text: 'The Top Thunder Lineup\'s Feature is that its core is immune to death while casting skills and turns the tide with burst DMG. Habby\'s reasoning: Starlight Weaver provides EX-Weapon Energy and EX-Weapon DMG bonus, Levin Archangel greatly boosts the main DPS in both offense and survival, Panda Brewmaster strengthens survival and DPS, and Archon Armor provides absolute defense and high CRIT DMG - the game says this lineup excels in all battles.',
+  },
+  {
+    key: 'lineup-electro-advanced',
+    category: 'strategy',
+    text: 'The Electro Advanced Lineup is the mid-game step between Electro Basic and Top Thunder in Wittle Defender. Its Lineup Core is God Ruler, and the five slots are God Ruler, Thunder Pharaoh, Sword Saint, Blazing Archer and Cheffy. It is literally the Electro Basic comp with slots three to five swapped for the shared Sword Saint, Blazing Archer and Cheffy buff shell.',
+  },
+  {
+    key: 'lineup-electro-advanced-why',
+    category: 'strategy',
+    text: 'The Electro Advanced Lineup\'s Feature is extremely powerful AoE DMG for multiple scenarios. Habby\'s reasoning: Thunder Pharaoh lowers enemies\' resistance, Sword Saint offers CRIT Rate bonus and Blazing Archer grants CRIT DMG bonus, and with three strong buffs plus ample healing from Cheffy the squad delivers great DPS in all battles.',
+  },
+  {
+    key: 'lineup-electro-basic',
+    category: 'strategy',
+    text: 'The Electro Basic Lineup is Habby\'s early-game Electro comp in Wittle Defender, the entry tier below Electro Advanced and Top Thunder. Its Lineup Core is God Ruler - the same core as Electro Advanced - and the five slots are God Ruler, Thunder Pharaoh, Robot, High Priest and Seraph. It is the only recommended lineup in the game whose five heroes all share one element.',
+  },
+  {
+    key: 'lineup-electro-basic-why',
+    category: 'strategy',
+    text: 'The Electro Basic Lineup\'s Feature is extremely powerful AoE DMG for multiple scenarios, the same line as Electro Advanced. Habby\'s reasoning: Thunder Pharaoh lowers enemies\' resistance, Robot attacks pull in enemies, High Priest boosts team DPS and Seraph provides healing, and the game says this team smoothly transitions through the beginner phase.',
+  },
+  {
+    key: 'lineup-basic-tier-template',
+    category: 'strategy',
+    text: 'Every Basic lineup Habby recommends in Wittle Defender follows one template: the element\'s core hero, three more heroes of that element, and Seraph (Rhea) in the last slot as the healer. It holds for the Wind, Fire, Ice and Electro Basic comps. Seraph is herself an Electro hero being lent to the other elements, which is why the Electro Basic comp ends up entirely Electro.',
+  },
+  {
+    key: 'lineup-advanced-tier-template',
+    category: 'strategy',
+    text: 'Every Advanced lineup Habby recommends in Wittle Defender shares a fixed shell: the element\'s core, one same-element support, then Sword Saint (CRIT Rate bonus), Blazing Archer (CRIT DMG bonus) and Cheffy (healing). Fire, Ice and Electro Advanced use those three in the same last three slots, and Wind Advanced is the same shell with Sword Saint promoted to Lineup Core. Owning that trio gets you most of any element\'s Advanced comp.',
+  },
+  {
+    key: 'lineup-top-tier-template',
+    category: 'strategy',
+    text: 'Every Top lineup Habby recommends in Wittle Defender shares a support shell: Starlight Weaver is the second slot of all five Top comps (Xenoscape, Wind, Fire, Ice and Thunder), always credited with EX-Weapon Energy and EX-Weapon DMG bonus, and Levin Archangel appears in four of the five for greatly boosting the main DPS in offense and survival. Top comps also stack S-rank Mythics and ignore element purity.',
+  },
+  {
+    key: 'lineup-advanced-basic-share-core',
+    category: 'strategy',
+    text: 'Within each element on Wittle Defender\'s Recommended screen, the Advanced and Basic lineups share the same Lineup Core hero and the same Feature text and differ only in the four supporting heroes: Wind uses Sword Saint, Fire uses Demon Spawn, Ice uses Polar Captain and Electro uses God Ruler. A recommended lineup is therefore identified by its name, never by its core hero.',
+  },
+  {
+    key: 'lineup-element-label-is-theme-not-roster',
+    category: 'strategy',
+    text: 'An element lineup in Wittle Defender does not mean five heroes of that element - the label describes the core and theme. Checked hero by hero from element badges: Top Fire, Ice Advanced and Electro Advanced are only two of five on-element, Top Wind, Top Ice and Top Thunder three of five, and the Basic comps four of five. Electro Basic is the single lineup in the whole menu that is fully mono-element.',
+  },
+  {
+    key: 'lineup-text-name-aliases',
+    category: 'heroes',
+    text: 'Wittle Defender\'s recommended lineup text sometimes names a hero differently from that hero\'s own page. The Top Fire card calls its core Draco Queen, but the hero page reads Draconic Empress (Drakaina), and the Top Xenoscape card says Sun Wukong where the hero page title is Monkey King. Draco Queen is an alias for Draconic Empress, not a separate hero.',
+  },
+  {
+    key: 'gap-lineup-heroes-not-captured',
+    category: 'heroes',
+    text: 'Three heroes named in Habby\'s recommended lineups are missing from Tempest AI\'s captured hero data: Void Witch (Celine), Peacekeeper (Karl) and Elemental Invoker (Omnis), all from the Top Xenoscape Lineup. They exist in the game and their identity is confirmed, but their skills, passives and Ascends have not been captured yet - say so rather than guessing at their kits.',
+  },
+  {
+    key: 'hero-void-witch-identity',
+    category: 'heroes',
+    text: 'Void Witch (character name Celine) is a Xenoscape-element Mage in Wittle Defender and the Lineup Core of Habby\'s Top Xenoscape Lineup. She also appears in the Wind Advanced Lineup, where the card credits her with providing a Mage DMG Bonus for Sword Saint. Her skill kit has not been captured, so nothing else about her abilities is known yet.',
+  },
+  {
+    key: 'hero-peacekeeper-identity',
+    category: 'heroes',
+    text: 'Peacekeeper (character name Karl) is a Xenoscape-element Fighter in Wittle Defender who appears in Habby\'s Top Xenoscape Lineup, where the card credits him with sharing DMG and providing tons of shields. His skill kit has not been captured, so nothing else about his abilities is known yet.',
+  },
+  {
+    key: 'hero-elemental-invoker-identity',
+    category: 'heroes',
+    text: 'Elemental Invoker (character name Omnis) is a Xenoscape-element Support in Wittle Defender who appears in Habby\'s Top Xenoscape Lineup, where the card credits it with damage amplifications and powerful mechanisms across all dimensions. Its skill kit has not been captured, so nothing else about its abilities is known yet.',
+  },
 ];

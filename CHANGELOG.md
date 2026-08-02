@@ -4,6 +4,17 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.14] - 2026-08-01
+
+⚔️ **"What team should I run?"** — Tempest AI now knows Habby's own 13 recommended lineups, straight from the in-game Recommended screen.
+
+- Every element (Ice-themed, Electro, Wind, Fire, Xenoscape) with its Top / Advanced / Basic tiers, the five heroes in each, and Habby's stated reasoning for why each hero is there
+- Advanced and Basic share a Lineup Core within an element, so there's a clear upgrade path: keep the core, improve the four around it
+- Three heroes that only exist in these lineups are now named — Void Witch (Celine), Peacekeeper (Karl) and Elemental Invoker (Omnis), all Xenoscape. Their skills aren't captured yet and the bot says so
+- Element names are matched up both ways, so Frost/Ice and Electric/Electro are understood as the same thing
+
+Still excluded on purpose: which lineups you've collected (that's your account), and any "this is the best comp" claim the game doesn't make itself.
+
 ## [0.1.13] - 2026-08-01
 
 📸 **Tempest AI can see your screenshots** — post a picture of your roster, a hero page or any in-game screen in the AI channel and it will actually look at it.
