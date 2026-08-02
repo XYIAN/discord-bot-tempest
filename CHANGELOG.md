@@ -4,6 +4,18 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.11] - 2026-08-01
+
+📚 **Tempest AI knows the game now** — the knowledge base ships with **328 verified facts** covering all **42 heroes**, captured screen by screen from the Hero Gallery.
+
+- Every hero: element, role, main skill, all four Ascend upgrades, passive levels, SP/Xenoscape skill, chain partner, and skin bonuses
+- The mechanics behind them: the four-tier star ladder and what each star unlocks, how Battle Assistance scales (+3% → +8% → +15%), which heroes have chain skills and why the best ones don't, and how skins actually work
+- Team-composition advice — who pairs with whom, and which heroes buff the team rather than themselves
+
+Facts are committed to the repo, so they survive a lost data volume and get corrected by editing a file rather than retyping `/fact add`. Community submissions still work exactly as before and sit alongside these.
+
+Deliberately **not** included: anything true of one account rather than the game (hero levels, power, ownership), and rules the capture couldn't settle — the AI says it doesn't know instead of guessing.
+
 ## [0.1.10] - 2026-07-30
 
 🚨 **Data-loss alarm** — if persisted state (knowledge, achievements, activity) comes back empty or sharply smaller than a previous boot, the bot now posts a loud alert to #bot-logs instead of carrying on silently.
