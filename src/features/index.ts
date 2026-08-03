@@ -6,6 +6,7 @@ import { aiFeature } from './ai/index.js';
 import { dailyResetFeature } from './daily-reset/index.js';
 import { guildFeature } from './guild/index.js';
 import { lobbyFeature } from './lobby/index.js';
+import { moderationFeature } from './moderation/index.js';
 import { opsFeature } from './ops/index.js';
 import { policyFeature } from './policy/index.js';
 import { releasesFeature } from './releases/index.js';
@@ -24,6 +25,7 @@ export function allFeatures(): FeatureModule[] {
     achievementsFeature(),
     guildFeature(),
     policyFeature(),
+    moderationFeature(),
     aiFeature(config),
   ];
 }

@@ -4,6 +4,15 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.20] - 2026-08-02
+
+🛡️ **Moderation tools** — officers and admins can finally manage the server through the bot with `/mod`.
+
+- **Officers:** add and remove roles, timeout a member (`30m`, `2h`, up to 7d), lift a timeout
+- **Admins:** all of the above, plus kick, ban and unban
+
+Timeouts and bans DM the member with the reason, every action is posted to #bot-logs so staff can see what each other did, and the bot refuses anything Discord would reject — with a sentence explaining why instead of a silent failure.
+
 ## [0.1.19] - 2026-08-02
 
 📜 **Rules and Terms now live in the server** — a new RULES & INFO section with #rules and #terms-and-privacy, readable by everyone.
