@@ -23,5 +23,5 @@ Discord hub bot for the **Tempest** guild in **Wittle Defender** (Habby). TypeSc
 
 - Slash commands are registered per-guild on `clientReady` — no separate registration script.
 - The AI feature needs `ANTHROPIC_API_KEY` (preferred, claude-opus-5) or `OPENAI_API_KEY` (fallback, gpt-4o-mini); with neither it disables itself cleanly.
-- The nightly memory-sync job files LLM-extracted facts as **pending**; they only join the prompt after `/fact approve`.
+- The **weekly** memory-sync job (Sat 09:00 PT, an hour before the sync report) files LLM-extracted facts as **pending**; they only join the prompt after `/fact approve`. It was nightly — at this guild's volume that spent an LLM call most days on a handful of questions.
 - `.env` is local only. Railway needs: DISCORD_TOKEN, DISCORD_CLIENT_ID, GUILD_ID, OWNER_ID, ANTHROPIC_API_KEY, DATA_DIR (pointing at a mounted volume).

@@ -6,6 +6,27 @@ import { qaLogStore } from './chat.js';
 import { addFact, CATEGORIES, isDuplicate, knowledgeStore } from './knowledge.js';
 
 const MAX_CANDIDATES_PER_SYNC = 5;
+const MAX_TRANSCRIPT_CHARS = 20_000;
+const MAX_KNOWN_FACTS_CHARS = 12_000;
+
+/**
+ * Keep the LAST items that fit within a character budget, preserving order.
+ * Recency matters more than completeness here: the newest conversations are
+ * the ones worth mining, and overflow is discarded either way.
+ */
+export function takeWithinBudget(items: string[], budget: number): string[] {
+  const kept: string[] = [];
+  let used = 0;
+  for (let i = items.length - 1; i >= 0; i--) {
+    const item = items[i];
+    if (item === undefined) continue;
+    const cost = item.length + 1;
+    if (used + cost > budget) break;
+    kept.unshift(item);
+    used += cost;
+  }
+  return kept;
+}
 
 /**
  * The autonomous version of the reference bot's manual sync-facts CLI:
@@ -24,14 +45,25 @@ export async function runMemorySync(ctx: BotContext, llm: LlmClient): Promise<vo
   }
 
   const knowledge = await knowledgeStore(ctx).get();
-  const existingFacts = knowledge.facts
-    .filter((f) => f.status !== 'rejected')
-    .map((f) => `- ${f.text}`)
-    .join('\n');
-  const transcript = entries
-    .map((e) => `Q: ${e.question}\nA: ${e.answer}`)
-    .join('\n---\n')
-    .slice(0, 20_000);
+  // The known-facts list only exists to discourage duplicate extraction, and
+  // the store now holds 400+ seeded facts — inlining all of them would send
+  // ~80KB of prompt every run. Send the most recent slice; `isDuplicate` below
+  // is the real guard and checks against the whole store regardless.
+  const existingFacts = takeWithinBudget(
+    knowledge.facts.filter((f) => f.status !== 'rejected').map((f) => `- ${f.text}`),
+    MAX_KNOWN_FACTS_CHARS,
+  ).join('\n');
+
+  // Take the MOST RECENT entries that fit, not the oldest. This used to be
+  // `.slice(0, 20_000)` on the joined string, which kept the head of the
+  // transcript while the cleanup below still cleared every entry — so once a
+  // period produced more than the budget, the newest conversations were
+  // deleted without ever being read. Weekly batches make that far likelier
+  // than nightly ones did.
+  const transcript = takeWithinBudget(
+    entries.map((e) => `Q: ${e.question}\nA: ${e.answer}`),
+    MAX_TRANSCRIPT_CHARS,
+  ).join('\n---\n');
 
   const system = [
     `You extract durable, verifiable facts about the game ${ctx.guild.identity.gameName} (by Habby) from community Q&A transcripts.`,

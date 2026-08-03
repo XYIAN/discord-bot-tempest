@@ -4,6 +4,12 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.18] - 2026-08-02
+
+💸 **Memory sync moved to weekly** — it was running every night, spending an AI call on whatever handful of questions came in that day. Now it runs Saturday morning, an hour before the weekly report, so the report covers what it just found.
+
+Two fixes that came with it: the sync now reads the *newest* conversations rather than the oldest (a busy stretch used to get deleted unread), and it no longer sends the entire 400-fact knowledge base along with every request.
+
 ## [0.1.17] - 2026-08-02
 
 🧹 **The recruiting post now replaces itself** instead of piling up — #recruiting keeps exactly one, always the newest.

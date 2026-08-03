@@ -32,8 +32,13 @@ export function aiFeature(config: AppConfig): FeatureModule {
         ? [
             {
               name: 'memory-sync',
-              // Nightly at 04:00 UTC — quiet hours for a mostly-US guild.
-              cron: '0 4 * * *',
+              // Weekly, Saturday 09:00 Pacific — an hour before the sync
+              // report, so the report includes what was just extracted.
+              // Was nightly, which spent an LLM call most days on a handful of
+              // questions; at this guild's volume a week of Q&A is a better
+              // sample and roughly a seventh of the cost.
+              cron: '0 9 * * 6',
+              timezone: 'America/Los_Angeles',
               run: (ctx: BotContext) => runMemorySync(ctx, llm),
             },
           ]

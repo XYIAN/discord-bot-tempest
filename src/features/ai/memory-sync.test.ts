@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseCandidates } from './memory-sync.js';
+import { parseCandidates, takeWithinBudget } from './memory-sync.js';
 
 describe('parseCandidates', () => {
   it('parses a clean JSON array', () => {
@@ -19,5 +19,29 @@ describe('parseCandidates', () => {
     expect(parseCandidates('[]')).toEqual([]);
     expect(parseCandidates('[{"nope": true}]')).toEqual([]);
     expect(parseCandidates('[{"text": "short", "category": "x"}]')).toEqual([]);
+  });
+});
+
+describe('takeWithinBudget', () => {
+  it('keeps everything when it fits', () => {
+    expect(takeWithinBudget(['aa', 'bb'], 100)).toEqual(['aa', 'bb']);
+  });
+
+  it('keeps the MOST RECENT items, not the oldest', () => {
+    // The bug this replaced kept the head and then deleted everything, so the
+    // newest conversations were discarded unread.
+    expect(takeWithinBudget(['old', 'mid', 'new'], 8)).toEqual(['mid', 'new']);
+  });
+
+  it('preserves original order among the items it keeps', () => {
+    expect(takeWithinBudget(['a', 'b', 'c', 'd'], 4)).toEqual(['c', 'd']);
+  });
+
+  it('returns empty when even one item exceeds the budget', () => {
+    expect(takeWithinBudget(['averylongentry'], 3)).toEqual([]);
+  });
+
+  it('handles an empty list', () => {
+    expect(takeWithinBudget([], 100)).toEqual([]);
   });
 });
