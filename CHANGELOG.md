@@ -4,6 +4,14 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.19] - 2026-08-02
+
+📜 **Rules and Terms now live in the server** — a new RULES & INFO section with #rules and #terms-and-privacy, readable by everyone.
+
+Plain language, no legalese: what the bot keeps, that some messages reach third-party AI services, and that questions in the AI channel may become general game facts after a moderator reviews them. Rules cover the usual — be decent, no spam, no advertising, and no buying or selling accounts.
+
+Both are written in the repo and republish themselves when the text changes, so they can't quietly go out of date. `/terms` links them any time.
+
 ## [0.1.18] - 2026-08-02
 
 💸 **Memory sync moved to weekly** — it was running every night, spending an AI call on whatever handful of questions came in that day. Now it runs Saturday morning, an hour before the weekly report, so the report covers what it just found.

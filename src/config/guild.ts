@@ -47,6 +47,10 @@ export interface GuildConfig {
     changelog: ChannelRef;
     /** Ops/debug firehose for admins. */
     botLogs: ChannelRef;
+    /** Read-only: server rules. */
+    rules: ChannelRef;
+    /** Read-only: terms of use and privacy summary. */
+    terms: ChannelRef;
   };
   roles: {
     /** Auto-assigned to everyone on join. */
@@ -95,6 +99,8 @@ export const guildConfig: GuildConfig = {
     aiChat: { name: 'tempest-ai' },
     changelog: { name: 'changelog' },
     botLogs: { name: 'bot-logs' },
+    rules: { name: 'rules' },
+    terms: { name: 'terms-and-privacy' },
   },
   roles: {
     member: { name: 'Storm Watcher' },

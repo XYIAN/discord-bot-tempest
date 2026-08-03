@@ -7,6 +7,7 @@ import { dailyResetFeature } from './daily-reset/index.js';
 import { guildFeature } from './guild/index.js';
 import { lobbyFeature } from './lobby/index.js';
 import { opsFeature } from './ops/index.js';
+import { policyFeature } from './policy/index.js';
 import { releasesFeature } from './releases/index.js';
 import { welcomeFeature } from './welcome/index.js';
 
@@ -22,6 +23,7 @@ export function allFeatures(): FeatureModule[] {
     activityFeature(),
     achievementsFeature(),
     guildFeature(),
+    policyFeature(),
     aiFeature(config),
   ];
 }

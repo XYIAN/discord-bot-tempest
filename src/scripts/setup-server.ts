@@ -89,7 +89,19 @@ async function ensureTextChannel(
       overwrites.push({ id: guild.members.me.id, allow: [PermissionFlagsBits.ViewChannel] });
     }
   } else if (spec.readOnly) {
-    overwrites.push({ id: guild.roles.everyone.id, deny: [PermissionFlagsBits.SendMessages] });
+    // Visible to EVERYONE — these channels are never gated. Only posting is
+    // restricted, so the document stays a single source of truth. Reactions
+    // stay allowed (archero2 denies them, but blocking a 👍 on the rules is
+    // friction for no benefit); threads are denied so the channel doesn't turn
+    // into a discussion thread nobody reads.
+    overwrites.push({
+      id: guild.roles.everyone.id,
+      deny: [
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.CreatePublicThreads,
+        PermissionFlagsBits.CreatePrivateThreads,
+      ],
+    });
     if (guild.members.me) {
       overwrites.push({ id: guild.members.me.id, allow: [PermissionFlagsBits.SendMessages] });
     }
@@ -162,6 +174,22 @@ async function main(): Promise<void> {
     name: g.channels.guildHall.name,
     topic: 'Guild members only — strategy, boss timing, and shenanigans.',
     restrictToRoles: restricted.length > 0 ? restricted : null,
+  });
+
+  // Rules & info — read-only, bot-published from src/features/policy/documents.ts.
+  // Placed above SYSTEM so it reads near the top of the channel list.
+  const rulesInfo = await ensureCategory(guild, '📜 RULES & INFO');
+  await ensureTextChannel(guild, rulesInfo, {
+    name: g.channels.rules.name,
+    topic: 'Server rules — read before posting.',
+    restrictToRoles: null,
+    readOnly: true,
+  });
+  await ensureTextChannel(guild, rulesInfo, {
+    name: g.channels.terms.name,
+    topic: `Terms of use and privacy summary for ${g.identity.botName}.`,
+    restrictToRoles: null,
+    readOnly: true,
   });
 
   // System category
