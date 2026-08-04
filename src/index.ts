@@ -41,7 +41,10 @@ async function main(): Promise<void> {
   const scheduler = new Scheduler(modules, ctx);
 
   let degradedReason: string | undefined;
-  startHealthServer(config.port, client, version, logger, () => degradedReason);
+  // Keep the handle: the health server holds an open listener (and keep-alive
+  // sockets from Railway's probe), so it must be closed on shutdown rather
+  // than left for process.exit to tear down.
+  const healthServer = startHealthServer(config.port, client, version, logger, () => degradedReason);
 
   registry.bindEvents();
 
@@ -80,6 +83,10 @@ async function main(): Promise<void> {
     shuttingDown = true;
     logger.info(`${signal} received; shutting down`);
     scheduler.stop();
+    // Stop accepting probes first so Railway sees the listener go away
+    // immediately, rather than the container appearing to linger.
+    healthServer.close();
+    healthServer.closeAllConnections?.();
     void client.destroy();
     void (async () => {
       await Promise.race([

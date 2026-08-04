@@ -60,3 +60,33 @@ as "empty". Two rules came out of that:
   change is genuinely invisible to members.
 - Never hand-edit content in Discord that the bot publishes — the next deploy
   overwrites it, and the repo is the source of truth.
+
+## Never make `npm` PID 1
+
+`startCommand` must run the binary directly:
+
+```json
+"startCommand": "node dist/index.js"   // ✅
+"startCommand": "npm start"            // ❌
+```
+
+With `npm start`, Railway's SIGTERM goes to **npm**, not to node. npm treats a
+signalled child as a failed command, prints `npm error signal SIGTERM`, and
+exits **non-zero** — so Railway reports every ordinary redeploy as
+"Deployment crashed" and emails about it.
+
+This cost two attempts to diagnose. v0.1.9 made the node shutdown fast and
+clean, which was correct and changed nothing, because node was never the
+problem: it exited 0 and npm overwrote that with a failure. The evidence is in
+the retired container's deploy logs:
+
+```
+16:39:57  Stopping Container
+16:40:01  npm error command failed
+16:40:01  npm error signal SIGTERM
+16:40:01  npm error command sh -c node dist/index.js
+```
+
+The lesson generalises: **when a wrapper process sits between the platform and
+your app, signals and exit codes are the wrapper's, not yours.** Check what is
+actually PID 1 before debugging your own shutdown path.

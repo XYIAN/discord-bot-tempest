@@ -4,6 +4,16 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.1.21] - 2026-08-03
+
+🔧 **No more false "deployment crashed" emails.** Every normal redeploy was sending one, and the bot was never actually down.
+
+The cause was the start command: Railway signalled `npm`, which reported its own child being stopped as a failure and exited with an error code. Running the bot directly means a redeploy now exits cleanly.
+
+Also tidies up the shutdown so the health endpoint closes properly instead of being left for the process to tear down.
+
+⚠️ Note on last release: `/mod kick` and `/mod ban` are shipped but have **not** been tested live yet — the rest of `/mod` has. Test on a throwaway account before relying on them.
+
 ## [0.1.20] - 2026-08-02
 
 🛡️ **Moderation tools** — officers and admins can finally manage the server through the bot with `/mod`.
