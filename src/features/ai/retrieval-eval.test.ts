@@ -281,3 +281,29 @@ describe('the spine — facts every answer needs, never subject to scoring', () 
     expect(chars).toBeLessThan(6000);
   });
 });
+
+describe('the exact live multi-turn failure, against real facts', () => {
+  it('Blazing Archer stays retrievable when the thread moved to Scarlet Reaper', () => {
+    // Verbatim from #tempest-ai. peekaboo had been discussing a lineup, then
+    // wrote a message about Scarlet Reaper only. Retrieval scored that message
+    // alone, so Blazing Archer's team-buff passive was absent — and the bot
+    // asserted he was "your main damage dealer" from its own earlier wording.
+    // In the SAME reply it got Scarlet Reaper right, because she was named.
+    const got = retrievedKeys(
+      'Scarlet reaper has higher damage when health is higher. Check the facts',
+      [
+        'Is SR or BA my main damage dealer?',
+        'Blazing Archer is typically your primary damage dealer, Scarlet Reaper supplements.',
+      ],
+    );
+    expect([...got]).toContain('hero-blazing-archer-passive');
+    expect([...got]).toContain('hero-blazing-archer-role');
+    expect([...got]).toContain('hero-scarlet-reaper-passive');
+  });
+
+  it('and is NOT retrievable without that context — proving context did it', () => {
+    const got = retrievedKeys('Scarlet reaper has higher damage when health is higher. Check the facts');
+    expect([...got]).toContain('hero-scarlet-reaper-passive');
+    expect([...got]).not.toContain('hero-blazing-archer-passive');
+  });
+});
