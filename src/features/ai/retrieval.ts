@@ -21,6 +21,16 @@ export const MAX_FACTS_CHARS = 140_000;
 const HERO_KEY_PREFIX = 'hero-';
 
 /**
+ * Key prefixes whose families get pinned when the subject is named.
+ *
+ * Heroes were the only entity when this was written. Runes are the next import
+ * and members already ask about them by name, so `rune-<name>-identity` gets the
+ * same treatment: name a rune and its whole family arrives, exactly as naming a
+ * hero does. Add a prefix here when a new entity type gets its own fact family.
+ */
+const ENTITY_PREFIXES = ['hero-', 'rune-'] as const;
+
+/**
  * The spine: facts included in EVERY prompt, never subject to scoring.
  *
  * These are meta-knowledge the bot needs to read any other fact correctly, and
@@ -104,11 +114,19 @@ const IDENTITY_SUFFIX = '-identity';
  * identity fact and is picked up with no code change.
  */
 export function heroRosterFrom(facts: Array<{ seedKey?: string }>): string[] {
+  return entityRosterFrom(facts, HERO_KEY_PREFIX);
+}
+
+/** The roster for one entity type, e.g. `hero-` or `rune-`. */
+export function entityRosterFrom(
+  facts: Array<{ seedKey?: string }>,
+  prefix: string,
+): string[] {
   const roster: string[] = [];
   for (const f of facts) {
     const key = f.seedKey;
-    if (!key || !key.startsWith(HERO_KEY_PREFIX) || !key.endsWith(IDENTITY_SUFFIX)) continue;
-    const slug = key.slice(HERO_KEY_PREFIX.length, key.length - IDENTITY_SUFFIX.length);
+    if (!key || !key.startsWith(prefix) || !key.endsWith(IDENTITY_SUFFIX)) continue;
+    const slug = key.slice(prefix.length, key.length - IDENTITY_SUFFIX.length);
     if (slug) roster.push(slug);
   }
   // Longest first so `fire-mage` wins over `fire` for hero-fire-mage-passive.
@@ -127,8 +145,17 @@ export function heroSlugForKey(
   seedKey: string | undefined,
   roster: readonly string[],
 ): string | undefined {
-  if (!seedKey || !seedKey.startsWith(HERO_KEY_PREFIX)) return undefined;
-  const rest = seedKey.slice(HERO_KEY_PREFIX.length);
+  return entitySlugForKey(seedKey, roster, HERO_KEY_PREFIX);
+}
+
+/** Which entity of this type does the key belong to? Longest name wins. */
+export function entitySlugForKey(
+  seedKey: string | undefined,
+  roster: readonly string[],
+  prefix: string,
+): string | undefined {
+  if (!seedKey || !seedKey.startsWith(prefix)) return undefined;
+  const rest = seedKey.slice(prefix.length);
   for (const slug of roster) {
     if (rest === slug || rest.startsWith(`${slug}-`)) return slug;
   }
@@ -178,8 +205,15 @@ export function selectRelevantFacts(
   const queryText = [question, question, ...context.slice(-4)].join(' ');
   const queryTokens = new Set(tokenize(queryText));
 
-  const roster = heroRosterFrom(facts);
-  const named = heroesMentioned(queryText, roster);
+  // One roster per entity type, so naming a rune pins its family just as
+  // naming a hero does.
+  const rosters = ENTITY_PREFIXES.map((prefix) => ({
+    prefix,
+    roster: entityRosterFrom(facts, prefix),
+  }));
+  const named = new Map<string, Set<string>>(
+    rosters.map(({ prefix, roster }) => [prefix, heroesMentioned(queryText, roster)]),
+  );
 
   // A hero named anywhere in the conversation gets their COMPLETE fact family.
   // Answering "is X any good?" needs identity, passive and synergy together;
@@ -188,9 +222,14 @@ export function selectRelevantFacts(
   const pinned: Fact[] = [];
   const rest: Fact[] = [];
   for (const f of facts) {
-    const slug = heroSlugForKey(f.seedKey, roster);
-    if ((f.seedKey && SPINE_KEYS.has(f.seedKey)) || (slug && named.has(slug))) pinned.push(f);
-    else rest.push(f);
+    let isPinned = Boolean(f.seedKey && SPINE_KEYS.has(f.seedKey));
+    if (!isPinned) {
+      for (const { prefix, roster } of rosters) {
+        const slug = entitySlugForKey(f.seedKey, roster, prefix);
+        if (slug && named.get(prefix)?.has(slug)) { isPinned = true; break; }
+      }
+    }
+    (isPinned ? pinned : rest).push(f);
   }
 
   const scored = rest

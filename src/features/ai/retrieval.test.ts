@@ -201,3 +201,44 @@ describe('budget and padding', () => {
     expect(selected).toContain(short);
   });
 });
+
+describe('rune families pin the same way hero families do', () => {
+  // Prep for the rune capture. Members already ask about runes by name, and
+  // without this their facts would fall back to plain keyword scoring the
+  // moment the corpus outgrows the budget — the exact gap that made the bot
+  // answer badly about heroes.
+  const runeFacts = [
+    fact('Meteor Rune is an ability rune that drops meteors.', 'rune-meteor-identity'),
+    fact('Meteor Rune reaches Epic at 40 shards.', 'rune-meteor-upgrade'),
+    fact('Meteor Rune synergises with Fire heroes.', 'rune-meteor-synergy'),
+  ];
+
+  it('naming a rune pins its whole family', () => {
+    const selected = selectRelevantFacts(overBudget(runeFacts), 'is the meteor rune any good');
+    const keys = selected.map((f) => f.seedKey);
+    for (const f of runeFacts) expect(keys).toContain(f.seedKey);
+  });
+
+  it('a rune written as two words still matches', () => {
+    const kb = [fact('Frost Bite rune slows enemies.', 'rune-frost-bite-identity')];
+    const selected = selectRelevantFacts(overBudget(kb), 'what does frostbite rune do');
+    expect(selected.map((f) => f.seedKey)).toContain('rune-frost-bite-identity');
+  });
+
+  it('heroes and runes pin independently in the same question', () => {
+    const mixed = [
+      ...runeFacts,
+      fact('Blazing Archer is Fire.', 'hero-blazing-archer-identity'),
+      fact('His passive buffs team CRIT DMG.', 'hero-blazing-archer-passive'),
+    ];
+    const selected = selectRelevantFacts(overBudget(mixed), 'is meteor rune good on blazing archer');
+    const keys = selected.map((f) => f.seedKey);
+    expect(keys).toContain('rune-meteor-synergy');
+    expect(keys).toContain('hero-blazing-archer-passive');
+  });
+
+  it('an unrelated question pins neither', () => {
+    const selected = selectRelevantFacts(overBudget(runeFacts), 'how do star tiers work');
+    expect(selected.map((f) => f.seedKey)).not.toContain('rune-meteor-synergy');
+  });
+});
