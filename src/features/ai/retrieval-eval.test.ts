@@ -307,3 +307,49 @@ describe('the exact live multi-turn failure, against real facts', () => {
     expect([...got]).not.toContain('hero-blazing-archer-passive');
   });
 });
+
+describe('the "what I do not know" fact must not outlive the gap', () => {
+  // gap-runes-treasures-pantheon is in the SPINE, so it goes into every single
+  // prompt. The moment rune facts are added it becomes actively harmful: the
+  // bot would hold rune data AND a standing instruction saying it has none, and
+  // would most likely keep answering "I don't have any data yet on runes" while
+  // the answer sits in the same prompt.
+  //
+  // This turns that silent future contradiction into a loud failure at exactly
+  // the moment the first fact on one of these topics is written.
+  const GAP_KEY = 'gap-runes-treasures-pantheon';
+  const TOPICS: Array<[string, RegExp]> = [
+    ['runes', /^runes?-/],
+    ['treasures', /^treasures?-/],
+    ['sigils', /^sigils?-/],
+    ['gear', /^gear-/],
+    ['emblems', /^emblems?-/],
+    ['pantheon', /^pantheon-/],
+  ];
+
+  const gapFact = () => ALL_FACTS.find((f) => f.seedKey === GAP_KEY);
+
+  it('the gap fact still exists and is in the spine', async () => {
+    const { spineKeys } = await import('./retrieval.js');
+    expect(gapFact()).toBeDefined();
+    expect(spineKeys()).toContain(GAP_KEY);
+  });
+
+  for (const [topic, keyPattern] of TOPICS) {
+    it(`if ${topic} facts exist, the gap fact no longer claims there are none`, () => {
+      const contentFacts = ALL_FACTS.filter(
+        (f) => f.seedKey && f.seedKey !== GAP_KEY && keyPattern.test(f.seedKey),
+      );
+      if (contentFacts.length === 0) return; // nothing added yet — nothing to check
+
+      const text = gapFact()!.text.toLowerCase();
+      // Once real content exists the topic must be removed from the "no data"
+      // sentence. Update gap-runes-treasures-pantheon in the same commit that
+      // adds the facts.
+      expect(
+        text.includes(`no data yet on`) && text.includes(topic),
+        `${contentFacts.length} ${topic} fact(s) exist but ${GAP_KEY} still says the bot has no ${topic} data. Update it in the same commit.`,
+      ).toBe(false);
+    });
+  }
+});
