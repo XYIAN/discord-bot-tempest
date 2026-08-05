@@ -4,6 +4,18 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.3.1] - 2026-08-05
+
+### A table is not a lookup
+
+v0.3.0 put the abbreviation table into every prompt. Tested immediately after, the bot read "SW" as **Monkey King** — a different wrong hero from the Swordmaster it guessed before, and Monkey King is `MK`.
+
+The table was present, at 99% through the prompt, and finding "SW" among 34 entries is a lookup rather than recall. Nothing told the model to perform one, so it pattern-matched instead.
+
+Now an explicit rule: never expand initials from memory or from what sounds plausible; look them up in the abbreviation fact and use exactly what it says; if they are absent or marked ambiguous, **ask** — do not answer around it and do not pick the closest-sounding hero.
+
+That is the third time this pattern has appeared tonight — prices, roles, and now abbreviations. **A fact supplies the data; a rule is what makes the model use it.** Neither alone is sufficient.
+
 ## [0.3.0] - 2026-08-05
 
 ### The real cause of "sword master is a xeno hero" — it was an abbreviation

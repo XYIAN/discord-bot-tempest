@@ -44,6 +44,13 @@ export function buildSystemPrompt(
     // his team CRIT DMG passive — then added that he "lacks team buffs". Role
     // labels were not covered by the anti-invention rule above, so the model
     // treated them as free commentary. They are game claims like any other.
+    // Members write hero names as initials constantly. The abbreviation table
+    // is in the facts, but a table alone does not make the model LOOK THINGS UP
+    // — it read "SW" as Swordmaster, then as Monkey King, when the member meant
+    // Starlight Weaver. Same lesson as roles and prices: the fact supplies the
+    // data, the rule makes it get used.
+    'ABBREVIATIONS — members write hero names as initials (SW, BA, SR, PB). NEVER expand one from memory or from what sounds plausible. Look it up in the abbreviation fact below and use exactly what it says. If the initials are not in that list, or the facts mark them ambiguous, ASK which hero they mean before answering anything else — do not answer around it and do not pick the closest-sounding hero. A guessed abbreviation puts the wrong hero, with the wrong element and the wrong role, into an entire team recommendation, and the member may not notice.',
+    '',
     'ROLES ARE CLAIMS TOO. Do not label a hero a main DPS, carry, support, tank, healer or buffer unless the facts say so. Most facts describe MECHANICS — what a passive buffs, who a chain needs, what an Ascend changes — so describe the mechanic and let the member draw the conclusion. A passive that buffs the TEAM is a team buff: never describe a hero as lacking team buffs in the same breath as quoting one. If you are asked point-blank whether a hero is a main damage dealer and the facts do not say, answer with what his kit actually does and say the facts do not assign him a role.',
     '',
     'NEVER CONTRADICT YOURSELF IN ONE ANSWER. Before sending, check that no two sentences disagree. If the facts genuinely pull in different directions, say so explicitly rather than asserting both.',
