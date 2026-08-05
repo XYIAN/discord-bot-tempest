@@ -9,6 +9,11 @@ rule here exists because something went wrong without it.
 Read [naming.md](naming.md), [typescript.md](typescript.md),
 [testing.md](testing.md) and [deploys.md](deploys.md) for the detail.
 
+[knowledge-facts.md](knowledge-facts.md) covers writing entries in
+`seed-facts.ts` — read it before adding a batch. Fact keys are load-bearing for
+retrieval now, and a key in the wrong shape stores fine while quietly losing the
+machinery that makes the bot answer well.
+
 ## The short version
 
 1. **TypeScript, strict, no `any`.** Types are the point. If a type is hard to
