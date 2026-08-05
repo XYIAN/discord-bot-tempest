@@ -49,18 +49,53 @@ function squash(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
+/** Every hero has exactly one `hero-<slug>-identity` fact. That is the roster. */
+const IDENTITY_SUFFIX = '-identity';
+
 /**
- * The hero slug inside a seed key: `hero-night-baron-passive` → `night-baron`.
+ * The roster, derived from the data rather than hardcoded.
  *
- * The last segment is the aspect (identity/passive/synergy/chain/ascend/skins),
- * so everything between the prefix and it is the name.
+ * Splitting a key on its last dash is wrong for the 57 keys whose aspect is two
+ * words — `hero-blazing-archer-main-skill` gives `blazing-archer-main`, a slug
+ * nobody types, so his MAIN SKILL would never be pinned when someone asks about
+ * him. A fixed list of aspect suffixes is wrong too: the vocabulary is
+ * open-ended (`synergy-atkspd`, `ascend-1-2`, `crowd-control`,
+ * `heavy-strike-combo`), so it would need editing every time a fact is written.
+ *
+ * The identity keys are the one thing that IS reliable, so they define the
+ * roster and everything else is matched against it. A new hero brings his own
+ * identity fact and is picked up with no code change.
  */
-export function heroSlugFromKey(seedKey: string | undefined): string | undefined {
+export function heroRosterFrom(facts: Array<{ seedKey?: string }>): string[] {
+  const roster: string[] = [];
+  for (const f of facts) {
+    const key = f.seedKey;
+    if (!key || !key.startsWith(HERO_KEY_PREFIX) || !key.endsWith(IDENTITY_SUFFIX)) continue;
+    const slug = key.slice(HERO_KEY_PREFIX.length, key.length - IDENTITY_SUFFIX.length);
+    if (slug) roster.push(slug);
+  }
+  // Longest first so `fire-mage` wins over `fire` for hero-fire-mage-passive.
+  return roster.sort((a, b) => b.length - a.length);
+}
+
+/**
+ * Which hero does this key belong to? Longest matching roster slug wins.
+ *
+ * Returns undefined for keys that only look hero-shaped —
+ * `hero-level-belongs-to-deployed-slot` is a general levelling mechanic, not a
+ * hero called "level", and pinning it to a fake hero would be worse than
+ * leaving it to ordinary keyword scoring.
+ */
+export function heroSlugForKey(
+  seedKey: string | undefined,
+  roster: readonly string[],
+): string | undefined {
   if (!seedKey || !seedKey.startsWith(HERO_KEY_PREFIX)) return undefined;
   const rest = seedKey.slice(HERO_KEY_PREFIX.length);
-  const lastDash = rest.lastIndexOf('-');
-  if (lastDash <= 0) return undefined;
-  return rest.slice(0, lastDash);
+  for (const slug of roster) {
+    if (rest === slug || rest.startsWith(`${slug}-`)) return slug;
+  }
+  return undefined;
 }
 
 /**
@@ -106,12 +141,8 @@ export function selectRelevantFacts(
   const queryText = [question, question, ...context.slice(-4)].join(' ');
   const queryTokens = new Set(tokenize(queryText));
 
-  const slugs = new Set<string>();
-  for (const f of facts) {
-    const slug = heroSlugFromKey(f.seedKey);
-    if (slug) slugs.add(slug);
-  }
-  const named = heroesMentioned(queryText, slugs);
+  const roster = heroRosterFrom(facts);
+  const named = heroesMentioned(queryText, roster);
 
   // A hero named anywhere in the conversation gets their COMPLETE fact family.
   // Answering "is X any good?" needs identity, passive and synergy together;
@@ -120,7 +151,7 @@ export function selectRelevantFacts(
   const pinned: Fact[] = [];
   const rest: Fact[] = [];
   for (const f of facts) {
-    const slug = heroSlugFromKey(f.seedKey);
+    const slug = heroSlugForKey(f.seedKey, roster);
     if (slug && named.has(slug)) pinned.push(f);
     else rest.push(f);
   }

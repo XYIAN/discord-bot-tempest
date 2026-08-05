@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MAX_FACTS_CHARS, heroSlugFromKey, heroesMentioned, selectRelevantFacts } from './retrieval.js';
+import { MAX_FACTS_CHARS, heroRosterFrom, heroSlugForKey, heroesMentioned, selectRelevantFacts } from './retrieval.js';
 import type { Fact } from './knowledge.js';
 
 let nextId = 1;
@@ -27,17 +27,75 @@ function overBudget(extra: Fact[]): Fact[] {
   return [...filler, ...extra];
 }
 
-describe('heroSlugFromKey', () => {
+const ROSTER = heroRosterFrom([
+  { seedKey: 'hero-swordmaster-identity' },
+  { seedKey: 'hero-night-baron-identity' },
+  { seedKey: 'hero-blazing-archer-identity' },
+  { seedKey: 'hero-fire-mage-identity' },
+  { seedKey: 'hero-fire-witch-identity' },
+]);
+
+describe('heroSlugForKey', () => {
   it('reads the hero name out of a seed key', () => {
-    expect(heroSlugFromKey('hero-swordmaster-identity')).toBe('swordmaster');
-    expect(heroSlugFromKey('hero-night-baron-passive')).toBe('night-baron');
-    expect(heroSlugFromKey('hero-blazing-archer-synergy')).toBe('blazing-archer');
+    expect(heroSlugForKey('hero-swordmaster-identity', ROSTER)).toBe('swordmaster');
+    expect(heroSlugForKey('hero-night-baron-passive', ROSTER)).toBe('night-baron');
   });
-  it('ignores keys that are not hero facts', () => {
-    expect(heroSlugFromKey('exweapon-swordmaster')).toBeUndefined();
-    expect(heroSlugFromKey('star-system')).toBeUndefined();
-    expect(heroSlugFromKey(undefined)).toBeUndefined();
-    expect(heroSlugFromKey('hero-')).toBeUndefined();
+  it('handles aspects of ANY length, not just the last segment', () => {
+    // 57 keys have a two-word aspect and the vocabulary is open-ended
+    // (synergy-atkspd, ascend-1-2, crowd-control). Splitting on the last dash
+    // gave "blazing-archer-main" — a slug nobody types — so his MAIN SKILL was
+    // never pinned. The first version of this test only used one-word aspects
+    // and passed for the wrong reason.
+    expect(heroSlugForKey('hero-blazing-archer-main-skill', ROSTER)).toBe('blazing-archer');
+    expect(heroSlugForKey('hero-blazing-archer-synergy-crit', ROSTER)).toBe('blazing-archer');
+    expect(heroSlugForKey('hero-night-baron-ascend-1-2', ROSTER)).toBe('night-baron');
+  });
+  it('prefers the LONGEST matching hero name', () => {
+    // Otherwise "fire-mage" facts could be attributed to a hero called "fire".
+    expect(heroSlugForKey('hero-fire-witch-passive', ROSTER)).toBe('fire-witch');
+    expect(heroSlugForKey('hero-fire-mage-passive', ROSTER)).toBe('fire-mage');
+  });
+  it('ignores keys that only LOOK hero-shaped', () => {
+    // A general levelling mechanic, not a hero called "level". Pinning it to an
+    // invented hero would be worse than leaving it to keyword scoring.
+    expect(heroSlugForKey('hero-level-belongs-to-deployed-slot', ROSTER)).toBeUndefined();
+    expect(heroSlugForKey('exweapon-swordmaster', ROSTER)).toBeUndefined();
+    expect(heroSlugForKey(undefined, ROSTER)).toBeUndefined();
+  });
+});
+
+describe('slug derivation against the REAL seed keys', () => {
+  it('no derived slug still ends in an aspect word', async () => {
+    // Guards the whole ASPECT_SUFFIXES list against the roster growing a new
+    // key shape. If this fails, add the new suffix rather than deleting this.
+    const { SEED_FACTS } = await import('./seed-facts.js');
+    const realRoster = heroRosterFrom(SEED_FACTS.map((f) => ({ seedKey: f.key })));
+    const bad: string[] = [];
+    for (const f of SEED_FACTS) {
+      const slug = heroSlugForKey(f.key, realRoster);
+      if (slug && /-(main|sp|ascend|ascends|identity|passive|synergy|chain|skins|skill|role)$/.test(slug)) {
+        bad.push(`${f.key} → ${slug}`);
+      }
+    }
+    expect(bad).toEqual([]);
+  });
+
+  it('every hero family resolves to one slug shared by all its facts', async () => {
+    const { SEED_FACTS } = await import('./seed-facts.js');
+    const realRoster = heroRosterFrom(SEED_FACTS.map((f) => ({ seedKey: f.key })));
+    const bySlug = new Map<string, number>();
+    for (const f of SEED_FACTS) {
+      const slug = heroSlugForKey(f.key, realRoster);
+      if (slug) bySlug.set(slug, (bySlug.get(slug) ?? 0) + 1);
+    }
+    // A real roster hero has several facts; a slug with exactly one is a sign
+    // the name was split wrongly.
+    // Some heroes genuinely have only an identity fact; the point is that
+    // mis-splitting no longer manufactures dozens of phantom one-fact heroes.
+    const singletons = [...bySlug.entries()].filter(([, n]) => n === 1).map(([s]) => s);
+    expect(singletons.length).toBeLessThan(10);
+    expect(bySlug.get('blazing-archer')).toBeGreaterThanOrEqual(6);
+    expect(bySlug.get('swordmaster')).toBeGreaterThanOrEqual(5);
   });
 });
 

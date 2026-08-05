@@ -4,6 +4,20 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.2.3] - 2026-08-05
+
+### The hero-name parser was wrong for 57 of the roster's fact keys
+
+Found while auditing element coverage, and it would have quietly undone most of v0.2.0 the moment the knowledge base outgrew one prompt.
+
+Pinning "a named hero's whole fact family" depends on knowing which hero a fact key belongs to. That was done by taking everything before the last dash — correct for `hero-night-baron-passive`, wrong for the 57 keys whose aspect is two words. `hero-blazing-archer-main-skill` yielded the hero `blazing-archer-main`, a name nobody types, so **his Main Skill would never have been pinned when someone asked about Blazing Archer**. My tests used only one-word aspects and passed for the wrong reason — the third time that has happened in this work, which is why the new tests run against the real seed keys rather than samples.
+
+A fixed list of aspect suffixes was tried and rejected: the vocabulary is open-ended (`synergy-atkspd`, `ascend-1-2`, `crowd-control`, `heavy-strike-combo`), so it would need editing every time anyone writes a fact.
+
+The roster is now **derived from the data**: every hero has exactly one `hero-<name>-identity` fact, so those keys define the roster and every other key is matched against it, longest name first. A new hero is picked up with no code change. `fire-mage` correctly beats `fire`, and `hero-level-vs-stars` is correctly recognised as a general levelling mechanic rather than a hero called "level".
+
+45 heroes, 294 hero facts correctly attributed, 3 non-hero keys correctly excluded. Blazing Archer went from being split across three phantom names to 9 facts under one.
+
 ## [0.2.2] - 2026-08-05
 
 ### Teach it to read a hero's job from the kit
