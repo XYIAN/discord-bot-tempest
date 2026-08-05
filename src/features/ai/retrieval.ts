@@ -20,6 +20,42 @@ export const MAX_FACTS_CHARS = 140_000;
 /** Facts for a hero named in the question are never dropped — see selectRelevantFacts. */
 const HERO_KEY_PREFIX = 'hero-';
 
+/**
+ * The spine: facts included in EVERY prompt, never subject to scoring.
+ *
+ * These are meta-knowledge the bot needs to read any other fact correctly, and
+ * they lose keyword scoring precisely when they are most needed:
+ *
+ *  - the abbreviation table, because "SW" and "BA" are two characters and the
+ *    tokenizer ignores anything that short. That gap is why the bot guessed
+ *    "SW" meant Swordmaster when a member meant Starlight Weaver, then built a
+ *    whole team around the wrong hero, with the wrong element and the wrong
+ *    role.
+ *  - the element vocabulary, because the game calls one element Electric,
+ *    Electro and (for Frost) Ice, and without that the variants read as
+ *    different elements.
+ *  - what the bot does NOT have data on, so it keeps saying "I don't know"
+ *    about runes and gear instead of inventing them once those questions stop
+ *    scoring against anything.
+ *
+ * Together they cost roughly 3,000 characters — cheap insurance against the
+ * failure modes that actually happened.
+ */
+const SPINE_KEYS = new Set([
+  'hero-abbreviations',
+  'hero-abbreviations-ambiguous',
+  'elements-list',
+  'element-naming-variants',
+  'role-reading-a-heros-job',
+  'strategy-element-team-discipline',
+  'gap-runes-treasures-pantheon',
+]);
+
+/** Exported so a test can assert every spine key still exists in the corpus. */
+export function spineKeys(): string[] {
+  return [...SPINE_KEYS];
+}
+
 /** Words too generic to carry meaning; they made every long fact score. */
 const STOPWORDS = new Set([
   'what', 'which', 'that', 'this', 'with', 'from', 'have', 'has', 'does', 'do',
@@ -152,7 +188,7 @@ export function selectRelevantFacts(
   const rest: Fact[] = [];
   for (const f of facts) {
     const slug = heroSlugForKey(f.seedKey, roster);
-    if (slug && named.has(slug)) pinned.push(f);
+    if ((f.seedKey && SPINE_KEYS.has(f.seedKey)) || (slug && named.has(slug))) pinned.push(f);
     else rest.push(f);
   }
 

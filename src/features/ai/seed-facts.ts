@@ -331,6 +331,29 @@ export const SEED_FACTS: SeedFact[] = [
     text: 'Blazing Archer\'s Chain Skill, Burning Ground, requires both Blazing Archer and Demon Spawn deployed: Flame Blade and Flame Arrow hits ignite Burning Ground, dealing massive damage.',
   },
   {
+    // A new member asked for exactly this: "all the heroes have too many names
+    // and people use two letter abbreviations that I don't really understand".
+    // The bot had no abbreviation data and guessed — it read "SW" as Swordmaster
+    // when the member meant Starlight Weaver, then called Swordmaster a Xeno
+    // hero, because Starlight Weaver IS Xenoscape and Swordmaster is Wind.
+    key: 'hero-abbreviations',
+    text: 'Members abbreviate hero names to their initials. Unambiguous ones: AA = Archon Armor; BA = Blazing Archer; CA = Cat Assassin; DE = Draconic Empress; DH = Demon Hunter; DS = Demon Spawn; EI = Elemental Invoker; ER = Elf Ranger; FM = Fire Mage; FV = Fiery Vanguard; FW = Fire Witch; GR = God Ruler; HP = High Priest; ID = Ice Demon; IM = Ice Mage; IQ = Ice Queen; IW = Ice Witch; IWP = Ice Wolf Pup; LA = Levin Archangel; MK = Monkey King; NB = Night Baron; NP = Novice Priest; NT = Northern Tyrant; PB = Panda Brewmaster; PC = Polar Captain; PD = Phoenix Dancer; RFM = Rogue Fire Mage; SR = Scarlet Reaper; SS = Sword Saint; SW = Starlight Weaver; TP = Thunder Pharaoh; UL = Unyielding Lancer; VW = Void Witch; WR = Windborne Ranger. Note SW is Starlight Weaver, NOT Swordmaster - Swordmaster is one word so it does not abbreviate to two letters.',
+    category: 'general',
+  },
+  {
+    key: 'hero-abbreviations-ambiguous',
+    text: 'Three hero abbreviations are ambiguous and must never be guessed: FA could be Fire Apprentice or Frost Archer; FL could be Fabled Lyra or Frost Lich; a bare S could be Swordmaster or Seraph. If a member uses one of these, or any abbreviation not on the known list, ask which hero they mean before answering. Guessing an abbreviation is how a wrong hero - with the wrong element and the wrong role - gets built into a whole team recommendation.',
+    category: 'general',
+  },
+  {
+    // The bot listed Blazing Archer and Cheffy, both FIRE heroes, in a WIND
+    // team; a member had to catch it. Every hero's element is recorded, so this
+    // was a discipline failure rather than a data gap.
+    key: 'strategy-element-team-discipline',
+    text: 'When asked for an element team (a Wind team, a Fire team and so on), every hero named must actually BE that element - check each hero\'s identity fact before listing them. A hero whose kit buffs an element is not necessarily of that element: Blazing Archer buffs team CRIT DMG and is Fire, Cheffy heals and is Fire, so neither belongs in a Wind team. If an off-element hero is worth including anyway, say plainly that they are off-element and why they still earn the slot.',
+    category: 'strategy',
+  },
+  {
     // Kyle (guild owner) reported the bot calling Blazing Archer "your main
     // damage dealer". Retrieval was fixed and it still said so, because the
     // facts describe his MECHANICS and left the role conclusion to the model.

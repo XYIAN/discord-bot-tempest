@@ -4,6 +4,37 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.3.0] - 2026-08-05
+
+### The real cause of "sword master is a xeno hero" — it was an abbreviation
+
+Reading the whole of `#tempest-ai` turned up the actual origin, and it was not retrieval.
+
+A member wrote *"Understand that SW is ideal"*. The bot read **SW** as **Swordmaster**, called him "your main Xeno hero", and built a five-hero team around that. The member meant **Starlight Weaver** — who genuinely *is* Xenoscape, while Swordmaster is Wind. One guessed abbreviation dragged the wrong element and the wrong role through an entire recommendation. Another member, on his first day, said it outright: *"all the heroes have too many names and people use two letter abbreviations that I don't really understand yet."*
+
+There were **zero** abbreviation facts. Now there are:
+
+- The full table, generated from the roster: 34 unambiguous abbreviations, and explicitly **SW = Starlight Weaver, NOT Swordmaster** (Swordmaster is one word, so it never abbreviates to two letters).
+- The three that are genuinely ambiguous — `FA` (Fire Apprentice / Frost Archer), `FL` (Fabled Lyra / Frost Lich), bare `S` (Swordmaster / Seraph) — with an instruction to **ask, never guess**.
+
+### Two Fire heroes in a Wind team
+
+The bot recommended Blazing Archer and Cheffy as Wind units; a member caught it. Both are Fire, and both identity facts say so — a discipline failure, not a data gap. Added a rule: every hero named in an element team must actually **be** that element, and an off-element pick has to be flagged as one with a reason.
+
+### The spine — facts every answer needs, exempt from scoring
+
+Seven small facts are now in every prompt regardless of keyword match, because they lose scoring exactly when they matter most:
+
+- The abbreviation table, since `SW` and `BA` are two characters and fall below the tokenizer's minimum — it could **never** have been retrieved by scoring, which is why the bot guessed.
+- The element vocabulary, since the game calls one element Electric, Electro and (for Frost) Ice.
+- The list of what the bot has **no** data on, so it keeps answering "I don't have rune data" instead of inventing runes once those questions stop matching anything.
+
+About 3,000 characters total — cheap insurance against the failures that actually happened.
+
+### What members are asking for that does not exist yet
+
+From the channel, ranked by demand: **runes** (asked twice, zero data), rate-up summon tickets, a tier list, and arena/campaign/arcade mode guidance. Runes are the clear next capture target.
+
 ## [0.2.4] - 2026-08-05
 
 ### The weekly sync could turn the bot's own mistakes into permanent facts

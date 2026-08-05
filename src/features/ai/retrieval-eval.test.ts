@@ -191,3 +191,93 @@ describe('element questions — the third thing members reported wrong', () => {
     expect([...got]).toEqual(expect.arrayContaining(['elements-list']));
   });
 });
+
+describe('abbreviations — the actual origin of the "sword master is xeno" bug', () => {
+  // A member wrote "SW is ideal". The bot read it as Swordmaster, called him a
+  // Xeno hero, and built a whole team around that. The member meant Starlight
+  // Weaver, who really is Xenoscape — so the wrong hero brought the wrong
+  // element and the wrong role into the recommendation.
+  it('the abbreviation table is in the knowledge base', () => {
+    const keys = ALL_FACTS.map((f) => f.seedKey);
+    expect(keys).toContain('hero-abbreviations');
+    expect(keys).toContain('hero-abbreviations-ambiguous');
+  });
+
+  it('SW resolves to Starlight Weaver, not Swordmaster', () => {
+    const table = ALL_FACTS.find((f) => f.seedKey === 'hero-abbreviations')!.text;
+    expect(table).toMatch(/SW = Starlight Weaver/);
+    expect(table).toMatch(/NOT Swordmaster/);
+  });
+
+  it('every unambiguous abbreviation maps to a hero that actually exists', () => {
+    // A table listing a hero the roster does not have would send the bot
+    // confidently to a nonexistent fact family.
+    const table = ALL_FACTS.find((f) => f.seedKey === 'hero-abbreviations')!.text;
+    const names = [...table.matchAll(/\b[A-Z]{2,3} = ([A-Z][a-zA-Z]*(?: [A-Z][a-zA-Z]*)*)/g)].map((m) => m[1]);
+    expect(names.length).toBeGreaterThan(30);
+    const roster = new Set(
+      ALL_FACTS
+        .map((f) => f.seedKey)
+        .filter((k): k is string => Boolean(k?.startsWith('hero-') && k.endsWith('-identity')))
+        .map((k) => k.slice('hero-'.length, -'-identity'.length)),
+    );
+    const missing = names.filter((n) => !roster.has(n.toLowerCase().replace(/ /g, '-')));
+    expect(missing).toEqual([]);
+  });
+
+  it('asking about an abbreviation retrieves the table', () => {
+    expect([...retrievedKeys('who is SW and is BA good with them')]).toContain('hero-abbreviations');
+  });
+});
+
+describe('element discipline in team building', () => {
+  it('the rule that off-element heroes must not pad an element team exists', () => {
+    const fact = ALL_FACTS.find((f) => f.seedKey === 'strategy-element-team-discipline');
+    expect(fact).toBeDefined();
+    expect(fact!.text).toMatch(/must actually BE that element/);
+  });
+
+  it('a wind-team question retrieves it', () => {
+    expect([...retrievedKeys('build me a good wind team')]).toContain('strategy-element-team-discipline');
+  });
+});
+
+describe('the spine — facts every answer needs, never subject to scoring', () => {
+  it('every spine key exists in the corpus', async () => {
+    // A spine key that has been renamed silently stops being included, and the
+    // failure is invisible: answers just get subtly worse.
+    const { spineKeys } = await import('./retrieval.js');
+    const present = new Set(ALL_FACTS.map((f) => f.seedKey));
+    const missing = spineKeys().filter((k) => !present.has(k));
+    expect(missing).toEqual([]);
+  });
+
+  it('the spine survives a question that matches none of it', async () => {
+    const { spineKeys } = await import('./retrieval.js');
+    // Deliberately about something unrelated to abbreviations or elements.
+    const got = retrievedKeys('how much healing does the priest do per second');
+    for (const k of spineKeys()) expect([...got]).toContain(k);
+  });
+
+  it('an abbreviation question now retrieves the table', () => {
+    // "SW" and "BA" are two characters, below the tokenizer minimum, so this
+    // could never be reached by scoring.
+    expect([...retrievedKeys('who is SW and is BA good with them')]).toContain('hero-abbreviations');
+  });
+
+  it('the "what I do not know" fact is always present', () => {
+    // Keeps the bot saying "I have no rune data" rather than inventing runes
+    // once rune questions stop scoring against anything.
+    expect([...retrievedKeys('anything at all about swordmaster')]).toContain('gap-runes-treasures-pantheon');
+  });
+
+  it('the spine is small enough to be free', () => {
+    const spine = ALL_FACTS.filter((f) => f.seedKey && [
+      'hero-abbreviations', 'hero-abbreviations-ambiguous', 'elements-list',
+      'element-naming-variants', 'role-reading-a-heros-job',
+      'strategy-element-team-discipline', 'gap-runes-treasures-pantheon',
+    ].includes(f.seedKey));
+    const chars = spine.reduce((n, f) => n + f.text.length, 0);
+    expect(chars).toBeLessThan(6000);
+  });
+});
