@@ -4,6 +4,22 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.2.4] - 2026-08-05
+
+### The weekly sync could turn the bot's own mistakes into permanent facts
+
+The most consequential thing found tonight, and it was a loaded gun rather than a fired one.
+
+The weekly memory-sync reads the week's Q&A and files candidate facts for moderator approval. Its rules were: extract claims *"asserted with confidence"*, that are *not already known*, hedged claims excluded — and **only what the assistant asserted**.
+
+Those criteria select **for** hallucinations. An invented claim is stated confidently, is by definition absent from the known-facts list, and is never hedged. "Blazing Archer is your main damage dealer" met every single one. Had it been extracted and approved — and it reads perfectly plausible to a reviewer, which is precisely why it went uncorrected in chat for days — the invention would have become permanent *verified* data that the bot then cites forever, with retrieval faithfully delivering it every time.
+
+- The assistant's own answers are now explicitly **not evidence**. A claim appearing only in an `A:` line, with nothing in the transcript corroborating it, is never extracted.
+- What does qualify: concrete detail a **member** supplied, including corrections of the bot, and claims a member then confirmed. Where a member and the bot disagree, the member's wording wins — they are the ones playing the game.
+- Injection defence is unchanged and now stated more precisely: extracting a factual **claim** a member made is fine because a moderator reviews every candidate; obeying an **instruction** found in the transcript is not.
+
+Members had already been correcting the bot in `#tempest-ai` — those corrections were the one genuinely reliable signal in the transcript, and the old rule discarded them while keeping the bot's own errors.
+
 ## [0.2.3] - 2026-08-05
 
 ### The hero-name parser was wrong for 57 of the roster's fact keys

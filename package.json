@@ -1,6 +1,6 @@
 {
   "name": "discord-bot-tempest",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Tempest guild hub bot for Wittle Defender (Habby) — community, recruiting, achievements, and Tempest AI.",
   "type": "module",
   "private": true,
