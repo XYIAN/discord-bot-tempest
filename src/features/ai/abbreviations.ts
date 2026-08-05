@@ -19,6 +19,24 @@
  * asks for the behaviour, and only code guarantees it.
  */
 
+/**
+ * All-caps tokens that are game vocabulary, never a hero.
+ *
+ * HP is the one that matters: High Priest's initials are HP, and "which hero
+ * has the most HP" is a question about hit points. Without this the resolver
+ * would tell the model, at the very top of the prompt and with total
+ * confidence, that a stats question is about High Priest — a worse failure than
+ * the guessing it was built to prevent, because it would fire constantly.
+ *
+ * The trade is deliberate: High Priest can no longer be abbreviated, and anyone
+ * who means him can type his name. Ambiguity in favour of the common meaning.
+ */
+const GAME_TERMS = new Set([
+  'HP', 'MP', 'SP', 'EX', 'ATK', 'DEF', 'DMG', 'SPD', 'RES', 'EXP', 'DPS',
+  'AOE', 'CD', 'LV', 'MAX', 'MIN', 'PVP', 'PVE', 'RNG', 'NPC', 'MVP', 'UI',
+  'OP', 'GG', 'TY', 'AFK', 'IMO', 'IDK', 'F2P', 'P2P', 'ETA', 'FYI', 'TBH',
+]);
+
 /** Initials for a hero slug: `starlight-weaver` → `SW`. */
 export function initialsFor(slug: string): string {
   return slug
@@ -84,7 +102,7 @@ export function resolveAbbreviations(
 
   for (const match of String(text ?? '').matchAll(/\b([A-Z]{2,3})\b/g)) {
     const abbr = match[1]!;
-    if (seen.has(abbr)) continue;
+    if (seen.has(abbr) || GAME_TERMS.has(abbr)) continue;
     seen.add(abbr);
     const hero = index.unique.get(abbr);
     if (hero) {

@@ -4,6 +4,18 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.4.1] - 2026-08-05
+
+### The HP trap — a bug the new resolver would have caused
+
+Caught by testing the resolver against realistic questions before trusting it.
+
+High Priest's initials genuinely are **HP**. So *"which hero has the most HP"* resolved to **HP = High Priest**, and stated it at the very top of the prompt with total confidence. That would have been **worse** than the guessing this feature was built to prevent, because it would fire on a very common question rather than an occasional one.
+
+Common game and chat shorthand is now excluded outright — `HP ATK DEF DMG SPD RES CRIT EXP DPS AOE SP EX MAX PVP PVE` and friends. Real hero initials still resolve in the same sentence: *"does SW have more HP than BA"* correctly yields SW and BA and leaves HP alone.
+
+The trade is deliberate and now recorded in the abbreviation fact too: **High Priest is not abbreviated.** HP means hit points in this game; anyone who means the hero can type his name. Ambiguity resolved in favour of the common meaning.
+
 ## [0.4.0] - 2026-08-05
 
 ### Abbreviations are now resolved in code, not left to the model

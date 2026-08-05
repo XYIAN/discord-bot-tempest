@@ -121,3 +121,26 @@ describe('against the real roster', () => {
     expect(idx.unique.get('SW')).not.toBe('monkey-king');
   });
 });
+
+describe('game vocabulary is never a hero (the HP trap)', () => {
+  it('"which hero has the most HP" is about hit points, not High Priest', () => {
+    // High Priest's initials really are HP. Resolving them would put a
+    // confident wrong statement at the TOP of the prompt on a very common
+    // question — worse than the guessing this module prevents, because it
+    // would fire constantly.
+    const idx = buildAbbreviationIndex([...ROSTER, 'high-priest']);
+    expect(resolveAbbreviations('which hero has the most HP', idx).resolved).toEqual([]);
+  });
+  it('common stat and chat shorthand never resolves', () => {
+    const idx = buildAbbreviationIndex([...ROSTER, 'high-priest']);
+    for (const q of ['what boosts ATK and DEF', 'best DPS hero', 'how much CRIT DMG',
+      'is the EX weapon worth it', 'PVP or PVE', 'MAX ascend', 'SP skill', 'GG']) {
+      expect(resolveAbbreviations(q, idx).resolved, q).toEqual([]);
+    }
+  });
+  it('but real hero initials still resolve in the same sentence', () => {
+    const idx = buildAbbreviationIndex([...ROSTER, 'high-priest']);
+    const r = resolveAbbreviations('does SW have more HP than BA', idx);
+    expect(r.resolved.map((x) => x.abbr).sort()).toEqual(['BA', 'SW']);
+  });
+});
