@@ -331,6 +331,20 @@ export const SEED_FACTS: SeedFact[] = [
     text: 'Blazing Archer\'s Chain Skill, Burning Ground, requires both Blazing Archer and Demon Spawn deployed: Flame Blade and Flame Arrow hits ignite Burning Ground, dealing massive damage.',
   },
   {
+    // Kyle (guild owner) reported the bot calling Blazing Archer "your main
+    // damage dealer". Retrieval was fixed and it still said so, because the
+    // facts describe his MECHANICS and left the role conclusion to the model.
+    // This states the conclusion the mechanics already support.
+    key: 'role-reading-a-heros-job',
+    text: 'How to read a hero\'s job from their kit, when no fact states a role outright: a passive or aura that buffs the TEAM is support value, and it applies whether or not that hero is dealing the damage. An Ascend line that only raises the hero\'s own numbers is personal scaling. A hero whose team contribution is an aura and whose Ascends are personal-only is an ENABLER — his job is multiplying the damage dealers around him, not being the damage. Never call a hero the main damage dealer just because his kit mentions damage, CRIT or attack speed; almost every hero in this game has those.',
+    category: 'strategy',
+  },
+  {
+    key: 'hero-blazing-archer-role',
+    text: 'Blazing Archer is a crit ENABLER, not the main damage dealer. His whole team contribution is Crit Power Aura (Team CRIT DMG up to +50%), and his Ascend line explicitly adds no new mechanics and no team effects - just his own fire rate twice and then his own CRIT Rate. Build the team so a real damage dealer benefits from his +50% Team CRIT DMG, and pair him with a CRIT Rate source such as Sword Saint, since rate and damage multiply. Confirmed by the guild owner after the bot repeatedly described him as a main DPS.',
+    category: 'heroes',
+  },
+  {
     key: 'hero-blazing-archer-synergy',
     category: 'strategy',
     text: 'Blazing Archer is the CRIT DMG half of a crit comp - his passive gives the team up to +50% CRIT DMG and his max Ascend raises his own CRIT Rate. Pair him with Sword Saint, who buffs team CRIT Rate, because rate and damage multiply; he also stacks with the CRIT DMG from Fabled Lyra and Panda Brewmaster.',

@@ -4,6 +4,17 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.2.2] - 2026-08-05
+
+### Teach it to read a hero's job from the kit
+
+Two prompt rules were not enough on their own — the bot kept assigning "main DPS" because the facts describe *mechanics* and left the role conclusion to the model. So the conclusion is now data it can quote.
+
+- **`role-reading-a-heros-job`** — how to tell an enabler from a carry: a passive that buffs the TEAM is support value regardless of who deals the damage; an Ascend line that only raises a hero's own numbers is personal scaling; a hero whose team contribution is an aura and whose Ascends are personal-only is an enabler. And never call a hero the main damage dealer just because his kit mentions damage, CRIT or attack speed — almost every hero here has those.
+- **`hero-blazing-archer-role`** — states outright that he is a crit enabler, not the main damage dealer, and why: his entire team contribution is Crit Power Aura (Team CRIT DMG up to +50%) while his Ascend line explicitly adds no team effects. Confirmed by the guild owner after the bot repeatedly got this wrong.
+
+This is the pattern to repeat as more heroes get added: when a role question keeps coming out wrong, the fix is usually a fact that states the conclusion, not a stricter instruction.
+
 ## [0.2.1] - 2026-08-05
 
 ### Role labels are game claims too
