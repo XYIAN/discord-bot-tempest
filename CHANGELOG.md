@@ -4,6 +4,26 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.2.0] - 2026-08-05
+
+### The bot was answering from 11% of what it knows
+
+Members reported it calling Swordmaster a Xenoscape hero, calling Blazing Archer "your main damage dealer", and getting hero elements wrong. Every one of those facts is present and correct in the knowledge base. None of it was a data problem — the answering fact never reached the model, and an LLM with no fact fills the gap by inventing one.
+
+**The budget was 12,000 characters against a corpus that had grown to 105,045.** So roughly 89% of the roster was withheld from every single answer. Raised to 140,000: all 420 facts now go in on every question, ~26k tokens. That is deliberately below the ~38k the sibling Archero 2 bot ships, where facts were measured recalled byte-perfectly from the start, middle and end of the prompt — so this size is known-safe rather than hoped-safe.
+
+**"sword master" and "Swordmaster" were different heroes to the scorer.** Members type hero names with spaces; the data spells several as one word. Under token matching they share nothing, so *"is sword master a xenoscape hero?"* scored **zero** against the very fact saying he is Mythic/Wind. Names are now matched on a squashed form, so `night baron`, `Night Baron`, `nightbaron` and `night-baron` are all the same hero.
+
+**Naming a hero now pins that hero's whole fact family.** Answering "is X any good?" needs identity, passive *and* synergy together. Retrieving one of the three yields a confident half-answer — which is exactly how Blazing Archer became a "main damage dealer": his personal CRIT Ascend was visible while his team-buff passive was not.
+
+**Retrieval now sees the conversation, not just the last message.** It scored the current message alone while the model was sent the whole thread, so in a multi-turn discussion the model kept talking about heroes whose facts had been dropped several turns back — answering from its own earlier wording instead of from data. That is precisely how the Blazing Archer claim survived a member's correction: their message was about Scarlet Reaper, so his passive was not in that prompt at all.
+
+**Selection no longer pads the prompt.** Leftover budget used to be filled with whatever came first in the file, so an unmatched question got ~48 arbitrary facts presented under "verified facts" — actively misleading rather than merely useless. Zero-scoring facts are now excluded, ties are stable, and scoring counts distinct terms so a long fact repeating a word cannot outrank a short precise one.
+
+`npx tsx src/scripts/retrieval-report.ts "your question"` now shows exactly what reaches the model, so "did the fact arrive?" can be answered in one command — a different bug from the model misreading a fact it was given.
+
+26 new tests, each verified to fail against the old behaviour.
+
 ## [0.1.21] - 2026-08-03
 
 🔧 **No more false "deployment crashed" emails.** Every normal redeploy was sending one, and the bot was never actually down.

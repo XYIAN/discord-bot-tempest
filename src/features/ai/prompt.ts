@@ -1,18 +1,20 @@
 import type { GuildConfig } from '../../config/guild.js';
 import type { Fact } from './knowledge.js';
+import { selectRelevantFacts } from './retrieval.js';
 
-/** Keep the prompt bounded — the reference bot inlined its whole 50KB knowledge base on every call. */
-const MAX_FACTS_CHARS = 12_000;
+export { selectRelevantFacts };
 
 export function buildSystemPrompt(
   guild: GuildConfig,
   facts: Fact[],
   question: string,
   hasImages = false,
+  /** Recent conversation text, oldest first — retrieval must see what the model sees. */
+  context: string[] = [],
 ): string {
   const { identity } = guild;
   const approved = facts.filter((f) => f.status === 'approved');
-  const selected = selectRelevantFacts(approved, question);
+  const selected = selectRelevantFacts(approved, question, context);
 
   const factsByCategory = new Map<string, string[]>();
   for (const fact of selected) {
@@ -58,37 +60,4 @@ export function buildSystemPrompt(
     factSections || '(none yet — encourage members to add some with /fact add)',
     '=== FACTS-END ===',
   ].join('\n');
-}
-
-/**
- * Cheap relevance filter: keyword-overlap score, keep highest scorers until
- * the budget is spent. No embeddings needed at this scale; swap this
- * function for retrieval if the knowledge base ever outgrows it.
- */
-export function selectRelevantFacts(facts: Fact[], question: string): Fact[] {
-  const total = facts.reduce((n, f) => n + f.text.length, 0);
-  if (total <= MAX_FACTS_CHARS) return facts;
-
-  const words = new Set(
-    question
-      .toLowerCase()
-      .split(/[^a-z0-9]+/)
-      .filter((w) => w.length > 3),
-  );
-  const scored = facts
-    .map((fact) => {
-      const factWords = fact.text.toLowerCase().split(/[^a-z0-9]+/);
-      const score = factWords.filter((w) => words.has(w)).length;
-      return { fact, score };
-    })
-    .sort((a, b) => b.score - a.score);
-
-  const selected: Fact[] = [];
-  let used = 0;
-  for (const { fact } of scored) {
-    if (used + fact.text.length > MAX_FACTS_CHARS) continue;
-    selected.push(fact);
-    used += fact.text.length;
-  }
-  return selected;
 }

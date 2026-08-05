@@ -1,6 +1,7 @@
 import type { Message } from 'discord.js';
 import type { BotContext } from '../../core/types.js';
 import type { ChatTurn, ContentPart, LlmClient } from '../../lib/llm/index.js';
+import { turnToText } from '../../lib/llm/index.js';
 import { collectImageAttachments } from '../../lib/llm/attachments.js';
 import { recordAiQuestion } from '../../lib/achievements/service.js';
 import { isHumanGuildMessage } from '../../lib/discord/message.js';
@@ -101,7 +102,19 @@ export async function handleAiMessage(
   const history = existing && Date.now() - existing.lastAt < MEMORY_TTL_MS ? existing.turns : [];
 
   const knowledge = await knowledgeStore(ctx).get();
-  const system = buildSystemPrompt(ctx.guild, knowledge.facts, question, hasAttachments);
+  // Retrieval must see what the MODEL sees. Scoring the current message alone
+  // meant that in a multi-turn thread the model kept discussing heroes whose
+  // facts had been dropped several turns back, and answered from its own
+  // earlier wording rather than from data — which is how it insisted Blazing
+  // Archer was a main damage dealer when his team-buff passive was absent.
+  const contextText = history.map((t) => turnToText(t.content));
+  const system = buildSystemPrompt(
+    ctx.guild,
+    knowledge.facts,
+    question,
+    hasAttachments,
+    contextText,
+  );
 
   // Screenshots are the most common way members ask about their own roster.
   const { images, skipped } = hasAttachments
