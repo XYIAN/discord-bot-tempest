@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { selectRelevantFacts } from './prompt.js';
+import { MAX_FACTS_CHARS, selectRelevantFacts } from './retrieval.js';
 import { SEED_FACTS } from './seed-facts.js';
 import type { Fact } from './knowledge.js';
 
@@ -82,21 +82,53 @@ const CASES: Array<{ question: string; needs: string; why: string }> = [
   },
 ];
 
-function retrievedKeys(question: string): Set<string> {
+/**
+ * Padding that forces selection to actually run.
+ *
+ * The whole corpus fits in the budget today, so calling selectRelevantFacts
+ * directly returns everything and every assertion below would pass without
+ * exercising a single line of the ranking code. These tests exist to protect
+ * the roster as it GROWS past one prompt — which is exactly when the algorithm
+ * starts mattering — so they run against a corpus deliberately pushed over the
+ * limit.
+ */
+const FILLER: Fact[] = (() => {
+  const out: Fact[] = [];
+  const chunk = 'unrelated padding about an entirely different subject. '.repeat(30);
+  let size = 0;
+  while (size < MAX_FACTS_CHARS) {
+    out.push({
+      id: 100_000 + out.length,
+      text: chunk + out.length,
+      category: 'general',
+      status: 'approved',
+      addedBy: '',
+      addedByName: 'filler',
+      addedAt: '2026-01-01T00:00:00.000Z',
+      source: 'seed',
+    });
+    size += chunk.length;
+  }
+  return out;
+})();
+
+const OVER_BUDGET = [...FILLER, ...ALL_FACTS];
+
+function retrievedKeys(question: string, context: string[] = []): Set<string> {
   return new Set(
-    selectRelevantFacts(ALL_FACTS, question)
+    selectRelevantFacts(OVER_BUDGET, question, context)
       .map((f) => f.seedKey)
       .filter((k): k is string => Boolean(k)),
   );
 }
 
 describe('retrieval reaches the fact that answers the question', () => {
-  it('the corpus is large enough that selection is actually active', () => {
-    // If this ever goes false the whole selection path stops running and these
-    // tests silently pass for the wrong reason.
-    const total = ALL_FACTS.reduce((n, f) => n + f.text.length, 0);
-    expect(ALL_FACTS.length).toBeGreaterThan(300);
-    expect(total).toBeGreaterThan(100_000);
+  it('selection is genuinely engaged for these cases', () => {
+    // Without this the padding could silently stop working and every case below
+    // would pass by returning the entire corpus.
+    const total = OVER_BUDGET.reduce((n, f) => n + f.text.length, 0);
+    expect(total).toBeGreaterThan(MAX_FACTS_CHARS);
+    expect(selectRelevantFacts(OVER_BUDGET, 'swordmaster').length).toBeLessThan(OVER_BUDGET.length);
   });
 
   for (const { question, needs, why } of CASES) {
@@ -127,12 +159,35 @@ describe('naming a hero pulls that hero\'s whole fact family', () => {
   }
 });
 
-describe('the budget is not the binding constraint it was', () => {
-  it('a plain hero question retrieves a useful share of the corpus', () => {
-    // At MAX_FACTS_CHARS = 12,000 against ~105,000 chars of facts, any question
-    // saw about 11% of what the bot knows.
-    const selected = selectRelevantFacts(ALL_FACTS, 'tell me about swordmaster');
-    const share = selected.length / ALL_FACTS.length;
-    expect(share).toBeGreaterThan(0.5);
+describe('the whole roster fits in one prompt today', () => {
+  it('no selection happens at the current corpus size', () => {
+    // The real safeguard: at 106k chars against a 140k budget nothing is
+    // dropped at all, so no ranking decision can go wrong in production yet.
+    // If a future import pushes past this, the tests above are what protect it.
+    const total = ALL_FACTS.reduce((n, f) => n + f.text.length, 0);
+    expect(total).toBeLessThan(MAX_FACTS_CHARS);
+    expect(selectRelevantFacts(ALL_FACTS, 'anything at all')).toHaveLength(ALL_FACTS.length);
+  });
+});
+
+describe('element questions — the third thing members reported wrong', () => {
+  const ELEMENT_CASES: Array<[string, string]> = [
+    ['what element is ice witch', 'hero-ice-witch-identity'],
+    ['what element is sword master', 'hero-swordmaster-identity'],
+    ['is starlight weaver xenoscape', 'hero-starlight-weaver-identity'],
+    ['what element is blazing archer', 'hero-blazing-archer-identity'],
+  ];
+  for (const [question, needs] of ELEMENT_CASES) {
+    it(`"${question}" retrieves ${needs}`, () => {
+      expect([...retrievedKeys(question)]).toContain(needs);
+    });
+  }
+
+  it('the element vocabulary facts survive an element question', () => {
+    // The game calls the same element Electric, Electro and (for Frost) Ice.
+    // Two facts explain that; without them the model treats the variants as
+    // different elements.
+    const got = retrievedKeys('what element is blazing archer');
+    expect([...got]).toEqual(expect.arrayContaining(['elements-list']));
   });
 });
