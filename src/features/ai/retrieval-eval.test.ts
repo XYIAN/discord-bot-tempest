@@ -395,3 +395,45 @@ describe('roster-by-element — one lookup instead of 45', () => {
     expect([...retrievedKeys('hero team recommendations for beginners')]).toContain('roster-by-element');
   });
 });
+
+describe('the Ice summon core (from the guild owner)', () => {
+  it('both facts exist and name the trio', () => {
+    const core = ALL_FACTS.find((f) => f.seedKey === 'strategy-ice-summon-core');
+    expect(core).toBeDefined();
+    for (const hero of ['Northern Tyrant', 'Polar Captain', 'Frost Lich']) {
+      expect(core!.text).toContain(hero);
+    }
+    expect(ALL_FACTS.find((f) => f.seedKey === 'strategy-ice-summon-flex-slots')).toBeDefined();
+  });
+
+  it('names Polar Captain as the damage dealer of the three', () => {
+    const core = ALL_FACTS.find((f) => f.seedKey === 'strategy-ice-summon-core')!;
+    expect(core.text).toMatch(/Polar Captain is the main damage dealer/);
+  });
+
+  it('all three are actually Ice, per their identity facts', () => {
+    // A strategy fact naming an off-element hero is the exact mistake the
+    // element-discipline rule exists to prevent, so the data must not make it.
+    for (const slug of ['northern-tyrant', 'polar-captain', 'frost-lich']) {
+      const id = ALL_FACTS.find((f) => f.seedKey === `hero-${slug}-identity`)!;
+      expect(id.text, slug).toMatch(/\b(Ice|Frost)\b/);
+    }
+  });
+
+  it('the numbers it quotes match the heroes\' own facts', () => {
+    // Guards against the summary drifting from the source facts it summarises.
+    const core = ALL_FACTS.find((f) => f.seedKey === 'strategy-ice-summon-core')!;
+    const tyrant = ALL_FACTS.find((f) => f.seedKey === 'hero-northern-tyrant-passive')!;
+    const lich = ALL_FACTS.find((f) => f.seedKey === 'hero-frost-lich-passive')!;
+    expect(core.text).toContain('+36%');
+    expect(tyrant.text).toContain('36%');
+    expect(core.text).toContain('+45%');
+    expect(lich.text).toContain('45%');
+  });
+
+  it('an ice-team question retrieves both', () => {
+    const got = retrievedKeys('whats the best ice team');
+    expect([...got]).toContain('strategy-ice-summon-core');
+    expect([...got]).toContain('strategy-ice-summon-flex-slots');
+  });
+});

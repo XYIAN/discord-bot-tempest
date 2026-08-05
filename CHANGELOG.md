@@ -4,6 +4,25 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.5.0] - 2026-08-05
+
+### The Ice summon core, and seven approved member facts
+
+**Ice.** Northern Tyrant + Polar Captain + Frost Lich, from the guild owner — one of the best combos in the game. Recorded with the *mechanism*, not just the list, because the mechanism is what makes it work and what lets the bot reason about substitutes:
+
+Polar Captain **generates** summons (Tide tentacles, plus up to 3 giant tentacles when allies die). The other two **multiply** them — Wolf Fury gives +4% team DMG per allied summon up to +36%, Bitter Frigidity gives every allied summon a 5× proc chance, and Necrotic Fury raises allied summon DMG up to +45%. So the trio compounds rather than stacks. Frost Lich and Polar Captain also share the Freezing Exhale chain.
+
+The two flex slots are a healer plus a CRIT booster, usually CRIT **DMG** because those heroes double as damage and support — Panda Brewmaster being the standard pick. Noted the tension worth knowing: Soul Pact pays off when allies die, but a team that is actually dying is losing the summons the other two scale off.
+
+Every number is cross-checked against the heroes' own facts by a test, so the summary can't drift from what it summarises.
+
+**Approved 7 pending facts**, including `#438 cheffy is a fire element hero, not wind` — credited to **@peekaboo**, who caught the same element bug I found overnight.
+
+**Two were not approved, deliberately:**
+
+- **#338** — "I don't have data on Northern Tyrant's EX-Weapon yet." That is **false**: `exweapon-northern-tyrant` has `[Glacial War Axe]` and Tyrant Roar. It is the bot's own stale non-answer harvested as a fact — precisely the self-poisoning loop closed in v0.2.4. Approving it would have put a claim into verified data that contradicts existing data.
+- **#437** — Juris's SW correction, but the text never made it through; the entry is literally `category:heroes /` with no content. His point was right and is already fixed in code, so this needs rejecting rather than approving.
+
 ## [0.4.2] - 2026-08-05
 
 ### Seraph is Electric — one lookup instead of forty-five

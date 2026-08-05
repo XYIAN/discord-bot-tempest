@@ -346,6 +346,21 @@ export const SEED_FACTS: SeedFact[] = [
     category: 'general',
   },
   {
+    // From Kyle (guild owner). Cross-checked against the three heroes' own
+    // facts: Polar Captain GENERATES summons (Tide tentacles, plus up to 3
+    // giant tentacles from Soul Pact on ally deaths) while Tyrant and Lich both
+    // MULTIPLY summon output. That is why the trio compounds rather than merely
+    // stacking, and the two of them even share a chain skill.
+    key: 'strategy-ice-summon-core',
+    text: 'The strongest Ice core is Northern Tyrant + Polar Captain + Frost Lich, widely considered one of the best combos in the whole game. Polar Captain is the main damage dealer of the three: his Tide summons tentacles and his Soul Pact turns allied deaths into up to 3 giant tentacles. The other two multiply that output rather than adding their own - Northern Tyrant\'s Wolf Fury gives the team +4% DMG per allied summoned unit (up to +36%) and his Bitter Frigidity gives every allied summon a 5x-damage proc chance, while Frost Lich\'s Necrotic Fury raises allied summon DMG by up to +45%. Because Polar Captain produces summons and both partners scale off allied summons, the three compound instead of just stacking. Frost Lich and Polar Captain also share the Freezing Exhale chain skill.',
+    category: 'strategy',
+  },
+  {
+    key: 'strategy-ice-summon-flex-slots',
+    text: 'The Ice summon core (Northern Tyrant, Polar Captain, Frost Lich) leaves two flex slots, and the usual answer is a healer plus a CRIT booster. Most players pick a CRIT DMG booster over CRIT Rate, because the CRIT DMG heroes tend to double as damage and support - Panda Brewmaster is the standard example, giving Team CRIT DMG +25/50/75%, +15% team HP and a team Dodge window all at once. A healer is wanted because Polar Captain\'s Soul Pact pays off when allies die, but a team that is actually dying is losing the summons that Wolf Fury and Necrotic Fury scale off.',
+    category: 'strategy',
+  },
+  {
     // Checking a hero's element meant consulting 45 separate identity facts, so
     // the bot didn't reliably do it — it listed Seraph (Electric) under a "Fire
     // Team" heading for a beginner, unflagged. This makes the check one lookup.
