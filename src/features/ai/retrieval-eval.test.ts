@@ -353,3 +353,45 @@ describe('the "what I do not know" fact must not outlive the gap', () => {
     });
   }
 });
+
+describe('roster-by-element — one lookup instead of 45', () => {
+  // The bot listed Seraph (Electric) under a "Fire Team" heading for a
+  // beginner, unflagged, because verifying an element meant consulting 45
+  // separate identity facts. This fact collapses that into one lookup.
+  const roster = () => ALL_FACTS.find((f) => f.seedKey === 'roster-by-element');
+
+  it('exists and is in the spine', async () => {
+    const { spineKeys } = await import('./retrieval.js');
+    expect(roster()).toBeDefined();
+    expect(spineKeys()).toContain('roster-by-element');
+  });
+
+  it('agrees with every hero identity fact', () => {
+    // If a hero's element changes, or a hero is added, this catches the drift
+    // rather than letting the summary rot into a confident wrong answer.
+    const text = roster()!.text;
+    const mismatches: string[] = [];
+    for (const f of ALL_FACTS) {
+      const key = f.seedKey;
+      if (!key?.startsWith('hero-') || !key.endsWith('-identity')) continue;
+      const slug = key.slice('hero-'.length, -'-identity'.length);
+      const name = slug.split('-').map((w) => w[0]!.toUpperCase() + w.slice(1)).join(' ');
+      const m = f.text.match(/\b(Fire|Wind|Ice|Frost|Electric|Xenoscape)\b/);
+      if (!m) { mismatches.push(`${name}: no element in identity fact`); continue; }
+      const el = m[1] === 'Frost' ? 'ICE/FROST' : m[1]!.toUpperCase();
+      // The name must appear in its element's section of the summary.
+      const section = text.split(/\b(?=FIRE \(|WIND \(|ICE\/FROST \(|ELECTRIC \(|XENOSCAPE \()/)
+        .find((sec) => sec.startsWith(el));
+      if (!section?.includes(name)) mismatches.push(`${name} (${el}) missing from that section`);
+    }
+    expect(mismatches).toEqual([]);
+  });
+
+  it('names Seraph as Electric, not Fire', () => {
+    expect(roster()!.text).toMatch(/ELECTRIC[^.]*Seraph/);
+  });
+
+  it('a team question retrieves it', () => {
+    expect([...retrievedKeys('hero team recommendations for beginners')]).toContain('roster-by-element');
+  });
+});

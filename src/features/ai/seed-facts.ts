@@ -346,6 +346,14 @@ export const SEED_FACTS: SeedFact[] = [
     category: 'general',
   },
   {
+    // Checking a hero's element meant consulting 45 separate identity facts, so
+    // the bot didn't reliably do it — it listed Seraph (Electric) under a "Fire
+    // Team" heading for a beginner, unflagged. This makes the check one lookup.
+    key: 'roster-by-element',
+    text: 'Every hero grouped by element, for checking an element team at a glance. FIRE (11): Blazing Archer, Cheffy, Demon Spawn, Draconic Empress, Fiery Vanguard, Fire Apprentice, Fire Mage, Fire Witch, Phoenix Dancer, Rogue Fire Mage, Scarlet Reaper. WIND (10): Cat Assassin, Demon Hunter, Elf Ranger, Fabled Lyra, Night Baron, Panda Brewmaster, Sword Saint, Swordmaster, Unyielding Lancer, Windborne Ranger. ICE/FROST (9): Frost Archer, Frost Lich, Ice Demon, Ice Mage, Ice Queen, Ice Witch, Ice Wolf Pup, Northern Tyrant, Polar Captain. ELECTRIC (10): Archon Armor, Frankenstein, God Ruler, High Priest, Levin Archangel, Novice Priest, Robot, Seraph, Thunder Pharaoh, Valkyrie. XENOSCAPE (5): Elemental Invoker, Monkey King, Peacekeeper, Starlight Weaver, Void Witch. Check this list before naming heroes in an element team - Seraph and Cheffy are the two most often misfiled, Seraph being Electric and Cheffy Fire despite both being healers.',
+    category: 'heroes',
+  },
+  {
     // The bot listed Blazing Archer and Cheffy, both FIRE heroes, in a WIND
     // team; a member had to catch it. Every hero's element is recorded, so this
     // was a discipline failure rather than a data gap.

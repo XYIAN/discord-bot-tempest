@@ -48,6 +48,7 @@ const SPINE_KEYS = new Set([
   'element-naming-variants',
   'role-reading-a-heros-job',
   'strategy-element-team-discipline',
+  'roster-by-element',
   'gap-runes-treasures-pantheon',
 ]);
 

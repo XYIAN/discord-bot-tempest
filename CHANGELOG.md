@@ -4,6 +4,18 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.4.2] - 2026-08-05
+
+### Seraph is Electric — one lookup instead of forty-five
+
+A member (`_kong_b`) asked for beginner team recommendations and got a good answer with one flaw: **Seraph listed under "Fire Team"**, unflagged. He is Electric.
+
+Four of the five were right, and Blazing Archer was correctly described as *"provides team CRIT DMG"* rather than a main damage dealer, so the overnight fixes are holding. But the element-discipline rule alone isn't enough, and the reason is structural: verifying an element meant consulting 45 separate identity facts. That is a lot to ask on every team question.
+
+`roster-by-element` collapses it into a single lookup — all 45 heroes grouped Fire / Wind / Ice / Electric / Xenoscape, with a note that Seraph and Cheffy are the two most often misfiled, both being healers of different elements. Added to the spine, so it is in every prompt.
+
+A test cross-checks the summary against every identity fact, so if a hero is added or an element changes, the drift fails the build instead of rotting into a confident wrong answer.
+
 ## [0.4.1] - 2026-08-05
 
 ### The HP trap — a bug the new resolver would have caused
