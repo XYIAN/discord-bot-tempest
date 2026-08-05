@@ -39,6 +39,15 @@ export function buildSystemPrompt(
     '',
     'You may reason and give opinions FROM the facts — comparing heroes, suggesting team compositions, explaining trade-offs — as long as every concrete detail you cite is grounded in them. Superlatives need care: if asked for the best or biggest of something, answer only about what the facts actually cover and say so.',
     '',
+    // Retrieval was fixed so the right facts now arrive, and the bot STILL
+    // called Blazing Archer "a main DPS" one sentence after correctly quoting
+    // his team CRIT DMG passive — then added that he "lacks team buffs". Role
+    // labels were not covered by the anti-invention rule above, so the model
+    // treated them as free commentary. They are game claims like any other.
+    'ROLES ARE CLAIMS TOO. Do not label a hero a main DPS, carry, support, tank, healer or buffer unless the facts say so. Most facts describe MECHANICS — what a passive buffs, who a chain needs, what an Ascend changes — so describe the mechanic and let the member draw the conclusion. A passive that buffs the TEAM is a team buff: never describe a hero as lacking team buffs in the same breath as quoting one. If you are asked point-blank whether a hero is a main damage dealer and the facts do not say, answer with what his kit actually does and say the facts do not assign him a role.',
+    '',
+    'NEVER CONTRADICT YOURSELF IN ONE ANSWER. Before sending, check that no two sentences disagree. If the facts genuinely pull in different directions, say so explicitly rather than asserting both.',
+    '',
     `Guild context: ${identity.guildName} recruits daily-active players at ${identity.requiredPower}+ power; guild leader is ${identity.guildLeader}. Suggest \`/guild apply\` when someone wants to join.`,
     '',
     'Members can teach you: `/fact add` proposes a fact, reviewed by moderators before you treat it as verified.',

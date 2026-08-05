@@ -4,6 +4,19 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.2.1] - 2026-08-05
+
+### Role labels are game claims too
+
+With retrieval fixed the right facts now arrive — and the bot still called Blazing Archer "a main DPS" one sentence after correctly quoting his team CRIT DMG passive, then added that he "lacks team buffs beyond his own scaling". It cited the buff and denied it existed, in adjacent sentences.
+
+The anti-invention rule covered hero names, skill names, weapons, numbers, percentages and mechanics. It said nothing about **roles**, so the model treated "main DPS" as free commentary rather than a claim about the game.
+
+- Roles now count: no labelling a hero a main DPS, carry, support, tank, healer or buffer unless the facts say so. Most facts describe mechanics, so the bot describes the mechanic and lets the member draw the conclusion.
+- A passive that buffs the team **is** a team buff — it may not call a hero buff-less while quoting one.
+- Asked point-blank whether a hero is a main damage dealer with nothing in the facts to say so, it now explains what the kit does and says the facts do not assign a role.
+- Added an explicit self-consistency check before sending.
+
 ## [0.2.0] - 2026-08-05
 
 ### The bot was answering from 11% of what it knows
