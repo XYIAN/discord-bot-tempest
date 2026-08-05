@@ -1,6 +1,7 @@
 import type { GuildConfig } from '../../config/guild.js';
 import type { Fact } from './knowledge.js';
-import { selectRelevantFacts } from './retrieval.js';
+import { heroRosterFrom, selectRelevantFacts } from './retrieval.js';
+import { abbreviationNotice, buildAbbreviationIndex, resolveAbbreviations } from './abbreviations.js';
 
 export { selectRelevantFacts };
 
@@ -15,6 +16,14 @@ export function buildSystemPrompt(
   const { identity } = guild;
   const approved = facts.filter((f) => f.status === 'approved');
   const selected = selectRelevantFacts(approved, question, context);
+
+  // Resolved in code, not left to the model. The abbreviation table sits ~99%
+  // through the prompt and finding "SW" among 34 entries is a lookup the model
+  // simply did not perform — it answered Swordmaster, then Monkey King, when a
+  // member meant Starlight Weaver. This states the answer up front.
+  const abbrev = abbreviationNotice(
+    resolveAbbreviations(question, buildAbbreviationIndex(heroRosterFrom(approved))),
+  );
 
   const factsByCategory = new Map<string, string[]>();
   for (const fact of selected) {
@@ -35,6 +44,7 @@ export function buildSystemPrompt(
     // general Habby knowledge" stopped being helpful and started producing
     // confident fabrications — it invented an EX-Weapon name for a hero on
     // the first live test. Game specifics must come from the facts or not at all.
+    ...(abbrev ? [abbrev, ''] : []),
     'CRITICAL — never invent game specifics. Every hero name, skill name, weapon name, number, percentage and mechanic you state about this game MUST come from the verified facts below. If the facts do not cover something, say plainly that you do not have that data yet and suggest `/fact add` — do NOT guess, do NOT extrapolate from other Habby or Archero-style games, and do NOT infer a name or number because it sounds plausible. "I don\'t know that one yet" is always a better answer than a confident invention.',
     '',
     'You may reason and give opinions FROM the facts — comparing heroes, suggesting team compositions, explaining trade-offs — as long as every concrete detail you cite is grounded in them. Superlatives need care: if asked for the best or biggest of something, answer only about what the facts actually cover and say so.',

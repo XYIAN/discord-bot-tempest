@@ -4,6 +4,24 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.4.0] - 2026-08-05
+
+### Abbreviations are now resolved in code, not left to the model
+
+Three attempts, and only the third holds.
+
+1. **v0.3.0** put the abbreviation table in every prompt. The bot still guessed — it moved from Swordmaster to **Monkey King**, who is `MK`.
+2. **v0.3.1** added an explicit rule to look initials up. Still Monkey King.
+3. **v0.4.0** resolves them in code, before the model sees the message.
+
+The table sits ~99% through a 111,000-character prompt, and finding "SW" among 34 entries is a *lookup*. The model kept pattern-matching instead. Now `SW` is resolved from the roster and stated at the **top** of the prompt: *"ABBREVIATIONS IN THIS MESSAGE, already resolved for you — use these exactly and do not substitute a different hero: SW = Starlight Weaver."* Ambiguous initials produce a hard instruction to ask rather than answer.
+
+The index is built from the roster, so a new hero brings his own abbreviation with no code change. Single-letter initials are excluded — nobody types a bare `S` to mean Swordmaster, and it would match the letter anywhere. Messages with no abbreviations get an unchanged prompt.
+
+**This is the third time tonight the same lesson landed:** a fact supplies the data, a rule asks for the behaviour, and only code guarantees it. Prices on the sibling bot, roles here, now abbreviations.
+
+While this was being fixed, **Juris filed `/fact` #437 — "Monkey King is not SW. SW refers to Starlight Weaver"** — catching it independently and pending your review. The learning loop works.
+
 ## [0.3.1] - 2026-08-05
 
 ### A table is not a lookup
