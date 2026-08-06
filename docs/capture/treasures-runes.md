@@ -97,7 +97,7 @@ tiers.
 Each `###` heading below is ONE distinct treasure with its complete six-tier
 ladder. Count the headings to see progress.
 
-**Captured: 14.** Ice complete; Wind partial (5 of an unknown total).
+**Captured: 20.** Ice complete; Wind well advanced (11 found, 2 gaps known).
 
 | treasure | element | buffs | role |
 |---|---|---|---|
@@ -115,6 +115,12 @@ ladder. Count the headings to see progress.
 | Boreas' Blessing | Wind | Windborne Ranger | attack |
 | Aeolian Core | Wind | Fabled Lyra | attack |
 | Windlock Casket | Wind | Fabled Lyra | defense |
+| Mystic Emerald | Wind | Sword Saint | attack |
+| Wild Fruit | Wind | Swordmaster | attack |
+| Treant Golem | Wind | Demon Hunter | defense |
+| Gale Colossus | Wind | Cat Assassin | attack |
+| Zephyr Cone | Wind | Cat Assassin | defense |
+| Vinewheel Timepiece | Wind | — (element-wide) | element |
 
 Ice heroes with BOTH runes found: Polar Captain, Frost Lich, Ice Queen.
 Still missing a partner rune: Northern Tyrant (has attack, needs defense),
@@ -469,3 +475,160 @@ page and tap Rune, and see where it lands.
 - [ ] Fuse screen
 - [ ] Treasure Conversion
 - [ ] Whether locked sockets state their unlock level
+
+
+## Wind pass — full ladders (all drag-verified)
+
+Every one below was drag-scrolled twice before recording. Rarity noted is the
+copy that happened to be opened; the ladder is the same at any rarity.
+
+### Mystic Emerald — Epic +2 · Sword Saint · attack
+5% / 5% / 5%
+
+| tier | effect |
+|---|---|
+| 🟢 | Sword Saint ATK +5% |
+| 🔵 | Sword Saint ATK +10% |
+| 🟣 | Sword Saint Flying Sword Final DMG +20% |
+| 🟠 | Final DMG increases to +40% |
+| 🔴 | Sword Saint Gladius Divinus Final DMG +20% |
+| ⚪ | Final DMG increases to +40% |
+
+### Verdant Embryo — Epic +2 · Sword Saint · defense
+5% / 5% / 5%
+
+| tier | effect |
+|---|---|
+| 🟢 | Sword Saint HP +5% |
+| 🔵 | Sword Saint HP +10% |
+| 🟣 | Sword Saint Flying Sword count +2 |
+| 🟠 | Flying Sword count increases to +4 |
+| 🔴 | For every skill cast, Sword Saint summons Exorcist Array to attack a large area |
+| ⚪ | Exorcist Array DMG +100% |
+
+### Boreas' Blessing — Epic +2 · Windborne Ranger · attack
+5% / 5% / 5%
+
+| tier | effect |
+|---|---|
+| 🟢 | Windborne Ranger ATK +5% |
+| 🔵 | Windborne Ranger ATK +10% |
+| 🟣 | Piercing Shot Final DMG +10% |
+| 🟠 | Piercing Shot Final DMG increases to +20% |
+| 🔴 | Piercing Shot CRIT Rate +15% |
+| ⚪ | Piercing Shot CRIT Rate increases to +30% |
+
+### Whistling Crown — Epic +2 · Windborne Ranger · defense
+5% / 5% / 5%
+
+| tier | effect |
+|---|---|
+| 🟢 | Windborne Ranger HP +5% |
+| 🔵 | Windborne Ranger HP +10% |
+| 🟣 | Enter [Gale Force] upon entering battle |
+| 🟠 | While entering [Gale Force], own DMG +12% for 10s |
+| 🔴 | …increases to +24% for 10s |
+| ⚪ | …increases to +36% for 10s |
+
+### Aeolian Core — Epic +2 · Fabled Lyra · attack
+5% / 5% / 5%
+
+| tier | effect |
+|---|---|
+| 🟢 | Fabled Lyra ATK +5% |
+| 🔵 | Fabled Lyra ATK +10% |
+| 🟣 | Tune Final DMG +30% |
+| 🟠 | Tune also reduces enemy DMG REDUC by 6% for 5s |
+| 🔴 | Tune Final DMG increases to +60% |
+| ⚪ | Tune also reduces enemy Wind RES by 10% for 5s |
+
+### Windlock Casket — Epic +2 · Fabled Lyra · defense
+5% / 5% / 5%
+
+| tier | effect |
+|---|---|
+| 🟢 | Fabled Lyra HP +5% |
+| 🔵 | Fabled Lyra HP +10% |
+| 🟣 | Sonic Waves Final DMG +30% |
+| 🟠 | Heal the ally with the lowest HP every 3s for 8% of Fabled Lyra's ATK |
+| 🔴 | Sonic Waves Final DMG increases to +60% |
+| ⚪ | Healing multiplier increases to 16% |
+
+The only healing effect on any treasure captured so far, and it scales off ATK
+rather than HP.
+
+### Wild Fruit — Epic · Swordmaster · attack
+3.8% / 3.8% / 3.8%
+
+| tier | effect |
+|---|---|
+| 🟢 | Swordmaster ATK +5% |
+| 🔵 | Swordmaster ATK +10% |
+| 🟣 | Swordmaster Whirlwind Slash and Blade Storm Final DMG +20% |
+| 🟠 | Final DMG increases to +40% |
+| 🔴 | Swordmaster Blade Storm's blade wind Final DMG +20% |
+| ⚪ | Blade Wind Final DMG increases to +40% |
+
+### Treant Golem — Epic · Demon Hunter · defense
+3.8% / 3.8% / 3.8%
+
+| tier | effect |
+|---|---|
+| 🟢 | Demon Hunter HP +5% |
+| 🔵 | Demon Hunter HP +10% |
+| 🟣 | Demon Hunter Musket Penetration +1 |
+| 🟠 | Musket Penetration increases to +3 |
+| 🔴 | Demon Hunter's bullets deal extra massive DMG to enemies above 80% HP |
+| ⚪ | Extra DMG threshold reduces to 60% HP |
+
+### Gale Colossus — Epic · Cat Assassin · attack
+3.8% / 3.8% / 3.8%
+
+| tier | effect |
+|---|---|
+| 🟢 | Cat Assassin ATK +5% |
+| 🔵 | Cat Assassin ATK +10% |
+| 🟣 | Cat Assassin Dart and Explosive Dart Final DMG +10% |
+| 🟠 | Final DMG increases to 15% |
+| 🔴 | Final DMG increases to 25% |
+| ⚪ | Final DMG increases to +40% |
+
+### Zephyr Cone — Epic · Cat Assassin · defense
+3.8% / 3.8% / 3.8%
+
+| tier | effect |
+|---|---|
+| 🟢 | Cat Assassin HP +5% |
+| 🔵 | Cat Assassin HP +10% |
+| 🟣 | Cat Assassin ATK has a chance to inflict Armor Break, reducing target's DEF by 10% for 4s |
+| 🟠 | Armor Break Duration +2s |
+| 🔴 | Every 20 Cat Assassin's Darts released trigger 3 extra giant piercing darts |
+| ⚪ | Giant piercing dart becomes giant piercing boomerang |
+
+### Vinewheel Timepiece — Epic +2 · element-wide · Wind
+5% / 5% / 5%. No hero portrait.
+
+| tier | effect |
+|---|---|
+| 🟢 | Wind DMG +2% |
+| 🔵 | Boost increases to 5% |
+| 🟣 | 8% |
+| 🟠 | 11% |
+| 🔴 | 15% |
+| ⚪ | 20% |
+
+**Numerically identical to Soulfrost Gyro (Ice).** Strong evidence every element
+has one element-wide treasure on a shared 2/5/8/11/15/20 ladder — so the Fire,
+Electro and Xenoscape equivalents can be predicted in shape, though their NAMES
+still have to be captured.
+
+### Wind pattern check
+
+Four complete pairs — Sword Saint, Windborne Ranger, Fabled Lyra, Cat Assassin.
+Two singles: Swordmaster has only an attack treasure, Demon Hunter only a
+defense one. Both partners are presumably in the game and simply not in this
+collection. Kyle's two-per-hero rule holds everywhere it can be checked.
+
+Stat contribution tracks rarity exactly as expected: every Epic +2 gives
+5%/5%/5% and every plain Epic gives 3.8%/3.8%/3.8%, regardless of which hero
+the treasure buffs.

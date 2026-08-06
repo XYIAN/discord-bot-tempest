@@ -2313,7 +2313,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-wind-roster',
     category: 'runes',
-    text: 'Wind Treasures (runes) captured so far in Wittle Defender, by the hero each buffs — Fabled Lyra: Aeolian Core (attack) and Windlock Casket (defense); Windborne Ranger: Boreas\' Blessing (attack) and Whistling Crown (defense); Sword Saint: Verdant Embryo (defense). Sword Saint\'s attack treasure and the Wind element-wide treasure have not been captured, and neither has anything for any other Wind hero — the Wind pass is unfinished.',
+    text: 'Wind Treasures (runes) captured so far in Wittle Defender, by the hero each buffs — Fabled Lyra: Aeolian Core (attack) and Windlock Casket (defense); Windborne Ranger: Boreas\' Blessing (attack) and Whistling Crown (defense); Sword Saint: Mystic Emerald (attack) and Verdant Embryo (defense); Cat Assassin: Gale Colossus (attack) and Zephyr Cone (defense); Swordmaster: Wild Fruit (attack) only; Demon Hunter: Treant Golem (defense) only. The Wind element-wide treasure is Vinewheel Timepiece. Swordmaster\'s defense treasure and Demon Hunter\'s attack treasure have not been captured, and nor has anything for any other Wind hero.',
   },
   {
     key: 'runes-for-the-ice-summon-core',
@@ -2464,6 +2464,67 @@ export const SEED_FACTS: SeedFact[] = [
     key: 'rune-windlock-casket-tiers',
     category: 'runes',
     text: 'Windlock Casket (Wind treasure/rune for Fabled Lyra) — its six skill tiers in order: green, Fabled Lyra HP +5%; blue, Fabled Lyra HP +10%; purple, Sonic Waves Final DMG +30%; orange, heal the ally with the lowest HP every 3s for 8% of Fabled Lyra\'s ATK; red, Sonic Waves Final DMG increases to +60%; white, that healing multiplier increases to 16%.',
+  },
+
+  {
+    key: 'rune-mystic-emerald-identity',
+    category: 'runes',
+    text: 'Mystic Emerald is a Wind Treasure (rune) in Wittle Defender that buffs Sword Saint. It is her ATTACK treasure and a pure damage ladder across both of her damage skills — Flying Sword first, then Gladius Divinus. It pairs with Verdant Embryo, her defense treasure: Verdant Embryo adds Flying Sword COUNT while Mystic Emerald raises what each sword HITS for, so the two multiply rather than overlap.',
+  },
+  {
+    key: 'rune-mystic-emerald-tiers',
+    category: 'runes',
+    text: 'Mystic Emerald (Wind treasure/rune for Sword Saint) — its six skill tiers in order: green, Sword Saint ATK +5%; blue, Sword Saint ATK +10%; purple, Sword Saint Flying Sword Final DMG +20%; orange, that Flying Sword Final DMG increases to +40%; red, Sword Saint Gladius Divinus Final DMG +20%; white, that Gladius Divinus Final DMG increases to +40%.',
+  },
+  {
+    key: 'rune-vinewheel-timepiece-identity',
+    category: 'runes',
+    text: 'Vinewheel Timepiece is the Wind ELEMENT-WIDE Treasure (rune) in Wittle Defender — the Wind counterpart to Ice\'s Soulfrost Gyro. It names no hero and shows no hero portrait; it raises all Wind damage, so its value scales with how many Wind heroes are deployed. Its ladder is numerically IDENTICAL to Soulfrost Gyro\'s, which is good evidence every element\'s element-wide treasure uses the same 2/5/8/11/15/20 progression.',
+  },
+  {
+    key: 'rune-vinewheel-timepiece-tiers',
+    category: 'runes',
+    text: 'Vinewheel Timepiece (Wind element-wide treasure/rune) — its six skill tiers in order, each REPLACING the previous value rather than stacking: green, Wind DMG +2%; blue, +5%; purple, +8%; orange, +11%; red, +15%; white, +20%. So fully upgraded it is +20% Wind DMG in total, not the sum of the six lines.',
+  },
+  {
+    key: 'rune-wild-fruit-identity',
+    category: 'runes',
+    text: 'Wild Fruit is a Wind Treasure (rune) in Wittle Defender that buffs Swordmaster. It is his ATTACK treasure and a pure damage ladder on his Whirlwind Slash and Blade Storm, finishing on Blade Storm\'s blade wind specifically. Swordmaster\'s own kit is defensive (his passive gives Team DEF), so this treasure is what turns him into a damage contributor rather than only a wall.',
+  },
+  {
+    key: 'rune-wild-fruit-tiers',
+    category: 'runes',
+    text: 'Wild Fruit (Wind treasure/rune for Swordmaster) — its six skill tiers in order: green, Swordmaster ATK +5%; blue, Swordmaster ATK +10%; purple, Swordmaster Whirlwind Slash and Blade Storm Final DMG +20%; orange, that Final DMG increases to +40%; red, Swordmaster Blade Storm\'s blade wind Final DMG +20%; white, that Blade Wind Final DMG increases to +40%.',
+  },
+  {
+    key: 'rune-treant-golem-identity',
+    category: 'runes',
+    text: 'Treant Golem is a Wind Treasure (rune) in Wittle Defender that buffs Demon Hunter. It is her DEFENSE treasure by its HP% opening, but its real payload is offensive and unusual: Musket Penetration +3, then bonus damage against high-health enemies with the threshold loosening from 80% HP to 60% HP. That makes it an opener/boss treasure rather than a sustain one.',
+  },
+  {
+    key: 'rune-treant-golem-tiers',
+    category: 'runes',
+    text: 'Treant Golem (Wind treasure/rune for Demon Hunter) — its six skill tiers in order: green, Demon Hunter HP +5%; blue, Demon Hunter HP +10%; purple, Demon Hunter Musket Penetration +1; orange, that Musket Penetration increases to +3; red, Demon Hunter\'s bullets deal extra massive DMG to enemies above 80% HP; white, that extra-DMG threshold reduces to 60% HP.',
+  },
+  {
+    key: 'rune-gale-colossus-identity',
+    category: 'runes',
+    text: 'Gale Colossus is a Wind Treasure (rune) in Wittle Defender that buffs Cat Assassin. It is her ATTACK treasure and a straight damage ladder on her Dart and Explosive Dart, rising to +40% Final DMG with no mechanic changes.',
+  },
+  {
+    key: 'rune-gale-colossus-tiers',
+    category: 'runes',
+    text: 'Gale Colossus (Wind treasure/rune for Cat Assassin) — its six skill tiers in order: green, Cat Assassin ATK +5%; blue, Cat Assassin ATK +10%; purple, Cat Assassin Dart and Explosive Dart Final DMG +10%; orange, that Final DMG increases to 15%; red, it increases to 25%; white, it increases to +40%.',
+  },
+  {
+    key: 'rune-zephyr-cone-identity',
+    category: 'runes',
+    text: 'Zephyr Cone is a Wind Treasure (rune) in Wittle Defender that buffs Cat Assassin. It is her DEFENSE treasure by its HP% opening, but its upper tiers are the most mechanically interesting of any Wind treasure captured: a chance to inflict Armor Break (enemy DEF down 10%), extra giant piercing darts every 20 darts, and finally those giant darts becoming boomerangs. The Armor Break is a team-wide benefit since it lowers the target\'s DEF for everyone.',
+  },
+  {
+    key: 'rune-zephyr-cone-tiers',
+    category: 'runes',
+    text: 'Zephyr Cone (Wind treasure/rune for Cat Assassin) — its six skill tiers in order: green, Cat Assassin HP +5%; blue, Cat Assassin HP +10%; purple, Cat Assassin ATK has a chance to inflict Armor Break reducing the target\'s DEF by 10% for 4s; orange, Armor Break duration +2s; red, every 20 of Cat Assassin\'s Darts released trigger 3 extra giant piercing darts; white, the giant piercing dart becomes a giant piercing boomerang.',
   },
 
   // ── Treasures (runes) — known by name only, ladder NOT captured ─────────
