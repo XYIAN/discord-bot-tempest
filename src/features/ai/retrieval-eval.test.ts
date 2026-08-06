@@ -225,14 +225,31 @@ describe('naming a hero pulls that hero\'s whole fact family', () => {
   }
 });
 
-describe('the whole roster fits in one prompt today', () => {
-  it('no selection happens at the current corpus size', () => {
-    // The real safeguard: at 106k chars against a 140k budget nothing is
-    // dropped at all, so no ranking decision can go wrong in production yet.
-    // If a future import pushes past this, the tests above are what protect it.
+describe('the corpus has outgrown one prompt — selection is now live', () => {
+  // This used to assert the opposite: that the whole corpus fit inside the
+  // budget, so no ranking decision could go wrong in production. The Xenoscape
+  // treasures pushed it past 140k and the old assertion failed, which is
+  // exactly what it was there to do — it was documenting a temporary state, not
+  // an invariant.
+  //
+  // Selection is now doing real work on every answer, so the cases above stop
+  // being a forward-looking safety net and become the live contract.
+  it('the corpus really is over budget, so the eval cases are not passing for free', () => {
     const total = ALL_FACTS.reduce((n, f) => n + f.text.length, 0);
-    expect(total).toBeLessThan(MAX_FACTS_CHARS);
-    expect(selectRelevantFacts(ALL_FACTS, 'anything at all')).toHaveLength(ALL_FACTS.length);
+    expect(total).toBeGreaterThan(MAX_FACTS_CHARS);
+  });
+
+  it('selection actually drops facts rather than returning everything', () => {
+    // Guards against a regression where selection silently no-ops: if this ever
+    // returns the whole corpus again, every case above would pass trivially.
+    const selected = selectRelevantFacts(ALL_FACTS, 'what does soulfrost gyro do');
+    expect(selected.length).toBeLessThan(ALL_FACTS.length);
+  });
+
+  it('and the prompt it produces is well inside the budget', () => {
+    const selected = selectRelevantFacts(ALL_FACTS, 'what does soulfrost gyro do');
+    const chars = selected.reduce((n, f) => n + f.text.length, 0);
+    expect(chars).toBeLessThanOrEqual(MAX_FACTS_CHARS);
   });
 });
 

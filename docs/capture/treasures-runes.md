@@ -97,7 +97,7 @@ tiers.
 Each `###` heading below is ONE distinct treasure with its complete six-tier
 ladder. Count the headings to see progress.
 
-**Captured: 27.** **Wind COMPLETE** (15). Ice at 12 — NOT complete, see below.
+**Captured: 30.** Wind COMPLETE (15). Ice 12. Xenoscape 3 (from the Shop catalogue).
 
 | treasure | element | buffs | role |
 |---|---|---|---|
@@ -788,3 +788,101 @@ pure function of rarity and +N:
 | Epic +2 | 5% |
 | Legendary (gold) | 5.6% |
 | Legendary +1 | 6.1% |
+
+
+## The Shop reward-preview catalogue — game data, not one player's bag
+
+Far better source than the treasure bag: **Shop → any Rate-Up/Wish banner → the
+`?` icon → Reward Preview**. Every square there opens the same full detail popup
+(name, rarity, stats, six tiers) — including treasures the player does **not
+own**. The Xenoscape banner's pool is Xenoscape treasures.
+
+### What is and isn't clickable
+
+- The **pool grid** (the "Epic Treasure" section) — squares open details. ✅
+- The **top row** (the "Wishlist"/"Rate-up" section) — **inert**. Repeated taps,
+  pointer-first clicks and micro-drags all did nothing. Not a targeting problem;
+  the pool squares directly below responded to the identical method. ❌
+- **Tapping any blank area closes the whole dialog**, and a long-press dismisses
+  it too — the opposite of the Treasure/Fuse screens, where long-press was the
+  fast path. **Plain taps only here.**
+
+### 🚨 Scrolling these popups needs a SLOW drag
+
+`scroll` does nothing and `left_click_drag` does nothing either — the same
+`left_click_drag` that works fine on the Fuse-screen popups. What works is a
+slow, multi-step drag:
+
+```
+mouse_move (383,560) → left_mouse_down → wait 0.3s
+  → mouse_move 530 → 500 → 470 → 445
+  → wait 0.3s → left_mouse_up
+```
+
+Xenoscape skill text is much longer than Ice/Wind (shields, Proxy mechanics,
+multi-clause conditions), so these popups routinely hide two tiers. Galactic
+Spark needed **two** slow drags to reach its white tier.
+
+### The separate Wishlist screen is a dead end
+
+The Wishlist dialog on the Xeno banner lets you pick which treasures are
+guaranteed, but shows **no skill details** — only icons. It also has a **Save**
+button that would change the player's actual wishlist. Do not press it. Use the
+`?` → Reward Preview instead.
+
+## ⚠️ Element affects the stat contribution — earlier claim corrected
+
+Every Xenoscape Epic measured gives **4.6% / 4.6% / 4.6%**, where Ice and Wind
+Epics give **3.8%**. So the earlier conclusion — "contribution is a pure
+function of rarity and +N" — was over-generalised from two elements.
+
+Corrected: it is independent of *which hero* the treasure buffs, but **not** of
+element. Xenoscape contributes more at the same rarity. Fire and Electro are
+unmeasured; do not assume either ladder.
+
+## Xenoscape captures
+
+### Galactic Heart — Epic · Starlight Weaver · attack
+4.6% / 4.6% / 4.6%
+
+| tier | effect |
+|---|---|
+| 🟢 | Starlight Weaver ATK +5% |
+| 🔵 | Starlight Weaver ATK +10% |
+| 🟣 | Comet Final DMG +30% |
+| 🟠 | After the Proxy unleashes the Exclusive Weapon skill, their damage +15% for 10s |
+| 🔴 | Comet's Final DMG increases to +50% |
+| ⚪ | That Proxy damage increase goes to 30% for 10s |
+
+The Proxy is the highest-attack hero she designates, so the orange and white
+tiers buff the team carry rather than Starlight Weaver herself.
+
+### Galactic Spark — Epic · Starlight Weaver · defense
+4.6% / 4.6% / 4.6%
+
+| tier | effect |
+|---|---|
+| 🟢 | Starlight Weaver HP +5% |
+| 🔵 | Starlight Weaver HP +10% |
+| 🟣 | When Proxy recovers Exclusive Weapon Energy, restore health equal to 8% of the Starlight Saintess's max health |
+| 🟠 | Healing increases and restores both herself and the Proxy at once |
+| 🔴 | That healing also grants a shield absorbing 3.5% of her max health per layer, max 3 layers, 10s, stacking refreshes duration |
+| ⚪ | The damage resisted by the shield is doubled |
+
+The only SHIELD on any treasure captured so far, and one of the few "defense"
+treasures that is genuinely defensive.
+
+### Phase Anchor — Epic · Void Witch · defense
+4.6% / 4.6% / 4.6%
+
+| tier | effect |
+|---|---|
+| 🟢 | Void Witch HP +5% |
+| 🔵 | Void Witch HP +10% |
+| 🟣 | Summoning Piercing Sight also creates a Planar Rift dealing continuous AoE DMG |
+| 🟠 | Planar Rift DMG doubles |
+| 🔴 | The Planar Rift itself creates Piercing Sight |
+| ⚪ | The Planar Rift creates Piercing Sight at twice the original speed |
+
+Still needed for Xenoscape: Void Witch's attack treasure, the element-wide
+treasure, and everything for every other Xenoscape hero.

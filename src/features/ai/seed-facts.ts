@@ -2273,7 +2273,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-rarity-ladder',
     category: 'runes',
-    text: 'Treasure (rune) rarity in Wittle Defender uses its OWN ladder, which is not the hero rarity ladder: Common (grey), Uncommon (green), Excellent (blue), Epic (pink/magenta/purple), Legendary (gold/yellow), and AT LEAST TWO MORE ABOVE Legendary whose names have not been captured — treasures carry red and white skill tiers beyond the orange/Legendary one, and a tier can only be unlocked by a rarity. Note it is Excellent, not Rare. The flat ATK/HP/DEF a treasure contributes depends ONLY on its rarity and +N, never on which hero it buffs: Common 0.5%, Uncommon 1.5%, Excellent 3%, Epic 3.8%, Epic +2 5%, Legendary 5.6%, Legendary +1 6.1%. Within a rarity a treasure gains +N levels shown as e.g. "Legendary +1", up to +2 before it can be fused up; its ATK/HP/DEF contribution rises with both the rarity and the +N.',
+    text: 'Treasure (rune) rarity in Wittle Defender uses its OWN ladder, which is not the hero rarity ladder: Common (grey), Uncommon (green), Excellent (blue), Epic (pink/magenta/purple), Legendary (gold/yellow), and AT LEAST TWO MORE ABOVE Legendary whose names have not been captured — treasures carry red and white skill tiers beyond the orange/Legendary one, and a tier can only be unlocked by a rarity. Note it is Excellent, not Rare. The flat ATK/HP/DEF a treasure contributes tracks its rarity and +N and never depends on which hero it buffs: for Ice and Wind, Common 0.5%, Uncommon 1.5%, Excellent 3%, Epic 3.8%, Epic +2 5%, Legendary 5.6%, Legendary +1 6.1%. ELEMENT MATTERS TOO — every Xenoscape Epic measured so far gives 4.6%, not 3.8%, so Xenoscape treasures contribute more at the same rarity. Do not quote an Ice/Wind number for a Xenoscape treasure, and treat Fire and Electro as unmeasured. Within a rarity a treasure gains +N levels shown as e.g. "Legendary +1", up to +2 before it can be fused up; its ATK/HP/DEF contribution rises with both the rarity and the +N.',
   },
   {
     key: 'runes-six-skill-tiers',
@@ -2303,7 +2303,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-coverage-caveat',
     category: 'runes',
-    text: 'IMPORTANT — Tempest AI\'s Treasure (rune) data is INCOMPLETE. It was captured from one player\'s collection: Ice/Frost and Wind are covered, and Fire, Electro and Xenoscape are barely started. If a treasure, or a particular hero\'s treasure, is not in these facts, say it has not been captured yet and invite /fact add — never say it does not exist in the game, and never invent tiers or numbers. The Treasure screen filters by the same five elements as heroes: Ice, Fire, Electro, Wind, Xenoscape.',
+    text: 'IMPORTANT — Tempest AI\'s Treasure (rune) data is INCOMPLETE. Most of it was captured from one player\'s collection — Ice/Frost and Wind are covered, Fire and Electro are barely started. The Xenoscape entries instead come from the Shop\'s reward-preview catalogue, so those are game data rather than that player\'s inventory, but only three of them have been read so far. If a treasure, or a particular hero\'s treasure, is not in these facts, say it has not been captured yet and invite /fact add — never say it does not exist in the game, and never invent tiers or numbers. The Treasure screen filters by the same five elements as heroes: Ice, Fire, Electro, Wind, Xenoscape.',
   },
   {
     key: 'runes-ice-roster',
@@ -2597,6 +2597,45 @@ export const SEED_FACTS: SeedFact[] = [
     key: 'rune-owlbeast-codex-tiers',
     category: 'runes',
     text: 'Owlbeast Codex (Wind treasure/rune for Night Baron) — its six skill tiers in order: green, Night Baron HP +5%; blue, Night Baron HP +10%; purple, Night Baron ATK has a chance to inflict Armor Break reducing the target\'s Damage Reduction by 6% for 4s; orange, that Armor Break effect increases to 12%; red, Night Baron\'s Armor Break also applies Laceration dealing DMG per second; white, that Laceration duration is +2s.',
+  },
+
+  // ── Treasures (runes) — Xenoscape ───────────────────────────────────────
+  // Captured from the Shop's Reward Preview rather than the treasure bag, so
+  // these are game data, NOT things this player owns. See runes-coverage-caveat.
+  {
+    key: 'rune-galactic-heart-identity',
+    category: 'runes',
+    text: 'Galactic Heart is a Xenoscape Treasure (rune) in Wittle Defender that buffs Starlight Weaver. It is her ATTACK treasure: Comet damage first, then two tiers that raise the damage of whichever hero she has designated as her Proxy after they unleash their Exclusive Weapon skill. Because the Proxy is the team\'s highest-attack hero, those tiers are effectively a buff to the team carry rather than to Starlight Weaver herself.',
+  },
+  {
+    key: 'rune-galactic-heart-tiers',
+    category: 'runes',
+    text: 'Galactic Heart (Xenoscape treasure/rune for Starlight Weaver) — its six skill tiers in order: green, Starlight Weaver ATK +5%; blue, Starlight Weaver ATK +10%; purple, Comet Final DMG +30%; orange, after the Proxy unleashes the Exclusive Weapon skill their damage is increased by 15% for 10s; red, Comet\'s Final DMG increases to +50%; white, that Proxy damage increase goes to 30% for 10s.',
+  },
+  {
+    key: 'rune-galactic-spark-identity',
+    category: 'runes',
+    text: 'Galactic Spark is a Xenoscape Treasure (rune) in Wittle Defender that buffs Starlight Weaver. It is her DEFENSE treasure and the only treasure captured so far that grants a SHIELD: its upper tiers heal both her and her Proxy, then layer a stacking absorb shield worth 3.5% of her max health per layer, up to 3 layers. It is genuinely defensive, unlike most treasures filed under that label.',
+  },
+  {
+    key: 'rune-galactic-spark-tiers',
+    category: 'runes',
+    text: 'Galactic Spark (Xenoscape treasure/rune for Starlight Weaver) — its six skill tiers in order: green, Starlight Weaver HP +5%; blue, Starlight Weaver HP +10%; purple, when the Proxy recovers Exclusive Weapon Energy they restore health equal to 8% of the Starlight Saintess\'s maximum health; orange, that healing increases and restores both herself and the Proxy at once; red, that healing also grants a shield absorbing 3.5% of her maximum health per layer, up to 3 layers for 10s, with stacking refreshing the duration; white, the damage resisted by the shield is doubled.',
+  },
+  {
+    key: 'rune-phase-anchor-identity',
+    category: 'runes',
+    text: 'Phase Anchor is a Xenoscape Treasure (rune) in Wittle Defender that buffs Void Witch. It is her DEFENSE treasure by its HP% opening, but its upper tiers build a self-sustaining loop: summoning Piercing Sight also creates a Planar Rift dealing continuous AoE damage, and later the Planar Rift creates Piercing Sight in return, at double speed.',
+  },
+  {
+    key: 'rune-phase-anchor-tiers',
+    category: 'runes',
+    text: 'Phase Anchor (Xenoscape treasure/rune for Void Witch) — its six skill tiers in order: green, Void Witch HP +5%; blue, Void Witch HP +10%; purple, summoning Piercing Sight will also create a Planar Rift dealing continuous AoE DMG; orange, Planar Rift DMG doubles; red, the Planar Rift will itself create Piercing Sight; white, the Planar Rift creates Piercing Sight at twice the original speed.',
+  },
+  {
+    key: 'runes-xenoscape-roster',
+    category: 'runes',
+    text: 'Xenoscape Treasures (runes) captured so far in Wittle Defender, by the hero each buffs — Starlight Weaver: Galactic Heart (attack) and Galactic Spark (defense); Void Witch: Phase Anchor (defense). Void Witch\'s attack treasure and the Xenoscape element-wide treasure have not been captured, and nor has anything for any other Xenoscape hero. These came from the Shop reward-preview catalogue, so they are game data rather than a list of what any one player owns.',
   },
 
   // ── Treasures (runes) — known by name only, ladder NOT captured ─────────
