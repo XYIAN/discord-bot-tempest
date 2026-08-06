@@ -2273,7 +2273,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-rarity-ladder',
     category: 'runes',
-    text: 'Treasure (rune) rarity in Wittle Defender uses its OWN ladder, which is not the hero rarity ladder: Uncommon (green), Excellent (blue), Epic (pink/magenta/purple), Legendary (gold/yellow), and AT LEAST TWO MORE ABOVE Legendary whose names have not been captured — treasures carry red and white skill tiers beyond the orange/Legendary one, and a tier can only be unlocked by a rarity. Note it is Excellent, not Rare. Below Uncommon there is a grey band, seen holding ordinary duplicate copies. Within a rarity a treasure gains +N levels shown as e.g. "Legendary +1", up to +2 before it can be fused up; its ATK/HP/DEF contribution rises with both the rarity and the +N.',
+    text: 'Treasure (rune) rarity in Wittle Defender uses its OWN ladder, which is not the hero rarity ladder: Common (grey), Uncommon (green), Excellent (blue), Epic (pink/magenta/purple), Legendary (gold/yellow), and AT LEAST TWO MORE ABOVE Legendary whose names have not been captured — treasures carry red and white skill tiers beyond the orange/Legendary one, and a tier can only be unlocked by a rarity. Note it is Excellent, not Rare. The flat ATK/HP/DEF a treasure contributes depends ONLY on its rarity and +N, never on which hero it buffs: Common 0.5%, Uncommon 1.5%, Excellent 3%, Epic 3.8%, Epic +2 5%, Legendary 5.6%, Legendary +1 6.1%. Within a rarity a treasure gains +N levels shown as e.g. "Legendary +1", up to +2 before it can be fused up; its ATK/HP/DEF contribution rises with both the rarity and the +N.',
   },
   {
     key: 'runes-six-skill-tiers',
@@ -2308,7 +2308,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-ice-roster',
     category: 'runes',
-    text: 'Ice/Frost Treasures (runes) captured so far in Wittle Defender, by the hero each buffs — Polar Captain: Frostone Edge (attack) and Frigid Hexblood (defense); Frost Lich: Perpetual Blizzard (attack) and Frigid Coronet (defense); Ice Queen: Cuttlefish Cap (attack) and Frost Wax (defense); Northern Tyrant: Icebound Fang (attack); Ice Witch: Glacier Tear (attack). The Ice element-wide treasure is Soulfrost Gyro. Northern Tyrant\'s and Ice Witch\'s defense treasures have not been captured, and no treasure has been captured for any other Frost hero.',
+    text: 'Ice/Frost Treasures (runes) captured so far in Wittle Defender, by the hero each buffs — Polar Captain: Frostone Edge (attack) and Frigid Hexblood (defense); Frost Lich: Perpetual Blizzard (attack) and Frigid Coronet (defense); Ice Queen: Cuttlefish Cap (attack) and Frost Wax (defense); Ice Witch: Glacier Tear (attack) and Frostvein Coral (defense); Northern Tyrant: Icebound Fang (attack) only; Ice Demon: Titan Toothpick (defense) only; Ice Mage: Glacier Sundae (defense) only. The Ice element-wide treasure is Soulfrost Gyro. Northern Tyrant\'s defense treasure and Ice Demon\'s and Ice Mage\'s attack treasures have not been found yet — going by every other hero they almost certainly exist.',
   },
   {
     key: 'runes-wind-roster',
@@ -2411,6 +2411,37 @@ export const SEED_FACTS: SeedFact[] = [
     key: 'rune-soulfrost-gyro-tiers',
     category: 'runes',
     text: 'Soulfrost Gyro (Ice element-wide treasure/rune) — its six skill tiers in order, each REPLACING the previous value rather than stacking with it: green, Ice DMG +2%; blue, +5%; purple, +8%; orange, +11%; red, +15%; white, +20%. So a fully upgraded Soulfrost Gyro is +20% Ice DMG in total, not the sum of the six lines.',
+  },
+
+  {
+    key: 'rune-frostvein-coral-identity',
+    category: 'runes',
+    text: 'Frostvein Coral is an Ice/Frost Treasure (rune) in Wittle Defender that buffs Ice Witch. It is her DEFENSE treasure and the partner to Glacier Tear, her attack one. Its middle tiers add Icicle trajectories and its top tiers give her a STACKING self ATK buff for every icicle cast, so it rewards long fights rather than burst.',
+  },
+  {
+    key: 'rune-frostvein-coral-tiers',
+    category: 'runes',
+    text: 'Frostvein Coral (Ice treasure/rune for Ice Witch) — its six skill tiers in order: green, Ice Witch HP +5%; blue, Ice Witch HP +10%; purple, Ice Witch Icicle Initial Trajectory +1; orange, that Initial Trajectory increases to +2; red, each icicle cast by Ice Witch boosts her ATK by 2% for a short time and stacks; white, that Icicle ATK boost increases to 4%.',
+  },
+  {
+    key: 'rune-titan-toothpick-identity',
+    category: 'runes',
+    text: 'Titan Toothpick is an Ice/Frost Treasure (rune) in Wittle Defender that buffs Ice Demon. Filed as his DEFENSE treasure by its HP% opening, it is in practice a summon-count treasure: +2 initial summoned units, a giant ice monster every 12 summons, and — uniquely — a TEAM Ice DMG +10% while that giant is present. That team-wide line makes it relevant to any Ice team, not just one running Ice Demon as a carry.',
+  },
+  {
+    key: 'rune-titan-toothpick-tiers',
+    category: 'runes',
+    text: 'Titan Toothpick (Ice treasure/rune for Ice Demon) — its six skill tiers in order: green, Ice Demon HP +5%; blue, Ice Demon HP +10%; purple, Ice Demon Initial Summoned Unit +1; orange, that Initial Summoned Unit increases to +2; red, for every 12 times ice monsters are summoned Ice Demon spawns an additional giant ice monster that is larger, faster and stronger; white, while Ice Demon\'s giant ice monster is present, Team Ice DMG +10%.',
+  },
+  {
+    key: 'rune-glacier-sundae-identity',
+    category: 'runes',
+    text: 'Glacier Sundae is an Ice/Frost Treasure (rune) in Wittle Defender that buffs Ice Mage. It is her DEFENSE treasure by its HP% opening, but its real value is an Ice RES shred on Frost Nova plus a large damage-rate bonus, so like most "defense" treasures it is an offensive pick. The Ice RES reduction helps every Ice hero attacking those targets.',
+  },
+  {
+    key: 'rune-glacier-sundae-tiers',
+    category: 'runes',
+    text: 'Glacier Sundae (Ice treasure/rune for Ice Mage) — its six skill tiers in order: green, Ice Mage HP +5%; blue, Ice Mage HP +10%; purple, Ice Mage Frost Nova Duration +2s; orange, Frost Nova reduces the Ice RES of targets in range by 10%; red, Ice Mage\'s Frost Nova DMG rate +25%; white, that DMG rate bonus increases to 50%.',
   },
 
   // ── Treasures (runes) — Wind ────────────────────────────────────────────

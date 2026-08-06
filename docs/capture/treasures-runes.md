@@ -97,7 +97,7 @@ tiers.
 Each `###` heading below is ONE distinct treasure with its complete six-tier
 ladder. Count the headings to see progress.
 
-**Captured: 24.** Ice complete; **Wind COMPLETE** (15 treasures, 7 full pairs).
+**Captured: 27.** **Wind COMPLETE** (15). Ice at 12 — NOT complete, see below.
 
 | treasure | element | buffs | role |
 |---|---|---|---|
@@ -726,3 +726,65 @@ The facts say so explicitly for each of these.
 Stat contribution tracks rarity exactly as expected: every Epic +2 gives
 5%/5%/5% and every plain Epic gives 3.8%/3.8%/3.8%, regardless of which hero
 the treasure buffs.
+
+
+## ⚠️ The Ice pass was NOT complete — re-check every element
+
+Going back to Ice with the long-press method found **three treasures the first
+pass missed**, all sitting at **Common** rarity right at the bottom of the grid:
+
+| treasure | hero | role |
+|---|---|---|
+| Frostvein Coral | Ice Witch | defense |
+| Titan Toothpick | Ice Demon | defense |
+| Glacier Sundae | Ice Mage | defense |
+
+Frostvein Coral closes the Ice Witch gap the first pass recorded as missing.
+Ice Demon and Ice Mage were both listed as "no treasure captured" — they had
+one all along, several screens down.
+
+**Why the first pass missed them.** It worked top-down through the grid, which
+is sorted by rarity, and the carried/high-rarity copies are all at the top. The
+Common-rarity singles at the very bottom looked like more duplicates in the
+zoomed-out view. Ice also has more visually similar icons than Wind (blue-white
+ice shapes), which made icon-triage unreliable.
+
+**Rule for the remaining elements:** scroll to the very bottom of every filtered
+grid and long-press everything in the last two rows, even when the art looks
+familiar. Never conclude "hero X has no treasure" from a partial scan.
+
+### Ice roster after the second pass
+
+| hero | attack | defense |
+|---|---|---|
+| Polar Captain | Frostone Edge | Frigid Hexblood |
+| Frost Lich | Perpetual Blizzard | Frigid Coronet |
+| Ice Queen | Cuttlefish Cap | Frost Wax |
+| Ice Witch | Glacier Tear | Frostvein Coral |
+| Northern Tyrant | Icebound Fang | **not found** |
+| Ice Demon | **not found** | Titan Toothpick |
+| Ice Mage | **not found** | Glacier Sundae |
+
+Element treasure: **Soulfrost Gyro**. Total 12.
+
+### Titan Toothpick matters for the Ice summon core
+
+Ice Demon's treasure gives **+2 initial summoned units**, a giant ice monster
+every 12 summons, and — the unusual part — **Team Ice DMG +10%** while that
+giant is alive. That is a team-wide buff hidden on a "defense" treasure for a
+hero the first pass did not even know had one.
+
+### Complete rarity → stat ladder
+
+Now closed at both ends. Common is the bottom (grey), and the contribution is a
+pure function of rarity and +N:
+
+| rarity | contribution |
+|---|---|
+| Common (grey) | 0.5% |
+| Uncommon (green) | 1.5% |
+| Excellent (blue) | 3% |
+| Epic (pink) | 3.8% |
+| Epic +2 | 5% |
+| Legendary (gold) | 5.6% |
+| Legendary +1 | 6.1% |
