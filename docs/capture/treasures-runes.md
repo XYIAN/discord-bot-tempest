@@ -97,7 +97,7 @@ tiers.
 Each `###` heading below is ONE distinct treasure with its complete six-tier
 ladder. Count the headings to see progress.
 
-**Captured: 20.** Ice complete; Wind well advanced (11 found, 2 gaps known).
+**Captured: 24.** Ice complete; **Wind COMPLETE** (15 treasures, 7 full pairs).
 
 | treasure | element | buffs | role |
 |---|---|---|---|
@@ -121,6 +121,10 @@ ladder. Count the headings to see progress.
 | Gale Colossus | Wind | Cat Assassin | attack |
 | Zephyr Cone | Wind | Cat Assassin | defense |
 | Vinewheel Timepiece | Wind | — (element-wide) | element |
+| Aerolux | Wind | Swordmaster | defense |
+| Verdant Skyplume | Wind | Demon Hunter | attack |
+| Dreamy Dragon Egg | Wind | Night Baron | attack |
+| Owlbeast Codex | Wind | Night Baron | defense |
 
 Ice heroes with BOTH runes found: Polar Captain, Frost Lich, Ice Queen.
 Still missing a partner rune: Northern Tyrant (has attack, needs defense),
@@ -622,12 +626,102 @@ has one element-wide treasure on a shared 2/5/8/11/15/20 ladder — so the Fire,
 Electro and Xenoscape equivalents can be predicted in shape, though their NAMES
 still have to be captured.
 
-### Wind pattern check
+### Aerolux — Excellent · Swordmaster · defense
+3% / 3% / 3%
 
-Four complete pairs — Sword Saint, Windborne Ranger, Fabled Lyra, Cat Assassin.
-Two singles: Swordmaster has only an attack treasure, Demon Hunter only a
-defense one. Both partners are presumably in the game and simply not in this
-collection. Kyle's two-per-hero rule holds everywhere it can be checked.
+| tier | effect |
+|---|---|
+| 🟢 | Swordmaster HP +5% |
+| 🔵 | Swordmaster HP +10% |
+| 🟣 | Swordmaster Whirlwind Slash Duration +10% |
+| 🟠 | Whirlwind Slash Duration increases to +20% |
+| 🔴 | When Whirlwind is active, Swordmaster reduces DMG taken by 20% |
+| ⚪ | Each hit by Whirlwind Slash increases the target's DMG taken by 5% for 5s. Stackable. |
+
+### Verdant Skyplume — Excellent · Demon Hunter · attack
+3% / 3% / 3%
+
+| tier | effect |
+|---|---|
+| 🟢 | Demon Hunter ATK +5% |
+| 🔵 | Demon Hunter ATK +10% |
+| 🟣 | Musket Burst and Musket Frenzy Final DMG +10% |
+| 🟠 | Final DMG increases to 15% |
+| 🔴 | Final DMG increases to 25% |
+| ⚪ | Final DMG increases to +40% |
+
+### Dreamy Dragon Egg — Excellent · Night Baron · attack
+3% / 3% / 3%
+
+| tier | effect |
+|---|---|
+| 🟢 | Night Baron ATK +5% |
+| 🔵 | Night Baron ATK +10% |
+| 🟣 | Night Baron Thrust Final DMG +20% |
+| 🟠 | Final DMG increases to +40% |
+| 🔴 | Night Baron Tempest Thrust Final DMG +20% |
+| ⚪ | Final DMG increases to +40% |
+
+### Owlbeast Codex — Excellent · Night Baron · defense
+3% / 3% / 3%
+
+| tier | effect |
+|---|---|
+| 🟢 | Night Baron HP +5% |
+| 🔵 | Night Baron HP +10% |
+| 🟣 | Night Baron ATK has a chance to inflict Armor Break, reducing target's Damage Reduction by 6% for 4s |
+| 🟠 | Armor Break effect increases to 12% |
+| 🔴 | Armor Break also applies Laceration, dealing DMG per second |
+| ⚪ | Laceration duration +2s |
+
+## Wind: COMPLETE — and the pattern is 7 for 7
+
+| hero | attack | defense |
+|---|---|---|
+| Fabled Lyra | Aeolian Core | Windlock Casket |
+| Windborne Ranger | Boreas' Blessing | Whistling Crown |
+| Sword Saint | Mystic Emerald | Verdant Embryo |
+| Cat Assassin | Gale Colossus | Zephyr Cone |
+| Swordmaster | Wild Fruit | Aerolux |
+| Demon Hunter | Verdant Skyplume | Treant Golem |
+| Night Baron | Dreamy Dragon Egg | Owlbeast Codex |
+
+Element treasure: **Vinewheel Timepiece**. Total 15.
+
+Seven heroes, seven complete pairs, no singles left over. Kyle's rule —
+"two runes per hero, one attack one defense, plus one element rune" — held
+exactly, and the two apparent gaps mid-pass (Swordmaster, Demon Hunter) were
+both filled by scrolling to lower rarities rather than being real exceptions.
+**Treat an apparent gap as "keep scrolling", not "does not exist".**
+
+### The stat contribution is a pure function of rarity
+
+Confirmed across both elements and every hero — the flat ATK/HP/DEF a treasure
+contributes depends ONLY on its rarity and +N, never on which hero it buffs:
+
+| rarity | contribution |
+|---|---|
+| Uncommon | 1.5% |
+| Excellent | 3% |
+| Epic | 3.8% |
+| Epic +2 | 5% |
+| Legendary | 5.6% |
+| Legendary +1 | 6.1% |
+
+Grey backgrounds below Uncommon hold ordinary duplicate copies, so the grey
+band is a real rarity (presumably Common) rather than a display quirk.
+
+### "Defense" is a bad name for the HP treasures
+
+Repeatedly the HP-opening treasure carries the strongest TEAM effect:
+
+- **Aerolux** (Swordmaster) ends on a stacking +5% DMG-taken debuff on the target
+- **Owlbeast Codex** (Night Baron) cuts enemy Damage Reduction, then adds a DoT
+- **Zephyr Cone** (Cat Assassin) inflicts Armor Break, cutting enemy DEF
+- **Frigid Hexblood** (Polar Captain) is pure summon generation
+
+Answering "which is the defensive one?" by the first two tiers is misleading.
+The facts say so explicitly for each of these.
 
 Stat contribution tracks rarity exactly as expected: every Epic +2 gives
 5%/5%/5% and every plain Epic gives 3.8%/3.8%/3.8%, regardless of which hero

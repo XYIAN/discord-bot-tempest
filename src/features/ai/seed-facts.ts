@@ -2273,7 +2273,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-rarity-ladder',
     category: 'runes',
-    text: 'Treasure (rune) rarity in Wittle Defender uses its OWN ladder, which is not the hero rarity ladder: Uncommon (green), Excellent (blue), Epic (pink/magenta/purple), Legendary (gold/yellow), and AT LEAST TWO MORE ABOVE Legendary whose names have not been captured — treasures carry red and white skill tiers beyond the orange/Legendary one, and a tier can only be unlocked by a rarity. Note it is Excellent, not Rare. A grey band below Uncommon appears in the grid but is unconfirmed. Within a rarity a treasure gains +N levels shown as e.g. "Legendary +1", up to +2 before it can be fused up; its ATK/HP/DEF contribution rises with both the rarity and the +N.',
+    text: 'Treasure (rune) rarity in Wittle Defender uses its OWN ladder, which is not the hero rarity ladder: Uncommon (green), Excellent (blue), Epic (pink/magenta/purple), Legendary (gold/yellow), and AT LEAST TWO MORE ABOVE Legendary whose names have not been captured — treasures carry red and white skill tiers beyond the orange/Legendary one, and a tier can only be unlocked by a rarity. Note it is Excellent, not Rare. Below Uncommon there is a grey band, seen holding ordinary duplicate copies. Within a rarity a treasure gains +N levels shown as e.g. "Legendary +1", up to +2 before it can be fused up; its ATK/HP/DEF contribution rises with both the rarity and the +N.',
   },
   {
     key: 'runes-six-skill-tiers',
@@ -2303,7 +2303,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-coverage-caveat',
     category: 'runes',
-    text: 'IMPORTANT — Tempest AI\'s Treasure (rune) data is INCOMPLETE. It was captured from one player\'s collection: Ice/Frost is covered, Wind is partly covered, and Fire, Electro and Xenoscape are barely started. If a treasure, or a particular hero\'s treasure, is not in these facts, say it has not been captured yet and invite /fact add — never say it does not exist in the game, and never invent tiers or numbers. The Treasure screen filters by the same five elements as heroes: Ice, Fire, Electro, Wind, Xenoscape.',
+    text: 'IMPORTANT — Tempest AI\'s Treasure (rune) data is INCOMPLETE. It was captured from one player\'s collection: Ice/Frost and Wind are covered, and Fire, Electro and Xenoscape are barely started. If a treasure, or a particular hero\'s treasure, is not in these facts, say it has not been captured yet and invite /fact add — never say it does not exist in the game, and never invent tiers or numbers. The Treasure screen filters by the same five elements as heroes: Ice, Fire, Electro, Wind, Xenoscape.',
   },
   {
     key: 'runes-ice-roster',
@@ -2313,7 +2313,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-wind-roster',
     category: 'runes',
-    text: 'Wind Treasures (runes) captured so far in Wittle Defender, by the hero each buffs — Fabled Lyra: Aeolian Core (attack) and Windlock Casket (defense); Windborne Ranger: Boreas\' Blessing (attack) and Whistling Crown (defense); Sword Saint: Mystic Emerald (attack) and Verdant Embryo (defense); Cat Assassin: Gale Colossus (attack) and Zephyr Cone (defense); Swordmaster: Wild Fruit (attack) only; Demon Hunter: Treant Golem (defense) only. The Wind element-wide treasure is Vinewheel Timepiece. Swordmaster\'s defense treasure and Demon Hunter\'s attack treasure have not been captured, and nor has anything for any other Wind hero.',
+    text: 'Wind Treasures (runes) in Wittle Defender, by the hero each buffs — Fabled Lyra: Aeolian Core (attack) and Windlock Casket (defense); Windborne Ranger: Boreas\' Blessing (attack) and Whistling Crown (defense); Sword Saint: Mystic Emerald (attack) and Verdant Embryo (defense); Cat Assassin: Gale Colossus (attack) and Zephyr Cone (defense); Swordmaster: Wild Fruit (attack) and Aerolux (defense); Demon Hunter: Verdant Skyplume (attack) and Treant Golem (defense); Night Baron: Dreamy Dragon Egg (attack) and Owlbeast Codex (defense). The Wind element-wide treasure is Vinewheel Timepiece. That is seven complete hero pairs plus the element treasure, with no Wind hero left holding only one — but it covers only the Wind heroes in this collection, so another Wind hero may still have a pair we have not seen.',
   },
   {
     key: 'runes-for-the-ice-summon-core',
@@ -2525,6 +2525,47 @@ export const SEED_FACTS: SeedFact[] = [
     key: 'rune-zephyr-cone-tiers',
     category: 'runes',
     text: 'Zephyr Cone (Wind treasure/rune for Cat Assassin) — its six skill tiers in order: green, Cat Assassin HP +5%; blue, Cat Assassin HP +10%; purple, Cat Assassin ATK has a chance to inflict Armor Break reducing the target\'s DEF by 10% for 4s; orange, Armor Break duration +2s; red, every 20 of Cat Assassin\'s Darts released trigger 3 extra giant piercing darts; white, the giant piercing dart becomes a giant piercing boomerang.',
+  },
+
+  {
+    key: 'rune-aerolux-identity',
+    category: 'runes',
+    text: 'Aerolux is a Wind Treasure (rune) in Wittle Defender that buffs Swordmaster. It is his DEFENSE treasure and the one that actually fits his job: it extends Whirlwind Slash duration, cuts the damage he takes by 20% while Whirlwind is active, and at its top tier makes every Whirlwind hit stack the target\'s DMG taken by 5%. That last tier is a TEAM damage amplifier, so a treasure filed under defense ends up buffing everyone\'s damage.',
+  },
+  {
+    key: 'rune-aerolux-tiers',
+    category: 'runes',
+    text: 'Aerolux (Wind treasure/rune for Swordmaster) — its six skill tiers in order: green, Swordmaster HP +5%; blue, Swordmaster HP +10%; purple, Swordmaster Whirlwind Slash Duration +10%; orange, that duration increases to +20%; red, when Whirlwind is active Swordmaster reduces DMG taken by 20%; white, each hit by Swordmaster\'s Whirlwind Slash increases the target\'s DMG taken by 5% for 5s, stackable.',
+  },
+  {
+    key: 'rune-verdant-skyplume-identity',
+    category: 'runes',
+    text: 'Verdant Skyplume is a Wind Treasure (rune) in Wittle Defender that buffs Demon Hunter. It is her ATTACK treasure and a straight damage ladder on her Musket Burst and Musket Frenzy, rising to +40% Final DMG with no mechanic changes. It is the partner to Treant Golem, her defense treasure.',
+  },
+  {
+    key: 'rune-verdant-skyplume-tiers',
+    category: 'runes',
+    text: 'Verdant Skyplume (Wind treasure/rune for Demon Hunter) — its six skill tiers in order: green, Demon Hunter ATK +5%; blue, Demon Hunter ATK +10%; purple, Demon Hunter Musket Burst and Musket Frenzy Final DMG +10%; orange, that Final DMG increases to 15%; red, it increases to 25%; white, it increases to +40%.',
+  },
+  {
+    key: 'rune-dreamy-dragon-egg-identity',
+    category: 'runes',
+    text: 'Dreamy Dragon Egg is a Wind Treasure (rune) in Wittle Defender that buffs Night Baron. It is his ATTACK treasure and a pure damage ladder across both of his thrust skills — Thrust first, then Tempest Thrust — with no mechanic changes.',
+  },
+  {
+    key: 'rune-dreamy-dragon-egg-tiers',
+    category: 'runes',
+    text: 'Dreamy Dragon Egg (Wind treasure/rune for Night Baron) — its six skill tiers in order: green, Night Baron ATK +5%; blue, Night Baron ATK +10%; purple, Night Baron Thrust Final DMG +20%; orange, that Thrust Final DMG increases to +40%; red, Night Baron Tempest Thrust Final DMG +20%; white, that Tempest Thrust Final DMG increases to +40%.',
+  },
+  {
+    key: 'rune-owlbeast-codex-identity',
+    category: 'runes',
+    text: 'Owlbeast Codex is a Wind Treasure (rune) in Wittle Defender that buffs Night Baron. It is his DEFENSE treasure by its HP% opening, but everything above that is a team-wide debuff engine: Night Baron gains a chance to inflict Armor Break that cuts the target\'s Damage Reduction, then that Armor Break also applies Laceration damage-over-time. Lowering an enemy\'s damage reduction helps every hero attacking it, not just Night Baron.',
+  },
+  {
+    key: 'rune-owlbeast-codex-tiers',
+    category: 'runes',
+    text: 'Owlbeast Codex (Wind treasure/rune for Night Baron) — its six skill tiers in order: green, Night Baron HP +5%; blue, Night Baron HP +10%; purple, Night Baron ATK has a chance to inflict Armor Break reducing the target\'s Damage Reduction by 6% for 4s; orange, that Armor Break effect increases to 12%; red, Night Baron\'s Armor Break also applies Laceration dealing DMG per second; white, that Laceration duration is +2s.',
   },
 
   // ── Treasures (runes) — known by name only, ladder NOT captured ─────────
