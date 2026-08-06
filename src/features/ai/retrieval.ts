@@ -254,6 +254,16 @@ export function selectRelevantFacts(
 
   const selected: Fact[] = [];
   let used = 0;
+  // NOTE: pinned facts are added WITHOUT a budget check, so MAX_FACTS_CHARS is a
+  // hard cap on scored facts and a soft one overall. That is deliberate — a
+  // named hero's family arriving half-complete is the exact failure this
+  // function exists to prevent, so completeness wins over the cap.
+  //
+  // Measured against a corpus deliberately inflated to 715k chars: a question
+  // naming seven entities selected 139,998 chars, i.e. the scored fill does the
+  // work and pinning stayed well inside. Exceeding the cap needs a message
+  // naming most of the roster AND most of the runes at once, and the cost then
+  // is a larger prompt rather than a wrong answer.
   for (const f of pinned) {
     selected.push(f);
     used += f.text.length;
