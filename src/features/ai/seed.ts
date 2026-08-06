@@ -9,11 +9,39 @@ export interface SeedResult {
   retired: number;
 }
 
-/** Seeded facts are inlined into the AI prompt — keep them single-line and markdown-flat. */
+/**
+ * Seeded facts are inlined into the AI prompt — keep them single-line and
+ * markdown-flat.
+ *
+ * This used to end in `.slice(0, 500)` and it was silently destroying data.
+ * 19 committed facts were over 500 characters, so 3,349 characters were being
+ * cut mid-sentence on every boot — including four of the nine SPINE facts that
+ * go into EVERY prompt:
+ *
+ *   - `hero-abbreviations` (956 chars) was cut at "PB = Panda Brewmaste|r",
+ *     losing SR, SS, TP and — the one that matters — `SW = Starlight Weaver`.
+ *     That is the exact entry the fact was written to add, so the abbreviation
+ *     fix shipped broken and the table never contained the abbreviation it was
+ *     built for.
+ *   - `roster-by-element` (937) was cut mid-roster, which is the single lookup
+ *     the bot uses to check a hero's element — and wrong elements were one of
+ *     the three things members actually reported.
+ *
+ * The 500 came from the `/fact add` path, where Discord enforces it on the
+ * slash-command option itself (`setMaxLength(500)` in facts-command.ts). That
+ * is a real limit on untrusted member input. Copying the number here applied it
+ * to content that is committed, reviewed in a diff and trusted, where it could
+ * only ever remove data. Note the user-facing sanitizer does not truncate
+ * either; it relies on Discord's cap. So no truncation is the consistent
+ * behaviour, not a loosening.
+ *
+ * Length is bounded where it actually matters — MAX_FACTS_CHARS in
+ * retrieval.ts caps what reaches the model per prompt.
+ */
 function sanitize(text: string): string {
   // Strip markdown before collapsing whitespace, not after — otherwise a
   // removed "# " leaves a double space behind.
-  return text.replace(/[`#]/g, '').replace(/\s+/g, ' ').trim().slice(0, 500);
+  return text.replace(/[`#]/g, '').replace(/\s+/g, ' ').trim();
 }
 
 /**

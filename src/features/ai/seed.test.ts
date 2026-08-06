@@ -87,6 +87,51 @@ describe('applySeedFacts', () => {
     expect(facts[0].text).toBe('Line one. Line two x');
   });
 
+  it('does NOT truncate a long fact — the 500-char slice destroyed real data', async () => {
+    // Regression. sanitize() used to end in .slice(0, 500), which silently cut
+    // 19 committed facts mid-sentence on every boot, including four SPINE facts
+    // that go into every prompt. The worst was hero-abbreviations, cut at
+    // "PB = Panda Brewmaste|r" — losing "SW = Starlight Weaver", the exact
+    // entry the fact was written to add.
+    //
+    // The 500 belongs on the /fact add path, where Discord enforces it on
+    // untrusted member input. Committed seeds are reviewed in a diff.
+    const long = `Long fact. ${'padding word '.repeat(60)}END-MARKER`;
+    expect(long.length).toBeGreaterThan(500);
+    await applySeedFacts(ctx, [{ key: 'long', text: long, category: 'general' }]);
+    const { facts } = await knowledgeStore(ctx).get();
+    expect(facts[0]!.text).toContain('END-MARKER');
+    expect(facts[0]!.text.length).toBeGreaterThan(500);
+  });
+
+  it('every real seed fact survives sanitize with its meaning intact', async () => {
+    // Guards the whole committed corpus, not just a synthetic case: if anyone
+    // reintroduces a cap, the facts that would lose text are named.
+    const { SEED_FACTS } = await import('./seed-facts.js');
+    await applySeedFacts(ctx, SEED_FACTS);
+    const { facts } = await knowledgeStore(ctx).get();
+    const stored = new Map(facts.map((f) => [f.seedKey, f.text]));
+
+    const mangled: string[] = [];
+    for (const seed of SEED_FACTS) {
+      const expected = seed.text.replace(/[`#]/g, '').replace(/\s+/g, ' ').trim();
+      if (stored.get(seed.key) !== expected) mangled.push(seed.key);
+    }
+    expect(mangled).toEqual([]);
+  });
+
+  it('the abbreviation table still contains the entry it was written for', async () => {
+    // The narrowest possible statement of the bug: SW = Starlight Weaver sits
+    // at character ~560 of hero-abbreviations and was being cut off, so the
+    // module built to stop the bot guessing "SW" never had SW in it.
+    const { SEED_FACTS } = await import('./seed-facts.js');
+    const abbr = SEED_FACTS.find((f) => f.key === 'hero-abbreviations');
+    expect(abbr, 'hero-abbreviations must exist').toBeDefined();
+    await applySeedFacts(ctx, [abbr!]);
+    const { facts } = await knowledgeStore(ctx).get();
+    expect(facts[0]!.text).toContain('SW = Starlight Weaver');
+  });
+
   it('seeds a store written before seededKeys existed', async () => {
     // Simulates the live volume: the loader returns the file verbatim, so a
     // pre-existing knowledge.json has no seededKeys field at all.

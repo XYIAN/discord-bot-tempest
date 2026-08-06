@@ -23,7 +23,12 @@ export interface SeedFact {
  * - One self-contained claim per fact. The AI sees them as an unordered
  *   bulleted list grouped by category, so a fact that only makes sense next
  *   to its neighbour will get separated and misread.
- * - Single line, no markdown, under 500 characters (sanitized on load).
+ * - Single line, no markdown. Backticks, '#' and newlines are stripped on
+ *   load. Length is NOT capped here — that cap belongs to `/fact add`, where
+ *   Discord enforces it on untrusted member input. Committed facts are
+ *   reviewed in a diff, and what reaches the model is bounded by
+ *   MAX_FACTS_CHARS in retrieval.ts instead. Prefer one claim per fact anyway;
+ *   a 1,000-character fact is usually two facts.
  * - Name the subject explicitly. "It scales with attack" is useless once the
  *   relevance filter drops the fact that said what "it" was.
  * - Numbers that a balance patch can change should say so, so the AI hedges

@@ -4,23 +4,40 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
-## [0.6.0] - 2026-08-05
+## [0.6.0] - 2026-08-06
 
-### Treasures — the rune gap starts closing
+### Treasures — and a silent bug that was breaking answers all along
 
-The bot now knows what runes are. In Wittle Defender the system is called **Treasure**, and the first element is in: **9 Ice treasures with complete six-tier skill ladders**, captured screen by screen from the game.
+**The bot knows runes now.** In Wittle Defender the system is called **Treasure**, and 31 of them are in with complete six-tier skill ladders:
 
-Per hero, the pattern the guild owner described and the capture confirmed — an **attack** treasure (hero ATK%, then skill damage) and a **defense** one (hero HP%, then a mechanic), plus **one element-wide treasure per element**. Ice covers Polar Captain, Frost Lich and Ice Queen with both; Northern Tyrant and Ice Witch with their attack one; and **Soulfrost Gyro** for the element.
+- **Wind — complete.** All 7 heroes with both treasures, plus the element rune. Fabled Lyra, Windborne Ranger, Sword Saint, Cat Assassin, Swordmaster, Demon Hunter, Night Baron.
+- **Ice — 12**, covering Polar Captain, Frost Lich, Ice Queen and Ice Witch with both, plus Northern Tyrant, Ice Demon and Ice Mage.
+- **Xenoscape — 4**, including both of Starlight Weaver's and Monkey King's attack treasure.
 
-**The system rules too:** 12 carry slots unlocked by player level, one copy of each, fusing for rarity, and a rarity ladder that is *not* the hero one — Uncommon, Excellent, Epic, Legendary, with `+N` levels inside each.
+Plus the system itself: 12 carry slots, the rarity ladder (Common → Uncommon → Excellent → Epic → Legendary, which is *not* the hero ladder — note **Excellent**, not Rare), and how fusing actually works. There are **two** upgrade paths: three duplicate copies raise rarity and unlock the next skill tier, while an element token adds a `+N` level that gives stats only. That is why your bag fills with duplicates — they are the upgrade material.
 
-**Why this matters for the Ice core.** The treasures that pay off are not the ones with the biggest ATK numbers. `Frigid Hexblood` gives Polar Captain **+6 initial Tide Count** and a recurring giant tentacle; `Perpetual Blizzard` adds **+1 Frost Wyvern per summon** and shreds enemy Ice Resistance by up to 16%. Northern Tyrant and Frost Lich both scale off allied summon count, so those tiers multiply the whole team. That conclusion is now its own fact, because ranking by raw stats gets it wrong.
+**Which treasures actually matter is now its own fact**, because ranking them by raw ATK% picks the wrong ones. For the Ice summon core the winners are the summon-count tiers — Frigid Hexblood's +6 initial Tide Count, Perpetual Blizzard's extra Frost Wyvern — since Northern Tyrant and Frost Lich both scale off allied summon count.
 
-**What it will still refuse to do.** Fire, Electro, Wind and Xenoscape are not captured. A permanent caveat fact rides in every prompt saying so, so a question about a Fire treasure gets "not captured yet" rather than an invented ladder — the same guard the old "no rune data" fact provided, narrowed to what is actually still missing.
+Also worth knowing: a treasure's "defense" half is often the more offensive one. Aerolux, Owlbeast Codex, Zephyr Cone and Frigid Hexblood all open with HP% and end on team-wide enemy debuffs.
 
-**Flagged rather than smoothed over:** every hero page has its own **Rune** button, and an earlier capture noted a four-socket ring that doesn't match Treasure's 12 sockets. These may be two different systems, so the bot says the distinction is unverified instead of assuming.
+### The bug behind the wrong answers
 
-Six retrieval tests now cover rune questions against the real corpus under selection pressure.
+Every seeded fact was being **cut off at 500 characters** when loaded. 19 facts were affected, losing 3,349 characters mid-sentence — including four of the nine facts that go into *every single* answer.
+
+The damage was specific and ugly:
+
+- **`SW = Starlight Weaver` was being cut off.** The abbreviation table was truncated at "PB = Panda Brewmaste**r**", so the fact written specifically to stop the bot guessing "SW" never actually contained SW. That fix has been shipped and broken since it landed.
+- **The element roster was cut mid-list**, and wrong hero elements were one of the three things reported.
+
+The 500-character limit belongs on `/fact add`, where Discord enforces it on member input. It had been copied onto committed facts, which are reviewed before shipping, where it could only ever delete data. Three tests now fail if anyone reintroduces it.
+
+If the bot has been confidently wrong about an abbreviation or an element, this is why.
+
+### Under the hood
+
+The knowledge base outgrew a single prompt (141,679 characters against a 140,000 budget), so the bot now selects the facts relevant to your question instead of sending everything. Naming a hero or a treasure pulls in its complete set of facts, so you get the whole picture rather than half of it. Answers should be *sharper*, not thinner — a question about one treasure now sends 14 facts instead of 504.
+
+**203 tests.** Rune coverage is honest about itself: Fire and Electro are not captured yet, and the bot will say so rather than inventing them.
 
 ## [0.5.0] - 2026-08-05
 
