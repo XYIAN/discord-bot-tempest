@@ -97,14 +97,33 @@ tiers.
 Each `###` heading below is ONE distinct treasure with its complete six-tier
 ladder. Count the headings to see progress.
 
-**Captured: 4 of an unknown total.** Ice pass in progress.
+**Captured: 9.** Ice pass in progress.
 
 | treasure | element | buffs | role |
 |---|---|---|---|
 | Frostone Edge | Ice | Polar Captain | attack |
 | Frigid Hexblood | Ice | Polar Captain | defense |
 | Frigid Coronet | Ice | Frost Lich | defense |
+| Icebound Fang | Ice | Northern Tyrant | attack |
+| Frost Wax | Ice | Ice Queen | defense |
+| Perpetual Blizzard | Ice | Frost Lich | attack |
+| Cuttlefish Cap | Ice | Ice Queen | attack |
+| Glacier Tear | Ice | Ice Witch | attack |
 | Soulfrost Gyro | Ice | — (element-wide) | element |
+
+Ice heroes with BOTH runes found: Polar Captain, Frost Lich, Ice Queen.
+Still missing a partner rune: Northern Tyrant (has attack, needs defense),
+Ice Witch (has attack, needs defense).
+Ice heroes with nothing yet: Ice Demon, Ice Mage, Ice Wolf Pup, Frost Archer,
+Frost Lich is done. Those may simply not be in Kyle's collection.
+
+Pattern holding: every hero rune so far is ATK+skill or HP+skill, exactly as
+Kyle described.
+
+**Faster method found.** The grid sorts by rarity and clusters duplicates, so
+clicking cells in order mostly re-opens treasures already captured. Zooming the
+grid and picking out the distinct ICON ART first, then clicking one cell per
+design, skips all the duplicates.
 
 Known by name but ladder NOT yet captured: Perpetual Blizzard (Ice, Frost Lich
 attack), Phoenix Gilded Crown (Monkey King attack), Windlock Casket (Fabled Lyra
@@ -186,6 +205,77 @@ pure summon generation — +6 initial Tide Count and a recurring giant tentacle.
 For the Ice summon core that is offence by another route, since Northern Tyrant
 and Frost Lich both scale off allied summon count.
 
+### Icebound Fang — seen at Epic
+ATK 3.8% / HP 3.8% / DEF 3.8%. Ice, **Northern Tyrant**. Attack rune.
+
+| tier | effect |
+|---|---|
+| 🟢 | Northern Tyrant ATK +5% |
+| 🔵 | Northern Tyrant ATK +10% |
+| 🟣 | Axe Barrage Final DMG +35% |
+| 🟠 | Axe Barrage Final DMG +70% |
+| 🔴 | Axe Barrage Final DMG +105% |
+| ⚪ | Axe Barrage Final DMG +140% |
+
+"Axe Barrage" is not in Northern Tyrant's hero facts — his Main Skill is
+Blizzard Cleaver. Flag for checking rather than assuming they are the same
+thing.
+
+### Frost Wax — seen at Epic
+ATK 3.8% / HP 3.8% / DEF 3.8%. Ice, **Ice Queen**. Defense rune.
+
+| tier | effect |
+|---|---|
+| 🟢 | Ice Queen HP +5% |
+| 🔵 | Ice Queen HP +10% |
+| 🟣 | Ice Queen Ice Storm reduces enemy DMG by 10% |
+| 🟠 | DMG reduces to 20% |
+| 🔴 | Ice Queen's Ice Storm deals extra massive DMG to enemies with reduced DMG |
+| ⚪ | Ice Queen Ice Storm reduces target's Ice RES by an extra 10% for 3s |
+
+### Perpetual Blizzard — seen at Excellent
+ATK 3% / HP 3% / DEF 3%. Ice, **Frost Lich**. Attack rune.
+
+| tier | effect |
+|---|---|
+| 🟢 | Frost Lich ATK +5% |
+| 🔵 | Frost Lich ATK +10% |
+| 🟣 | Frost Wyvern's Final DMG +40% |
+| 🟠 | Frost Wyvern's attack additionally reduces enemies' Ice Element Resistance by 8% for 10s, cannot stack |
+| 🔴 | When summoning Frost Wyverns, summon count +1 |
+| ⚪ | The effect of reducing Ice Element Resistance increases to 16% |
+
+Another one that pays the Ice summon core directly: an extra Frost Wyvern per
+summon, plus an Ice RES shred that amplifies every Ice hero on the team.
+
+### Cuttlefish Cap — seen at Excellent
+ATK 3% / HP 3% / DEF 3%. Ice, **Ice Queen**. Attack rune.
+
+| tier | effect |
+|---|---|
+| 🟢 | Ice Queen ATK +5% |
+| 🔵 | Ice Queen ATK +10% |
+| 🟣 | Ice Queen Ice Storm and Frigid Hurricane Final DMG +20% |
+| 🟠 | Final DMG increases to +40% |
+| 🔴 | Ice Queen Ministorm Final DMG +20% |
+| ⚪ | Final DMG increases to +40% |
+
+The 🟠 and ⚪ lines both read "+40%" but refer to different skills — 🟠 continues
+the Ice Storm/Frigid Hurricane line, ⚪ continues Ministorm. Re-opened and
+scrolled specifically to check this rather than assume a duplicate.
+
+### Glacier Tear — seen at Excellent
+ATK 3% / HP 3% / DEF 3%. Ice, **Ice Witch**. Attack rune.
+
+| tier | effect |
+|---|---|
+| 🟢 | Ice Witch ATK +5% |
+| 🔵 | Ice Witch ATK +10% |
+| 🟣 | Ice Witch Icicle and Icicle Frenzy Final DMG +10% |
+| 🟠 | Final DMG increases to 15% |
+| 🔴 | Final DMG increases to 25% |
+| ⚪ | Final DMG increases to +40% |
+
 ## How the inventory grid really works — READ THIS BEFORE CAPTURING
 
 The grid is NOT a list of distinct treasures. It holds **multiple copies of the
@@ -243,11 +333,13 @@ each pass rather than only at the end.
 ## Rarity names seen so far
 
 - **Uncommon** — green grid background
-- **Epic**, **Epic +2** — pink/magenta background
+- **Excellent** — blue grid background
+- **Epic**, **Epic +1**, **Epic +2** — pink/magenta background
 - **Legendary**, **Legendary +1** — gold/yellow background
 
-Grey and blue backgrounds also appear in the grid and are presumably Common and
-Rare, unconfirmed.
+Grey backgrounds also appear, presumably the tier below Uncommon (Common?),
+unconfirmed. Note the ladder uses **Excellent**, not "Rare" — do not assume it
+matches the hero rarity names.
 
 Rarity is shown as a named band at the top of the detail page, with **+N** for
 levels within it. Grid background colour tracks the copy's rarity (grey, green,
