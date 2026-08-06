@@ -2635,7 +2635,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-xenoscape-roster',
     category: 'runes',
-    text: 'Xenoscape Treasures (runes) captured so far in Wittle Defender, by the hero each buffs — Starlight Weaver: Galactic Heart (attack) and Galactic Spark (defense); Void Witch: Phase Anchor (defense). Void Witch\'s attack treasure and the Xenoscape element-wide treasure have not been captured, and nor has anything for any other Xenoscape hero. These came from the Shop reward-preview catalogue, so they are game data rather than a list of what any one player owns.',
+    text: 'Xenoscape Treasures (runes) captured so far in Wittle Defender, by the hero each buffs — Starlight Weaver: Galactic Heart (attack) and Galactic Spark (defense); Void Witch: Phase Anchor (defense); Monkey King (Sun Wukong): Phoenix Gilded Crown (attack). Void Witch\'s attack treasure, Monkey King\'s defense treasure and the Xenoscape element-wide treasure have not been captured, and nor has anything for any other Xenoscape hero. These came from the Shop reward-preview catalogue, so they are game data rather than a list of what any one player owns.',
   },
 
   // ── Treasures (runes) — known by name only, ladder NOT captured ─────────
@@ -2646,6 +2646,11 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'rune-phoenix-gilded-crown-identity',
     category: 'runes',
-    text: 'Phoenix Gilded Crown is a Treasure (rune) in Wittle Defender that buffs Monkey King, whose in-game name Sun Wukong is what the treasure text uses. Monkey King is a Xenoscape hero. It is his ATTACK treasure: Sun Wukong ATK +5% then +10%, and above that his Celestial Crush skill gains Final DMG +25%. Its remaining skill tiers have NOT been captured, and his defense treasure has not been found — say so rather than guessing.',
+    text: 'Phoenix Gilded Crown is a Xenoscape Treasure (rune) in Wittle Defender that buffs Monkey King, whose in-game name Sun Wukong is what the treasure text uses. It is his ATTACK treasure and a pure damage ladder across both of his damage skills - Celestial Crush first, then Mountain Breaker - with no mechanic changes. His defense treasure has not been captured.',
+  },
+  {
+    key: 'rune-phoenix-gilded-crown-tiers',
+    category: 'runes',
+    text: 'Phoenix Gilded Crown (Xenoscape treasure/rune for Monkey King / Sun Wukong) - its six skill tiers in order: green, Sun Wukong ATK +5%; blue, Sun Wukong ATK +10%; purple, [Celestial Crush] Final DMG +25%; orange, that Celestial Crush bonus increases to +50%; red, [Mountain Breaker] Final DMG +25%; white, that Mountain Breaker bonus increases to +50%.',
   },
 ];

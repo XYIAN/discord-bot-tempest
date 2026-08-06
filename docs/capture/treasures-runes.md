@@ -886,3 +886,34 @@ treasures that is genuinely defensive.
 
 Still needed for Xenoscape: Void Witch's attack treasure, the element-wide
 treasure, and everything for every other Xenoscape hero.
+
+
+## 🛑 STOP — do not interact with the Shop screen
+
+**I spent 3,900 of Kyle's gems by accident.** Aiming for the `?` info icon on
+the "Rare Treasure Ore" card, the click landed on the card's appraise button
+instead and ran a **10x appraisal**. Gems went 9,680 → 5,780 and the Xenoscape
+guarantee counter moved from 50 to 40 draws.
+
+Why it happened, so it does not happen again:
+
+- On every Shop card the **`?` info icon sits a few pixels from a purchase
+  button**. At the mirrored window's size those are ~8px apart on screen.
+- Appraisal runs **immediately with no confirmation dialog** — unlike Fuse,
+  which at least asks when the treasure is equipped.
+- A miss is **irreversible and costs real premium currency**.
+
+**Rules for any future session:**
+
+1. **Never click anything on the Shop screen.** Not the `?`, not a card, not a
+   banner. The reward-preview catalogue is genuinely the best data source in the
+   game, but it is behind a minefield.
+2. If the catalogue is wanted, **ask Kyle to open the Reward Preview himself**
+   and hand over from there. Once the preview dialog is open, clicking the
+   *pool grid squares inside it* is safe — that is a read-only dialog with no
+   purchase buttons.
+3. The Fuse screen and the Treasure bag are safe to drive; only the Shop is not.
+
+The treasure data captured through the preview before this happened is fine and
+is kept. The incident is recorded here rather than quietly fixed because the
+next session will be tempted by the same catalogue.
