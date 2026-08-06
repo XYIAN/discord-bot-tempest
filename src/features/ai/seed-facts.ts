@@ -2278,7 +2278,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-six-skill-tiers',
     category: 'runes',
-    text: 'Treasure (rune) skill tiers in Wittle Defender are colour-coded in this order: green, blue, purple, orange, red, white — one unlocked per rarity step, so green = Uncommon, blue = Excellent, purple = Epic and orange = Legendary. The NUMBER of tiers VARIES by treasure: Frostone Edge has six, Verdant Embryo has five. Do not assume six. A treasure detail page lists all of its tiers no matter what rarity that copy is, so a low-rarity copy is a perfectly good source for the full ladder.',
+    text: 'Every Treasure (rune) in Wittle Defender has exactly SIX skill tiers, one unlocked per rarity step, colour-coded in this order: green, blue, purple, orange, red, white — so green = Uncommon, blue = Excellent, purple = Epic and orange = Legendary. Verified on fourteen treasures across Ice and Wind with no exceptions. A treasure detail page lists all six no matter what rarity that copy is, so tiers above its current rarity are visible but not active, and a low-rarity copy is a perfectly good source for the full ladder.',
   },
   {
     key: 'runes-two-per-hero-pattern',
@@ -2303,12 +2303,17 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-coverage-caveat',
     category: 'runes',
-    text: 'IMPORTANT — Tempest AI\'s Treasure (rune) data is INCOMPLETE. It was captured from one player\'s collection: the Ice/Frost element is covered fully, Wind is partial (Verdant Embryo complete; Aeolian Core and Windlock Casket by name only), and Fire, Electro and Xenoscape are barely started. If a treasure, or a particular hero\'s treasure, is not in these facts, say it has not been captured yet and invite /fact add — never say it does not exist in the game, and never invent tiers or numbers. The Treasure screen filters by the same five elements as heroes: Ice, Fire, Electro, Wind, Xenoscape.',
+    text: 'IMPORTANT — Tempest AI\'s Treasure (rune) data is INCOMPLETE. It was captured from one player\'s collection: Ice/Frost is covered, Wind is partly covered, and Fire, Electro and Xenoscape are barely started. If a treasure, or a particular hero\'s treasure, is not in these facts, say it has not been captured yet and invite /fact add — never say it does not exist in the game, and never invent tiers or numbers. The Treasure screen filters by the same five elements as heroes: Ice, Fire, Electro, Wind, Xenoscape.',
   },
   {
     key: 'runes-ice-roster',
     category: 'runes',
     text: 'Ice/Frost Treasures (runes) captured so far in Wittle Defender, by the hero each buffs — Polar Captain: Frostone Edge (attack) and Frigid Hexblood (defense); Frost Lich: Perpetual Blizzard (attack) and Frigid Coronet (defense); Ice Queen: Cuttlefish Cap (attack) and Frost Wax (defense); Northern Tyrant: Icebound Fang (attack); Ice Witch: Glacier Tear (attack). The Ice element-wide treasure is Soulfrost Gyro. Northern Tyrant\'s and Ice Witch\'s defense treasures have not been captured, and no treasure has been captured for any other Frost hero.',
+  },
+  {
+    key: 'runes-wind-roster',
+    category: 'runes',
+    text: 'Wind Treasures (runes) captured so far in Wittle Defender, by the hero each buffs — Fabled Lyra: Aeolian Core (attack) and Windlock Casket (defense); Windborne Ranger: Boreas\' Blessing (attack) and Whistling Crown (defense); Sword Saint: Verdant Embryo (defense). Sword Saint\'s attack treasure and the Wind element-wide treasure have not been captured, and neither has anything for any other Wind hero — the Wind pass is unfinished.',
   },
   {
     key: 'runes-for-the-ice-summon-core',
@@ -2412,29 +2417,60 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'rune-verdant-embryo-identity',
     category: 'runes',
-    text: 'Verdant Embryo is a Wind Treasure (rune) in Wittle Defender that buffs Sword Saint. It is her DEFENSE treasure — HP% on the first two tiers — and above that it scales her Flying Sword count, which is the same thing her Ascend upgrades do, so the two stack toward the same build. It has FIVE skill tiers, not six: proof that the tier count varies by treasure.',
+    text: 'Verdant Embryo is a Wind Treasure (rune) in Wittle Defender that buffs Sword Saint. It is her DEFENSE treasure — HP% on the first two tiers — and above that it scales her Flying Sword count, which is exactly what her Ascend upgrades also do, so the two stack toward the same build. Its top tiers add a separate Exorcist Array summon on every skill cast.',
   },
   {
     key: 'rune-verdant-embryo-tiers',
     category: 'runes',
-    text: 'Verdant Embryo (Wind treasure/rune for Sword Saint) — its five skill tiers in order: green, Sword Saint HP +5%; blue, Sword Saint HP +10%; purple, Sword Saint Flying Sword count +2; orange, that Flying Sword count increases to +4; red, for every skill cast Sword Saint summons an Exorcist Array to attack a large area. It has no white tier.',
+    text: 'Verdant Embryo (Wind treasure/rune for Sword Saint) — its six skill tiers in order: green, Sword Saint HP +5%; blue, Sword Saint HP +10%; purple, Sword Saint Flying Sword count +2; orange, that Flying Sword count increases to +4; red, for every skill cast Sword Saint summons an Exorcist Array to attack a large area; white, Exorcist Array DMG +100%.',
+  },
+  {
+    key: 'rune-whistling-crown-identity',
+    category: 'runes',
+    text: 'Whistling Crown is a Wind Treasure (rune) in Wittle Defender that buffs Windborne Ranger. It is her DEFENSE treasure — HP% on the first two tiers — but its upper tiers are offensive: they grant her [Gale Force] state at the start of every battle and then stack her own damage while she is in it. [Gale Force] is the same state her Ascend upgrades feed, so the treasure front-loads a state she would otherwise have to build up to.',
+  },
+  {
+    key: 'rune-whistling-crown-tiers',
+    category: 'runes',
+    text: 'Whistling Crown (Wind treasure/rune for Windborne Ranger) — its six skill tiers in order: green, Windborne Ranger HP +5%; blue, Windborne Ranger HP +10%; purple, enter [Gale Force] upon entering battle; orange, while entering [Gale Force] her own DMG +12% for 10s; red, that increases to +24% for 10s; white, that increases to +36% for 10s.',
+  },
+  {
+    key: 'rune-boreas-blessing-identity',
+    category: 'runes',
+    text: 'Boreas\' Blessing is a Wind Treasure (rune) in Wittle Defender that buffs Windborne Ranger. It is her ATTACK treasure and it is entirely focused on her Main Skill, Piercing Shot — first its Final DMG, then its CRIT Rate, ending at Piercing Shot CRIT Rate +30%. That CRIT Rate half makes it unusually good next to a CRIT DMG buffer such as Blazing Archer, since her own kit supplies the rate.',
+  },
+  {
+    key: 'rune-boreas-blessing-tiers',
+    category: 'runes',
+    text: 'Boreas\' Blessing (Wind treasure/rune for Windborne Ranger) — its six skill tiers in order: green, Windborne Ranger ATK +5%; blue, Windborne Ranger ATK +10%; purple, Piercing Shot Final DMG +10%; orange, that Final DMG increases to +20%; red, Piercing Shot CRIT Rate +15%; white, that CRIT Rate increases to +30%.',
   },
 
-  // ── Treasures (runes) — known by name only, ladders NOT captured ────────
-  // These three were read off the Total Treasure Bonus summary, which shows
-  // only the tiers already unlocked on the account. Their hero, element and
-  // attack/defense role are solid; their six-tier ladders are not, so each
-  // fact says so rather than presenting a partial ladder as complete.
   {
     key: 'rune-aeolian-core-identity',
     category: 'runes',
-    text: 'Aeolian Core is a Wind Treasure (rune) in Wittle Defender that buffs Fabled Lyra. It is her ATTACK treasure: Fabled Lyra ATK +5% then +10%, and above that her Tune skill gains Final DMG +30%. Its remaining skill tiers have NOT been captured — say so rather than guessing at them.',
+    text: 'Aeolian Core is a Wind Treasure (rune) in Wittle Defender that buffs Fabled Lyra. It is her ATTACK treasure, built entirely around her Tune skill: Final DMG first, then two debuff tiers that make the whole team hit harder — enemy DMG REDUC down 6%, and enemy Wind RES down 10%. That last one amplifies every Wind hero deployed, not just Fabled Lyra, so it is worth more on a mono-Wind team than its own numbers suggest.',
+  },
+  {
+    key: 'rune-aeolian-core-tiers',
+    category: 'runes',
+    text: 'Aeolian Core (Wind treasure/rune for Fabled Lyra) — its six skill tiers in order: green, Fabled Lyra ATK +5%; blue, Fabled Lyra ATK +10%; purple, Tune Final DMG +30%; orange, Tune also reduces enemy DMG REDUC by 6% for 5s; red, Tune Final DMG increases to +60%; white, Tune also reduces enemy Wind RES by 10% for 5s.',
   },
   {
     key: 'rune-windlock-casket-identity',
     category: 'runes',
-    text: 'Windlock Casket is a Wind Treasure (rune) in Wittle Defender that buffs Fabled Lyra. It is her DEFENSE treasure: Fabled Lyra HP +5% then +10%, and above that her Sonic Waves skill gains Final DMG +30%. Its remaining skill tiers have NOT been captured — say so rather than guessing at them.',
+    text: 'Windlock Casket is a Wind Treasure (rune) in Wittle Defender that buffs Fabled Lyra. It is her DEFENSE treasure and the only treasure captured so far that adds HEALING: at its orange tier she heals the lowest-HP ally every 3s for a share of her own ATK, which scales with her damage stats rather than with HP. Its other tiers push Sonic Waves damage.',
   },
+  {
+    key: 'rune-windlock-casket-tiers',
+    category: 'runes',
+    text: 'Windlock Casket (Wind treasure/rune for Fabled Lyra) — its six skill tiers in order: green, Fabled Lyra HP +5%; blue, Fabled Lyra HP +10%; purple, Sonic Waves Final DMG +30%; orange, heal the ally with the lowest HP every 3s for 8% of Fabled Lyra\'s ATK; red, Sonic Waves Final DMG increases to +60%; white, that healing multiplier increases to 16%.',
+  },
+
+  // ── Treasures (runes) — known by name only, ladder NOT captured ─────────
+  // Read off the Total Treasure Bonus summary, which shows only the tiers
+  // already unlocked on the account. Hero, element and attack/defense role are
+  // solid; the six-tier ladder is not, so the fact says so rather than
+  // presenting a partial ladder as complete.
   {
     key: 'rune-phoenix-gilded-crown-identity',
     category: 'runes',

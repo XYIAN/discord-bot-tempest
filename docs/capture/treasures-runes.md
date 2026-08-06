@@ -97,7 +97,7 @@ tiers.
 Each `###` heading below is ONE distinct treasure with its complete six-tier
 ladder. Count the headings to see progress.
 
-**Captured: 10.** Ice complete; Wind started (Verdant Embryo).
+**Captured: 14.** Ice complete; Wind partial (5 of an unknown total).
 
 | treasure | element | buffs | role |
 |---|---|---|---|
@@ -111,6 +111,10 @@ ladder. Count the headings to see progress.
 | Glacier Tear | Ice | Ice Witch | attack |
 | Soulfrost Gyro | Ice | — (element-wide) | element |
 | Verdant Embryo | Wind | Sword Saint | defense |
+| Whistling Crown | Wind | Windborne Ranger | defense |
+| Boreas' Blessing | Wind | Windborne Ranger | attack |
+| Aeolian Core | Wind | Fabled Lyra | attack |
+| Windlock Casket | Wind | Fabled Lyra | defense |
 
 Ice heroes with BOTH runes found: Polar Captain, Frost Lich, Ice Queen.
 Still missing a partner rune: Northern Tyrant (has attack, needs defense),
@@ -283,11 +287,21 @@ Reached from the **Fuse** button. It says *"Please select a Treasure to fuse.
 Long press a Treasure to view details."*
 
 **Long press is the fast capture method.** It opens a compact popup with the
-name, rarity + N, the three stat percentages, and the complete Treasure Skill
-list — everything the old tap-through modal gave, in one action and with no
-scrolling. Drive it as `mouse_move` → `left_mouse_down` → wait ~1.2s →
-`left_mouse_up`. Verified against Frostone Edge: identical data to the modal
-capture (Legendary +1, 6.1%/6.1%/6.1%, same six tiers).
+name, rarity + N, the three stat percentages, and the Treasure Skill list.
+Drive it as `mouse_move` → `left_mouse_down` → wait ~1.2s → `left_mouse_up`.
+Verified against Frostone Edge: identical data to the modal capture
+(Legendary +1, 6.1%/6.1%/6.1%, same six tiers).
+
+### 🚨 ALWAYS DRAG-SCROLL THE POPUP — this cost a wrong fact
+
+The skill box has a **fixed height that holds about six SHORT lines** and
+scrolls internally. Any tier whose text wraps to two lines pushes the last tier
+out of sight — **and the box still renders a clean rounded bottom border, so a
+truncated list looks complete.** There is no scrollbar and no visual cue.
+
+`scroll` does nothing here. Use `left_click_drag` from (395, 505) to (395, 415),
+**twice**, then re-zoom. Do this on every single treasure before recording it,
+even when the list already looks finished.
 
 ### There are TWO fusion paths, not one
 
@@ -309,15 +323,25 @@ is why the grid holds several copies of one treasure.
 
 `+N` appears to cap at **+2** before a rarity-up is possible.
 
-### ⚠️ Tier count VARIES — "six tiers" was wrong
+### Tier count is SIX, always — a retracted correction
 
-Frostone Edge has **six** (…red, white). Verdant Embryo has **five** — it stops
-at red, and the popup is not truncated (the panel's bottom edge is visible below
-the last line). The seeded fact claiming "exactly SIX" has been corrected.
+An earlier pass recorded "Verdant Embryo has five tiers" and edited the seeded
+fact to say the count varies. **That was wrong: the popup was truncated.**
+Verdant Embryo's sixth tier is `⚪ Exorcist Array DMG +100%`. Whistling Crown
+read as five for the same reason and also has six.
+
+Fourteen treasures across Ice and Wind now have drag-verified ladders and every
+one has exactly **six**. The fact has been restored.
+
+The mistake was checking for truncation against Frostone Edge, whose six lines
+are all short and happen to fit exactly — so "the popup does not truncate"
+passed for the wrong reason. Verify a negative against the WORST case (longest
+wrapped text), never a convenient one.
 
 Since a skill tier is unlocked by a rarity step and orange = Legendary, the red
 and white tiers prove **at least two rarities exist above Legendary**. Their
-names are not captured — nothing in this collection is that high.
+names are not captured — nothing in this collection is that high. That part
+stands.
 
 ### Do not press these
 
