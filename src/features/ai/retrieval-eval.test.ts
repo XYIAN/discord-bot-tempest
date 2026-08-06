@@ -116,6 +116,36 @@ const CASES: Array<{ question: string; needs: string; why: string }> = [
     needs: 'runes-rarity-ladder',
     why: 'Treasures use Excellent where heroes use Rare; guessing the hero ladder is wrong.',
   },
+  {
+    question: 'what does aerolux do',
+    needs: 'rune-aerolux-tiers',
+    why: 'Wind treasure named directly — its family must pin.',
+  },
+  {
+    question: 'best runes for cat assassin',
+    needs: 'runes-wind-roster',
+    why: 'Asked by hero. Only the Wind roster fact maps a hero to their two treasures.',
+  },
+  {
+    question: 'what rune does swordmaster want',
+    needs: 'runes-wind-roster',
+    why: 'Same shape, and Swordmaster is the hero the SW bug was about.',
+  },
+  {
+    question: 'why do i have duplicate treasures',
+    needs: 'runes-fusion-rarity-up',
+    why: 'A real question with no entity to pin on — duplicates ARE the upgrade material.',
+  },
+  {
+    question: 'how do i upgrade a treasure',
+    needs: 'runes-fusion-rarity-up',
+    why: 'Two fusion paths exist; answering with only the token one would be wrong.',
+  },
+  {
+    question: 'do treasures help all my heroes',
+    needs: 'runes-stats-vs-skills',
+    why: 'The stats/skills split is the answer, and nothing in the question names an entity.',
+  },
 ];
 
 /**
@@ -341,6 +371,79 @@ describe('the exact live multi-turn failure, against real facts', () => {
     const got = retrievedKeys('Scarlet reaper has higher damage when health is higher. Check the facts');
     expect([...got]).toContain('hero-scarlet-reaper-passive');
     expect([...got]).not.toContain('hero-blazing-archer-passive');
+  });
+});
+
+describe('the corpus crossing the budget for the first time', () => {
+  // The corpus sat at ~138k against a 140k budget when this was written, so the
+  // NEXT batch of facts tips it over and selection engages in production for
+  // the first time. An earlier check ran at 5x budget and passed, but that is
+  // the easy case: far over budget, the scored fill is doing obvious work.
+  //
+  // Just barely over is the case with teeth. Pinned facts go in first and
+  // unconditionally, then the remaining budget is filled in SCORE order — so
+  // only a handful of facts get dropped, and they are the lowest-scoring ones.
+  // A fact can score low and still be the only fact that answers a broad
+  // question ("why do i have duplicate treasures"), which is exactly the shape
+  // that has no entity name to pin on.
+  //
+  // The filler is deliberately written to LOOK like rune text so it competes on
+  // keyword score instead of being trivially outranked.
+  const RUNE_SHAPED_FILLER =
+    'This treasure raises a hero ATK and HP and its upper tiers increase Final DMG for that skill. ';
+
+  function corpusOverBudgetBy(extra: number): Fact[] {
+    const out = [...ALL_FACTS];
+    const total = () => out.reduce((n, f) => n + f.text.length, 0);
+    let id = 800_000;
+    while (total() < MAX_FACTS_CHARS + extra) {
+      out.push({
+        id: id++,
+        text: RUNE_SHAPED_FILLER.repeat(4) + id,
+        category: 'runes',
+        status: 'approved',
+        addedBy: '',
+        addedByName: 'filler',
+        addedAt: '2026-01-01T00:00:00.000Z',
+        source: 'seed',
+        seedKey: `filler-${id}`,
+      });
+    }
+    return out;
+  }
+
+  // Broad questions with no entity to pin on — the ones genuinely at risk.
+  const BROAD: Array<[string, string]> = [
+    ['best treasures for the ice summon core', 'runes-for-the-ice-summon-core'],
+    ['why do i have duplicate treasures', 'runes-fusion-rarity-up'],
+    ['do treasures help all my heroes', 'runes-stats-vs-skills'],
+    ['how many treasures can i carry', 'runes-carry-limit-and-slots'],
+    ['what rarity are treasures', 'runes-rarity-ladder'],
+    ['whats the best ice team', 'strategy-ice-summon-core'],
+  ];
+
+  for (const over of [2_000, 20_000, 100_000]) {
+    it(`broad questions still reach their fact at ${over.toLocaleString()} chars over budget`, () => {
+      const corpus = corpusOverBudgetBy(over);
+      const total = corpus.reduce((n, f) => n + f.text.length, 0);
+      expect(total, 'filler must actually push it over').toBeGreaterThan(MAX_FACTS_CHARS);
+
+      const missing: string[] = [];
+      for (const [question, needs] of BROAD) {
+        const got = new Set(selectRelevantFacts(corpus, question).map((f) => f.seedKey));
+        if (!got.has(needs)) missing.push(`"${question}" lost ${needs}`);
+      }
+      expect(missing).toEqual([]);
+    });
+  }
+
+  it('the spine survives even when the corpus is far over budget', async () => {
+    const { spineKeys } = await import('./retrieval.js');
+    const corpus = corpusOverBudgetBy(100_000);
+    const got = new Set(
+      selectRelevantFacts(corpus, 'something completely unrelated to anything').map((f) => f.seedKey),
+    );
+    for (const k of spineKeys()) expect([...got]).toContain(k);
   });
 });
 
