@@ -15,15 +15,41 @@ export function buildSystemPrompt(
 ): string {
   const { identity } = guild;
   const approved = facts.filter((f) => f.status === 'approved');
-  const selected = selectRelevantFacts(approved, question, context);
 
   // Resolved in code, not left to the model. The abbreviation table sits ~99%
   // through the prompt and finding "SW" among 34 entries is a lookup the model
   // simply did not perform — it answered Swordmaster, then Monkey King, when a
   // member meant Starlight Weaver. This states the answer up front.
-  const abbrev = abbreviationNotice(
-    resolveAbbreviations(question, buildAbbreviationIndex(heroRosterFrom(approved))),
-  );
+  const resolved = resolveAbbreviations(question, buildAbbreviationIndex(heroRosterFrom(approved)));
+  const abbrev = abbreviationNotice(resolved);
+
+  // RETRIEVAL MUST SEE THE EXPANDED NAMES, and this must happen BEFORE
+  // selectRelevantFacts rather than after.
+  //
+  // These two fixes were written months apart and did not compose. Retrieval
+  // pins a hero's family by matching their name in the question, but "SW" is
+  // two characters — below the tokenizer's minimum and far below the 4-char
+  // floor in heroesMentioned — so an abbreviated question matched nothing.
+  //
+  // While the whole corpus fit in one prompt that was harmless: the facts were
+  // all present anyway. The moment the corpus outgrew the budget it became the
+  // worst possible failure — measured, "is SW worth building?" retrieved ZERO
+  // Starlight Weaver facts while the notice above it confidently declared
+  // "SW = Starlight Weaver". Naming the right hero and then supplying no data
+  // about them is exactly the setup that makes a model invent.
+  //
+  // Ambiguous initials contribute their candidates too. The notice still forces
+  // the model to ask which hero is meant, and having both families present is
+  // what lets it ask a useful question instead of a blank one.
+  const namedByAbbreviation = [
+    ...resolved.resolved.map((r) => r.hero),
+    ...resolved.ambiguous.flatMap((a) => a.options),
+  ];
+  const retrievalQuestion = namedByAbbreviation.length
+    ? `${question} ${namedByAbbreviation.join(' ')}`
+    : question;
+
+  const selected = selectRelevantFacts(approved, retrievalQuestion, context);
 
   const factsByCategory = new Map<string, string[]>();
   for (const fact of selected) {
