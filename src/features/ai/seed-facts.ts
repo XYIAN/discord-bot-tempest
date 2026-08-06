@@ -1975,7 +1975,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'hero-void-witch-identity',
     category: 'heroes',
-    text: 'Void Witch (character name Celine) is a Xenoscape-element Mage in Wittle Defender and the Lineup Core of Habby\'s Top Xenoscape Lineup. She also appears in the Wind Advanced Lineup, where the card credits her with providing a Mage DMG Bonus for Sword Saint. Her skill kit has not been captured, so nothing else about her abilities is known yet.',
+    text: 'Void Witch (character name Celine) is a Xenoscape-element Mage in Wittle Defender and the Lineup Core of Habby\'s Top Xenoscape Lineup. She also appears in the Wind Advanced Lineup, where the card credits her with providing a Mage DMG Bonus for Sword Saint. Her full skill kit has not been captured, but two of her abilities are known from her treasure Phase Anchor: Piercing Sight, which she summons, and Planar Rift, a continuous area-damage field. How she casts them, and the rest of her kit, is still unknown.',
   },
   {
     key: 'hero-peacekeeper-identity',
@@ -2283,7 +2283,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-six-skill-tiers',
     category: 'runes',
-    text: 'Every Treasure (rune) in Wittle Defender has exactly SIX skill tiers, one unlocked per rarity step, colour-coded in this order: green, blue, purple, orange, red, white — so green = Uncommon, blue = Excellent, purple = Epic and orange = Legendary. Verified on fourteen treasures across Ice and Wind with no exceptions. A treasure detail page lists all six no matter what rarity that copy is, so tiers above its current rarity are visible but not active, and a low-rarity copy is a perfectly good source for the full ladder.',
+    text: 'Every Treasure (rune) in Wittle Defender has exactly SIX skill tiers, one unlocked per rarity step, colour-coded in this order: green, blue, purple, orange, red, white — so green = Uncommon, blue = Excellent, purple = Epic and orange = Legendary. Verified on all 31 treasures captured so far, across Ice, Wind and Xenoscape, with no exceptions. A treasure detail page lists all six no matter what rarity that copy is, so tiers above its current rarity are visible but not active, and a low-rarity copy is a perfectly good source for the full ladder.',
   },
   {
     key: 'runes-two-per-hero-pattern',
@@ -2308,7 +2308,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-coverage-caveat',
     category: 'runes',
-    text: 'IMPORTANT — Tempest AI\'s Treasure (rune) data is INCOMPLETE. Most of it was captured from one player\'s collection — Ice/Frost and Wind are covered, Fire and Electro are barely started. The Xenoscape entries instead come from the Shop\'s reward-preview catalogue, so those are game data rather than that player\'s inventory, but only three of them have been read so far. If a treasure, or a particular hero\'s treasure, is not in these facts, say it has not been captured yet and invite /fact add — never say it does not exist in the game, and never invent tiers or numbers. The Treasure screen filters by the same five elements as heroes: Ice, Fire, Electro, Wind, Xenoscape.',
+    text: 'IMPORTANT — Tempest AI\'s Treasure (rune) data is INCOMPLETE. Ice/Frost (12 treasures) and Wind (15, complete) were captured from one player\'s collection. Xenoscape (4) came from the Shop\'s reward-preview catalogue, so those are game data rather than that player\'s inventory. There is NO Fire data and NO Electro data at all — not partial, none — so any question about a Fire or Electro treasure must be answered with "not captured yet". If a treasure, or a particular hero\'s treasure, is not in these facts, say it has not been captured yet and invite /fact add — never say it does not exist in the game, and never invent tiers or numbers. The Treasure screen filters by the same five elements as heroes: Ice, Fire, Electro, Wind, Xenoscape.',
   },
   {
     key: 'runes-ice-roster',
@@ -2494,7 +2494,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'rune-windlock-casket-identity',
     category: 'runes',
-    text: 'Windlock Casket is a Wind Treasure (rune) in Wittle Defender that buffs Fabled Lyra. It is her DEFENSE treasure and the only treasure captured so far that adds HEALING: at its orange tier she heals the lowest-HP ally every 3s for a share of her own ATK, which scales with her damage stats rather than with HP. Its other tiers push Sonic Waves damage.',
+    text: 'Windlock Casket is a Wind Treasure (rune) in Wittle Defender that buffs Fabled Lyra. It is her DEFENSE treasure and one of three captured treasures that HEAL — the others being Frigid Coronet and Galactic Spark. At its orange tier she heals the lowest-HP ally every 3s for a share of her own ATK, so the healing scales with her damage stats rather than with HP, which is unusual and means building her for damage also builds her sustain. Its other tiers push Sonic Waves damage.',
   },
   {
     key: 'rune-windlock-casket-tiers',

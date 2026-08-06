@@ -225,6 +225,63 @@ describe('naming a hero pulls that hero\'s whole fact family', () => {
   }
 });
 
+describe('rune roster facts must not drift from the rune facts that exist', () => {
+  // A pre-deploy audit found four live contradictions of exactly this shape,
+  // all introduced by adding treasures and forgetting to update a summary:
+  //   - runes-coverage-caveat said three Xenoscape treasures; four existed
+  //   - runes-six-skill-tiers said "verified on fourteen"; 31 existed
+  //   - Windlock Casket claimed to be the ONLY healing treasure, contradicting
+  //     Frigid Coronet, which the same file says heals all allies
+  //
+  // Summary facts are the ones most likely to rot, because nothing forces them
+  // to be revisited. This makes the roster facts mechanically checkable.
+  const identityKeys = SEED_FACTS.filter((f) => /^rune-[a-z-]+-identity$/.test(f.key)).map((f) =>
+    f.key.slice('rune-'.length, -'-identity'.length),
+  );
+
+  /** Turn "frostone-edge" into the "Frostone Edge" a roster fact would write. */
+  const display = (slug: string) =>
+    slug.split('-').map((w) => w[0]!.toUpperCase() + w.slice(1)).join(' ');
+
+  const ROSTERS = ['runes-ice-roster', 'runes-wind-roster', 'runes-xenoscape-roster'];
+
+  it('every treasure with an identity fact is named in exactly one roster fact', () => {
+    const rosterText = ROSTERS.map((k) => ({
+      key: k,
+      text: SEED_FACTS.find((f) => f.key === k)?.text ?? '',
+    }));
+    for (const r of rosterText) expect(r.text, `${r.key} must exist`).not.toBe('');
+
+    const problems: string[] = [];
+    for (const slug of identityKeys) {
+      const name = display(slug);
+      // Apostrophes differ between key and prose (boreas-blessing -> Boreas' Blessing),
+      // so compare on the distinctive first word plus the last.
+      const parts = name.split(' ');
+      const needle = parts[parts.length - 1]!;
+      const hits = rosterText.filter((r) => r.text.includes(needle) && r.text.includes(parts[0]!));
+      if (hits.length !== 1) {
+        problems.push(`${name} appears in ${hits.length} roster facts (${hits.map((h) => h.key).join(', ') || 'none'})`);
+      }
+    }
+    expect(problems).toEqual([]);
+  });
+
+  it('the coverage caveat still names Fire and Electro as uncaptured', () => {
+    // The moment a Fire or Electro treasure is added this must be rewritten, or
+    // the bot will hold the data AND a standing instruction saying it has none
+    // — the same failure gap-runes-treasures-pantheon exists to prevent.
+    const caveat = SEED_FACTS.find((f) => f.key === 'runes-coverage-caveat');
+    expect(caveat).toBeDefined();
+    const hasFire = identityKeys.some((s) =>
+      /fire|ember|flame|blaze|magma|inferno/.test(s),
+    );
+    if (!hasFire) {
+      expect(caveat!.text.toLowerCase()).toContain('fire');
+    }
+  });
+});
+
 describe('the corpus has outgrown one prompt — selection is now live', () => {
   // This used to assert the opposite: that the whole corpus fit inside the
   // budget, so no ranking decision could go wrong in production. The Xenoscape
