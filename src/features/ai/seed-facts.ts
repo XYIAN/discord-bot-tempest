@@ -2273,12 +2273,12 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-rarity-ladder',
     category: 'runes',
-    text: 'Treasure (rune) rarity in Wittle Defender uses its OWN ladder, which is not the hero rarity ladder: Uncommon (green), Excellent (blue), Epic (pink/magenta), Legendary (gold). Note it is Excellent, not Rare. A grey band below Uncommon appears in the grid but has not been confirmed. Within a rarity a treasure gains +N levels shown as e.g. "Legendary +1", and its ATK/HP/DEF contribution rises with both the rarity and the +N.',
+    text: 'Treasure (rune) rarity in Wittle Defender uses its OWN ladder, which is not the hero rarity ladder: Uncommon (green), Excellent (blue), Epic (pink/magenta/purple), Legendary (gold/yellow), and AT LEAST TWO MORE ABOVE Legendary whose names have not been captured — treasures carry red and white skill tiers beyond the orange/Legendary one, and a tier can only be unlocked by a rarity. Note it is Excellent, not Rare. A grey band below Uncommon appears in the grid but is unconfirmed. Within a rarity a treasure gains +N levels shown as e.g. "Legendary +1", up to +2 before it can be fused up; its ATK/HP/DEF contribution rises with both the rarity and the +N.',
   },
   {
     key: 'runes-six-skill-tiers',
     category: 'runes',
-    text: 'Every Treasure (rune) in Wittle Defender has exactly SIX skill tiers, one unlocked per rarity step, colour-coded in this order: green, blue, purple, orange, red, white. Orange is confirmed to be Legendary. A treasure detail page lists all six tiers no matter what rarity that copy is, so tiers above its current rarity are visible but not active — which means a low-rarity copy is a perfectly good source for the full ladder.',
+    text: 'Treasure (rune) skill tiers in Wittle Defender are colour-coded in this order: green, blue, purple, orange, red, white — one unlocked per rarity step, so green = Uncommon, blue = Excellent, purple = Epic and orange = Legendary. The NUMBER of tiers VARIES by treasure: Frostone Edge has six, Verdant Embryo has five. Do not assume six. A treasure detail page lists all of its tiers no matter what rarity that copy is, so a low-rarity copy is a perfectly good source for the full ladder.',
   },
   {
     key: 'runes-two-per-hero-pattern',
@@ -2288,12 +2288,22 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'runes-fuse-and-reset',
     category: 'runes',
-    text: 'Treasure (rune) upgrading in Wittle Defender: once obtained, a treasure can be FUSED into a higher rarity, and raising its rarity both increases its stats and unlocks its next skill tier. When a treasure reaches Epic rarity a treasure reset feature unlocks, which reclaims the materials used in crafting. The Treasure screen also offers Treasure Conversion, whose rules have not been captured yet.',
+    text: 'Treasure (rune) upgrading in Wittle Defender: once obtained, a treasure can be FUSED into a higher rarity, and raising its rarity both increases its stats and unlocks its next skill tier. When a treasure reaches Epic rarity a treasure reset feature unlocks, which reclaims the materials used in crafting. The Treasure screen also offers Treasure Conversion, whose rules have not been captured yet. There are TWO separate fusion paths — see the rarity-up and level-up facts; they cost different things and give different rewards.',
+  },
+  {
+    key: 'runes-fusion-rarity-up',
+    category: 'runes',
+    text: 'Treasure (rune) RARITY-UP fusion in Wittle Defender consumes DUPLICATE COPIES of the same treasure: a treasure at the top +N level of its rarity plus 2 more identical copies at that same rarity and level fuses into the next rarity up. This is the fusion that UNLOCKS THE NEXT SKILL TIER, and it also raises the flat ATK/HP/DEF contribution. Observed directly: an Epic +2 Verdant Embryo listed "Cost: 2x Epic +2 Verdant Embryo" and previewed a Legendary result that unlocked its orange skill tier. This is why a player\'s treasure bag holds several copies of the same treasure — duplicates are the upgrade material, not clutter.',
+  },
+  {
+    key: 'runes-fusion-level-up',
+    category: 'runes',
+    text: 'Treasure (rune) LEVEL-UP fusion in Wittle Defender is the other path and costs a generic ELEMENT TOKEN rather than duplicate treasures: one token matching the treasure\'s rarity and element raises it by one +N level within its current rarity. It gives only a small flat ATK/HP/DEF increase and does NOT unlock a new skill tier. Observed directly: a Legendary Electro treasure listed "Cost: 1x Legendary [Electro token]" and previewed Legendary +1 with +0.5% ATK/HP/DEF and no new skill line. So +N levels are stat padding; skill tiers come only from rarity-up.',
   },
   {
     key: 'runes-coverage-caveat',
     category: 'runes',
-    text: 'IMPORTANT — Tempest AI\'s Treasure (rune) data is INCOMPLETE. It was captured from one player\'s collection: the Ice/Frost element is covered, and Fire, Electro, Wind and Xenoscape are not captured yet beyond a few treasure names with no skill ladders. If a treasure or a hero\'s treasure is not in these facts, say it has not been captured yet and invite /fact add — never say it does not exist in the game, and never invent tiers or numbers. The Treasure screen filters by the same five elements as heroes: Ice, Fire, Electro, Wind, Xenoscape.',
+    text: 'IMPORTANT — Tempest AI\'s Treasure (rune) data is INCOMPLETE. It was captured from one player\'s collection: the Ice/Frost element is covered fully, Wind is partial (Verdant Embryo complete; Aeolian Core and Windlock Casket by name only), and Fire, Electro and Xenoscape are barely started. If a treasure, or a particular hero\'s treasure, is not in these facts, say it has not been captured yet and invite /fact add — never say it does not exist in the game, and never invent tiers or numbers. The Treasure screen filters by the same five elements as heroes: Ice, Fire, Electro, Wind, Xenoscape.',
   },
   {
     key: 'runes-ice-roster',
@@ -2396,6 +2406,18 @@ export const SEED_FACTS: SeedFact[] = [
     key: 'rune-soulfrost-gyro-tiers',
     category: 'runes',
     text: 'Soulfrost Gyro (Ice element-wide treasure/rune) — its six skill tiers in order, each REPLACING the previous value rather than stacking with it: green, Ice DMG +2%; blue, +5%; purple, +8%; orange, +11%; red, +15%; white, +20%. So a fully upgraded Soulfrost Gyro is +20% Ice DMG in total, not the sum of the six lines.',
+  },
+
+  // ── Treasures (runes) — Wind ────────────────────────────────────────────
+  {
+    key: 'rune-verdant-embryo-identity',
+    category: 'runes',
+    text: 'Verdant Embryo is a Wind Treasure (rune) in Wittle Defender that buffs Sword Saint. It is her DEFENSE treasure — HP% on the first two tiers — and above that it scales her Flying Sword count, which is the same thing her Ascend upgrades do, so the two stack toward the same build. It has FIVE skill tiers, not six: proof that the tier count varies by treasure.',
+  },
+  {
+    key: 'rune-verdant-embryo-tiers',
+    category: 'runes',
+    text: 'Verdant Embryo (Wind treasure/rune for Sword Saint) — its five skill tiers in order: green, Sword Saint HP +5%; blue, Sword Saint HP +10%; purple, Sword Saint Flying Sword count +2; orange, that Flying Sword count increases to +4; red, for every skill cast Sword Saint summons an Exorcist Array to attack a large area. It has no white tier.',
   },
 
   // ── Treasures (runes) — known by name only, ladders NOT captured ────────

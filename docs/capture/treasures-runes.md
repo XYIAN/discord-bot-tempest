@@ -97,7 +97,7 @@ tiers.
 Each `###` heading below is ONE distinct treasure with its complete six-tier
 ladder. Count the headings to see progress.
 
-**Captured: 9.** Ice pass in progress.
+**Captured: 10.** Ice complete; Wind started (Verdant Embryo).
 
 | treasure | element | buffs | role |
 |---|---|---|---|
@@ -110,6 +110,7 @@ ladder. Count the headings to see progress.
 | Cuttlefish Cap | Ice | Ice Queen | attack |
 | Glacier Tear | Ice | Ice Witch | attack |
 | Soulfrost Gyro | Ice | — (element-wide) | element |
+| Verdant Embryo | Wind | Sword Saint | defense |
 
 Ice heroes with BOTH runes found: Polar Captain, Frost Lich, Ice Queen.
 Still missing a partner rune: Northern Tyrant (has attack, needs defense),
@@ -275,6 +276,55 @@ ATK 3% / HP 3% / DEF 3%. Ice, **Ice Witch**. Attack rune.
 | 🟠 | Final DMG increases to 15% |
 | 🔴 | Final DMG increases to 25% |
 | ⚪ | Final DMG increases to +40% |
+
+## The Fuse screen — how upgrading actually works
+
+Reached from the **Fuse** button. It says *"Please select a Treasure to fuse.
+Long press a Treasure to view details."*
+
+**Long press is the fast capture method.** It opens a compact popup with the
+name, rarity + N, the three stat percentages, and the complete Treasure Skill
+list — everything the old tap-through modal gave, in one action and with no
+scrolling. Drive it as `mouse_move` → `left_mouse_down` → wait ~1.2s →
+`left_mouse_up`. Verified against Frostone Edge: identical data to the modal
+capture (Legendary +1, 6.1%/6.1%/6.1%, same six tiers).
+
+### There are TWO fusion paths, not one
+
+| path | costs | gives |
+|---|---|---|
+| **Rarity up** | 2 more identical copies at the same rarity **and** the same +N | next rarity, **unlocks the next skill tier**, bigger stat contribution |
+| **Level up (+N)** | 1 generic **element token** of matching rarity | **+1** level, small stat bump, **no** new skill |
+
+Observed directly:
+
+- Epic +2 Verdant Embryo → `Cost: 2x Epic +2 Verdant Embryo`, result framed
+  gold (Legendary) and the preview named the orange-tier skill as the gain.
+- Legendary Electro treasure → `Cost: 1x Legendary ⚡`, result **Legendary +1**,
+  gain `+0.5% ATK / +0.5% HP / +0.5% DEF` and **no** skill line.
+
+This is exactly what Kyle meant by "each level takes a specific amount to
+merge". **Duplicates in the bag are the upgrade material, not clutter** — that
+is why the grid holds several copies of one treasure.
+
+`+N` appears to cap at **+2** before a rarity-up is possible.
+
+### ⚠️ Tier count VARIES — "six tiers" was wrong
+
+Frostone Edge has **six** (…red, white). Verdant Embryo has **five** — it stops
+at red, and the popup is not truncated (the panel's bottom edge is visible below
+the last line). The seeded fact claiming "exactly SIX" has been corrected.
+
+Since a skill tier is unlocked by a rarity step and orange = Legendary, the red
+and white tiers prove **at least two rarities exist above Legendary**. Their
+names are not captured — nothing in this collection is that high.
+
+### Do not press these
+
+`Fuse`, `Quick Fuse` and `Smart Fusion` **spend Kyle's materials**. Selecting a
+treasure is a safe preview; confirming is not. Selecting an equipped treasure
+raises a *"This treasure is already equipped. Confirm fusion?"* dialog — answer
+**Maybe Later**. Long-press for details instead; it never enters the fuse slot.
 
 ## How the inventory grid really works — READ THIS BEFORE CAPTURING
 
