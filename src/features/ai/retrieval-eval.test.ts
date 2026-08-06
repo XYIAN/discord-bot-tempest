@@ -80,6 +80,42 @@ const CASES: Array<{ question: string; needs: string; why: string }> = [
     needs: 'hero-demon-hunter-synergy',
     why: 'Two-word name plus a vague verb.',
   },
+
+  // ── Treasures (runes) ──────────────────────────────────────────────────
+  // Runes were the single most-asked topic the bot had nothing for. These
+  // cases matter more than the hero ones did, because a member naming a
+  // treasure is asking for its exact numbers — the failure mode is a plausible
+  // invented ladder, which reads just like a real one.
+  {
+    question: 'what does soulfrost gyro do',
+    needs: 'rune-soulfrost-gyro-tiers',
+    why: 'Named treasure — the tier ladder is the answer, not the identity blurb.',
+  },
+  {
+    question: 'what runes should i use for frost lich',
+    needs: 'runes-ice-roster',
+    why: 'Asks by HERO, not by treasure name. The roster fact is the only one that maps a hero to his two treasures.',
+  },
+  {
+    question: 'best treasures for the ice summon core',
+    needs: 'runes-for-the-ice-summon-core',
+    why: 'The conclusion fact. Without it the bot ranks by raw ATK% and recommends the wrong ones.',
+  },
+  {
+    question: 'is frigid hexblood a defensive rune',
+    needs: 'rune-frigid-hexblood-identity',
+    why: 'The honest answer is "only its first two tiers" — the identity fact is where that nuance lives.',
+  },
+  {
+    question: 'how many treasures can i carry',
+    needs: 'runes-carry-limit-and-slots',
+    why: 'Plain system question, no entity name to pin on.',
+  },
+  {
+    question: 'what rarity are treasures',
+    needs: 'runes-rarity-ladder',
+    why: 'Treasures use Excellent where heroes use Rare; guessing the hero ladder is wrong.',
+  },
 ];
 
 /**

@@ -60,11 +60,24 @@ coming out wrong after you have confirmed the facts reach the prompt, add a fact
 stating the conclusion. An instruction competes with everything else in the
 prompt; a fact is what the bot is already told to answer from.
 
-**Keep `gap-runes-treasures-pantheon` honest.** It is in the spine and tells the
-bot what it does *not* know, which is why it says "I don't have any data yet on
-runes" rather than inventing them. The moment you add facts on one of those
-topics, remove that topic from the gap fact **in the same commit**. A test
-enforces this and will tell you.
+**Keep the "what I don't know" facts honest.** `gap-runes-treasures-pantheon` is
+in the spine and tells the bot what it does *not* know, which is why it says
+"I don't have any data yet on sigils" rather than inventing them. The moment you
+add facts on one of those topics, remove that topic from the gap fact **in the
+same commit**. A test enforces this and will tell you.
+
+When a topic moves from "nothing" to "partial", it needs its own caveat fact in
+the spine rather than just dropping out of the gap fact. Runes did this in
+v0.6.0: Ice is captured and four elements are not, so `runes-coverage-caveat`
+took over the job for that topic and was added to `SPINE_KEYS`. **Update that
+caveat as each element lands** — a stale "Fire is not captured yet" is exactly
+the contradiction the gap-fact test exists to prevent, and no test can catch it
+once the topic has left the gap fact.
+
+Entity facts get families: `rune-<name>-identity` plus `rune-<name>-tiers`. The
+identity key is what puts the treasure on the rune roster, same as heroes — see
+`ENTITY_PREFIXES` in `retrieval.ts`. Without it, naming a treasure will not pull
+its ladder in.
 
 **A fact supplies data; a rule asks for behaviour; only code guarantees it.**
 Proved three times. Hero abbreviations needed all three: the table as a fact, a

@@ -1783,7 +1783,7 @@ export const SEED_FACTS: SeedFact[] = [
   {
     key: 'gap-runes-treasures-pantheon',
     category: 'general',
-    text: 'Tempest AI has no data yet on runes, treasures, sigils, gear, emblems or the pantheon system in Wittle Defender. It knows they exist — runes are a four-socket ring on the EX-Weapon screen, and Sigil, Gear, Rune, Emblem and Pantheon are buttons on every hero page — but nothing about their contents. Say so and invite /fact add rather than guessing.',
+    text: 'Tempest AI has no data yet on sigils, gear, emblems or the pantheon system in Wittle Defender. It knows they exist — Sigil, Gear, Rune, Emblem and Pantheon are buttons on every hero page — but nothing about their contents. Say so and invite /fact add rather than guessing. Treasure/rune coverage is a separate and partial story: see the Treasure facts and their coverage caveat.',
   },
   {
     key: 'gap-meta-and-tier-lists',
@@ -2235,5 +2235,187 @@ export const SEED_FACTS: SeedFact[] = [
     key: 'exweapon-demon-spawn',
     category: 'gear',
     text: 'Demon Spawn (Zain) wields the EX-Weapon [Fiery Executioner], which teaches Hell Void Slash: every 20s, consecutive Hell Void Slashes. It is a pure damage ladder with no mechanic nodes - [+30] adds 5 attacks to the multi-hit flurry its ladder calls Hell Severance and [+40] gives that flurry bonus damage per hit. Its damage scales with combat level rather than hero level.',
+  },
+
+  // ── Treasures (runes) — system ──────────────────────────────────────────
+  //
+  // Captured screen-by-screen from the Treasure screen on Kyle's account; the
+  // working notes are in docs/capture/treasures-runes.md. Two things to hold on
+  // to when extending this section:
+  //
+  //  - The game calls this system TREASURE. Members say "rune". Every fact here
+  //    names both, because a member asking "best runes for Frost Lich" must hit
+  //    the same facts as one asking about treasures.
+  //  - Kyle's collection is INCOMPLETE, exactly like the hero gallery. A
+  //    treasure that is not here has not been captured; it is never "does not
+  //    exist". runes-coverage-caveat carries that instruction — keep it current
+  //    as elements are added.
+  //
+  // Keys are `rune-<name>-identity` / `rune-<name>-tiers`. The identity key is
+  // load-bearing: retrieval.ts builds the rune roster from it, so naming a
+  // treasure in a question pulls its whole family. See
+  // docs/coding-standards/knowledge-facts.md.
+  {
+    key: 'runes-are-called-treasures',
+    category: 'runes',
+    text: 'In Wittle Defender the system members call "runes" is the TREASURE screen, and all the treasure/rune facts here describe it. Treasures are account-wide and carried into battle as a group, NOT equipped to one hero the way an EX-Weapon is, even though most of them name a specific hero in their skills. UNRESOLVED: every hero page also has its own Rune button, and an earlier capture noted a four-socket rune ring on the EX-Weapon screen, which does not match the Treasure screen\'s 12 sockets. These may be two different systems. If someone asks about per-hero runes rather than treasures, say that distinction has not been verified yet instead of assuming they are the same thing.',
+  },
+  {
+    key: 'runes-carry-limit-and-slots',
+    category: 'runes',
+    text: 'Treasure (rune) carry rules in Wittle Defender: a player can carry up to 12 treasures into battle, but only 1 slot is unlocked at the start and the rest unlock as the player levels up. Only one copy of each treasure can be carried at a time. Whether the locked sockets state their unlock level has not been captured.',
+  },
+  {
+    key: 'runes-stats-vs-skills',
+    category: 'runes',
+    text: 'How a Treasure (rune) helps in Wittle Defender: every treasure gives a flat ATK%, HP% and DEF% contribution that ALL deployed heroes benefit from, and those contributions add up across every treasure carried into one account-wide total shown on the Treasure screen. Separately it grants Treasure Skills, and those are almost always tied to one named hero or one element. So the raw stats always help whatever team you run, while the skills only pay off if that hero or element is actually deployed.',
+  },
+  {
+    key: 'runes-rarity-ladder',
+    category: 'runes',
+    text: 'Treasure (rune) rarity in Wittle Defender uses its OWN ladder, which is not the hero rarity ladder: Uncommon (green), Excellent (blue), Epic (pink/magenta), Legendary (gold). Note it is Excellent, not Rare. A grey band below Uncommon appears in the grid but has not been confirmed. Within a rarity a treasure gains +N levels shown as e.g. "Legendary +1", and its ATK/HP/DEF contribution rises with both the rarity and the +N.',
+  },
+  {
+    key: 'runes-six-skill-tiers',
+    category: 'runes',
+    text: 'Every Treasure (rune) in Wittle Defender has exactly SIX skill tiers, one unlocked per rarity step, colour-coded in this order: green, blue, purple, orange, red, white. Orange is confirmed to be Legendary. A treasure detail page lists all six tiers no matter what rarity that copy is, so tiers above its current rarity are visible but not active — which means a low-rarity copy is a perfectly good source for the full ladder.',
+  },
+  {
+    key: 'runes-two-per-hero-pattern',
+    category: 'runes',
+    text: 'The organising pattern of the Treasure (rune) system in Wittle Defender: most heroes have TWO treasures — an "attack" one whose first two tiers give that hero ATK%, and a "defense" one whose first two tiers give that hero HP% — and each element additionally has one element-wide treasure boosting that whole element\'s damage. Above those first two tiers both kinds usually amplify the hero\'s named skills, so a defense treasure is often not defensive at high rarity: Frigid Hexblood is Polar Captain\'s HP treasure and its top tiers are pure summon generation.',
+  },
+  {
+    key: 'runes-fuse-and-reset',
+    category: 'runes',
+    text: 'Treasure (rune) upgrading in Wittle Defender: once obtained, a treasure can be FUSED into a higher rarity, and raising its rarity both increases its stats and unlocks its next skill tier. When a treasure reaches Epic rarity a treasure reset feature unlocks, which reclaims the materials used in crafting. The Treasure screen also offers Treasure Conversion, whose rules have not been captured yet.',
+  },
+  {
+    key: 'runes-coverage-caveat',
+    category: 'runes',
+    text: 'IMPORTANT — Tempest AI\'s Treasure (rune) data is INCOMPLETE. It was captured from one player\'s collection: the Ice/Frost element is covered, and Fire, Electro, Wind and Xenoscape are not captured yet beyond a few treasure names with no skill ladders. If a treasure or a hero\'s treasure is not in these facts, say it has not been captured yet and invite /fact add — never say it does not exist in the game, and never invent tiers or numbers. The Treasure screen filters by the same five elements as heroes: Ice, Fire, Electro, Wind, Xenoscape.',
+  },
+  {
+    key: 'runes-ice-roster',
+    category: 'runes',
+    text: 'Ice/Frost Treasures (runes) captured so far in Wittle Defender, by the hero each buffs — Polar Captain: Frostone Edge (attack) and Frigid Hexblood (defense); Frost Lich: Perpetual Blizzard (attack) and Frigid Coronet (defense); Ice Queen: Cuttlefish Cap (attack) and Frost Wax (defense); Northern Tyrant: Icebound Fang (attack); Ice Witch: Glacier Tear (attack). The Ice element-wide treasure is Soulfrost Gyro. Northern Tyrant\'s and Ice Witch\'s defense treasures have not been captured, and no treasure has been captured for any other Frost hero.',
+  },
+  {
+    key: 'runes-for-the-ice-summon-core',
+    category: 'strategy',
+    text: 'Which Treasures (runes) matter most for the Ice summon core (Northern Tyrant + Polar Captain + Frost Lich): the ones that add SUMMON COUNT or element-wide damage, not the ones that add raw stats, because Northern Tyrant and Frost Lich both scale off allied summon count so a summon-count tier multiplies the whole team. In priority order — Frigid Hexblood (Polar Captain initial Tide Count +3 then +6, then a recurring giant tentacle), Perpetual Blizzard (+1 Frost Wyvern per summon, and shreds enemy Ice Resistance up to 16% which amplifies every Ice hero), Soulfrost Gyro (all Ice DMG up to +20%), then Frostone Edge (Polar Captain Tide Final DMG up to +60%).',
+  },
+
+  // ── Treasures (runes) — Ice/Frost, full six-tier ladders ────────────────
+  {
+    key: 'rune-frostone-edge-identity',
+    category: 'runes',
+    text: 'Frostone Edge is an Ice/Frost Treasure (rune) in Wittle Defender that buffs Polar Captain. It is his ATTACK treasure: the first tiers give him ATK% and the upper tiers multiply the damage of his Tide and Voracious Wave skills. Note Voracious Wave is a Polar Captain skill that does not appear in his captured hero facts, so treat it as a real skill of his that we have not documented separately.',
+  },
+  {
+    key: 'rune-frostone-edge-tiers',
+    category: 'runes',
+    text: 'Frostone Edge (Ice treasure/rune for Polar Captain) — its six skill tiers in order: green, Polar Captain ATK +5%; blue, Polar Captain ATK +10%; purple, Polar Captain Tide Final DMG +30%; orange, that Tide Final DMG increases to +60%; red, Polar Captain Voracious Wave Final DMG +36%; white, that Voracious Wave Final DMG increases to +72%.',
+  },
+  {
+    key: 'rune-frigid-hexblood-identity',
+    category: 'runes',
+    text: 'Frigid Hexblood is an Ice/Frost Treasure (rune) in Wittle Defender that buffs Polar Captain. It is his DEFENSE treasure by its first two tiers (HP%), but that label is misleading above them: its upper tiers are pure summon generation, giving +6 initial Tide Count and a recurring giant sea monster tentacle. In an Ice summon team it is an offensive pick, not a survivability one, because Northern Tyrant and Frost Lich both scale off allied summon count.',
+  },
+  {
+    key: 'rune-frigid-hexblood-tiers',
+    category: 'runes',
+    text: 'Frigid Hexblood (Ice treasure/rune for Polar Captain) — its six skill tiers in order: green, Polar Captain HP +5%; blue, Polar Captain HP +10%; purple, Polar Captain initial Tide Count +3; orange, that initial Tide Count increases to +6; red, every 20 casts of Tide Polar Captain summons a giant sea monster\'s tentacle to hit a large area; white, Giant Sea Monster Tentacle +2.',
+  },
+  {
+    key: 'rune-frigid-coronet-identity',
+    category: 'runes',
+    text: 'Frigid Coronet is an Ice/Frost Treasure (rune) in Wittle Defender that buffs Frost Lich. It is his DEFENSE treasure: HP% at the bottom, and above that it converts his Frost Vortex into a debuff and team-sustain tool — slowing enemy attack speed and cooldowns, then healing the whole team when the vortex ends — rather than adding any damage.',
+  },
+  {
+    key: 'rune-frigid-coronet-tiers',
+    category: 'runes',
+    text: 'Frigid Coronet (Ice treasure/rune for Frost Lich) — its six skill tiers in order: green, Frost Lich HP +5%; blue, Frost Lich HP +10%; purple, Frost Vortex additionally reduces enemies\' ATK SPD and skill cooldown speed by 15% for 5s and cannot stack; orange, when Frost Vortex ends it heals all allies for 1.5% of Frost Lich\'s max HP; red, that ATK SPD and cooldown reduction increases to 30%; white, that healing coefficient increases to 3%.',
+  },
+  {
+    key: 'rune-perpetual-blizzard-identity',
+    category: 'runes',
+    text: 'Perpetual Blizzard is an Ice/Frost Treasure (rune) in Wittle Defender that buffs Frost Lich. It is his ATTACK treasure and one of the most valuable treasures for any Ice team, because its upper tiers add an extra Frost Wyvern per summon and shred enemy Ice Element Resistance — an effect that amplifies every Ice hero deployed, not just Frost Lich.',
+  },
+  {
+    key: 'rune-perpetual-blizzard-tiers',
+    category: 'runes',
+    text: 'Perpetual Blizzard (Ice treasure/rune for Frost Lich) — its six skill tiers in order: green, Frost Lich ATK +5%; blue, Frost Lich ATK +10%; purple, Frost Wyvern\'s Final DMG +40%; orange, Frost Wyvern\'s attack additionally reduces enemies\' Ice Element Resistance by 8% for 10s and cannot stack; red, when summoning Frost Wyverns the summon count is +1; white, that Ice Element Resistance reduction increases to 16%.',
+  },
+  {
+    key: 'rune-icebound-fang-identity',
+    category: 'runes',
+    text: 'Icebound Fang is an Ice/Frost Treasure (rune) in Wittle Defender that buffs Northern Tyrant. It is his ATTACK treasure and a pure damage ladder — ATK% then four escalating steps of Axe Barrage Final DMG up to +140%, with no added mechanic at any tier. Caution: "Axe Barrage" does not appear in Northern Tyrant\'s captured hero facts, where his Main Skill is Blizzard Cleaver; do not assume the two are the same skill.',
+  },
+  {
+    key: 'rune-icebound-fang-tiers',
+    category: 'runes',
+    text: 'Icebound Fang (Ice treasure/rune for Northern Tyrant) — its six skill tiers in order: green, Northern Tyrant ATK +5%; blue, Northern Tyrant ATK +10%; purple, Axe Barrage Final DMG +35%; orange, Axe Barrage Final DMG +70%; red, Axe Barrage Final DMG +105%; white, Axe Barrage Final DMG +140%.',
+  },
+  {
+    key: 'rune-frost-wax-identity',
+    category: 'runes',
+    text: 'Frost Wax is an Ice/Frost Treasure (rune) in Wittle Defender that buffs Ice Queen. It is her DEFENSE treasure: HP% first, then it turns her Ice Storm into a damage-reduction debuff, and its top tiers punish the enemies she has already debuffed and add an Ice Resistance shred.',
+  },
+  {
+    key: 'rune-frost-wax-tiers',
+    category: 'runes',
+    text: 'Frost Wax (Ice treasure/rune for Ice Queen) — its six skill tiers in order: green, Ice Queen HP +5%; blue, Ice Queen HP +10%; purple, Ice Queen\'s Ice Storm reduces enemy DMG by 10%; orange, that DMG reduction increases to 20%; red, Ice Storm deals extra massive DMG to enemies whose damage is already reduced; white, Ice Storm reduces the target\'s Ice RES by an extra 10% for 3s.',
+  },
+  {
+    key: 'rune-cuttlefish-cap-identity',
+    category: 'runes',
+    text: 'Cuttlefish Cap is an Ice/Frost Treasure (rune) in Wittle Defender that buffs Ice Queen. It is her ATTACK treasure and a pure damage ladder, but an unusually broad one — it covers three of her skills: Ice Storm, Frigid Hurricane and Ministorm.',
+  },
+  {
+    key: 'rune-cuttlefish-cap-tiers',
+    category: 'runes',
+    text: 'Cuttlefish Cap (Ice treasure/rune for Ice Queen) — its six skill tiers in order: green, Ice Queen ATK +5%; blue, Ice Queen ATK +10%; purple, Ice Queen Ice Storm and Frigid Hurricane Final DMG +20%; orange, that Ice Storm and Frigid Hurricane bonus increases to +40%; red, Ice Queen Ministorm Final DMG +20%; white, that Ministorm bonus increases to +40%. The orange and white tiers both read "+40%" in game but apply to different skills, so they are not a duplicate.',
+  },
+  {
+    key: 'rune-glacier-tear-identity',
+    category: 'runes',
+    text: 'Glacier Tear is an Ice/Frost Treasure (rune) in Wittle Defender that buffs Ice Witch. It is her ATTACK treasure — ATK% and then a single damage line covering her Icicle and Icicle Frenzy skills, which grows across the top four tiers from +10% to +40%.',
+  },
+  {
+    key: 'rune-glacier-tear-tiers',
+    category: 'runes',
+    text: 'Glacier Tear (Ice treasure/rune for Ice Witch) — its six skill tiers in order: green, Ice Witch ATK +5%; blue, Ice Witch ATK +10%; purple, Ice Witch Icicle and Icicle Frenzy Final DMG +10%; orange, that bonus increases to 15%; red, it increases to 25%; white, it increases to +40%.',
+  },
+  {
+    key: 'rune-soulfrost-gyro-identity',
+    category: 'runes',
+    text: 'Soulfrost Gyro is the Ice/Frost ELEMENT-WIDE Treasure (rune) in Wittle Defender. Unlike hero treasures it shows no hero portrait and names no hero — it raises all Ice damage, so its value scales with how many Ice heroes are deployed. It is the strongest single treasure for a mono-Ice team such as the Northern Tyrant summon core, and close to worthless in a team running only one Ice hero.',
+  },
+  {
+    key: 'rune-soulfrost-gyro-tiers',
+    category: 'runes',
+    text: 'Soulfrost Gyro (Ice element-wide treasure/rune) — its six skill tiers in order, each REPLACING the previous value rather than stacking with it: green, Ice DMG +2%; blue, +5%; purple, +8%; orange, +11%; red, +15%; white, +20%. So a fully upgraded Soulfrost Gyro is +20% Ice DMG in total, not the sum of the six lines.',
+  },
+
+  // ── Treasures (runes) — known by name only, ladders NOT captured ────────
+  // These three were read off the Total Treasure Bonus summary, which shows
+  // only the tiers already unlocked on the account. Their hero, element and
+  // attack/defense role are solid; their six-tier ladders are not, so each
+  // fact says so rather than presenting a partial ladder as complete.
+  {
+    key: 'rune-aeolian-core-identity',
+    category: 'runes',
+    text: 'Aeolian Core is a Wind Treasure (rune) in Wittle Defender that buffs Fabled Lyra. It is her ATTACK treasure: Fabled Lyra ATK +5% then +10%, and above that her Tune skill gains Final DMG +30%. Its remaining skill tiers have NOT been captured — say so rather than guessing at them.',
+  },
+  {
+    key: 'rune-windlock-casket-identity',
+    category: 'runes',
+    text: 'Windlock Casket is a Wind Treasure (rune) in Wittle Defender that buffs Fabled Lyra. It is her DEFENSE treasure: Fabled Lyra HP +5% then +10%, and above that her Sonic Waves skill gains Final DMG +30%. Its remaining skill tiers have NOT been captured — say so rather than guessing at them.',
+  },
+  {
+    key: 'rune-phoenix-gilded-crown-identity',
+    category: 'runes',
+    text: 'Phoenix Gilded Crown is a Treasure (rune) in Wittle Defender that buffs Monkey King, whose in-game name Sun Wukong is what the treasure text uses. Monkey King is a Xenoscape hero. It is his ATTACK treasure: Sun Wukong ATK +5% then +10%, and above that his Celestial Crush skill gains Final DMG +25%. Its remaining skill tiers have NOT been captured, and his defense treasure has not been found — say so rather than guessing.',
   },
 ];

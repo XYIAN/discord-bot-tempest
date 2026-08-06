@@ -346,6 +346,47 @@ levels within it. Grid background colour tracks the copy's rarity (grey, green,
 blue, pink/magenta, gold seen so far). Still need the full ordered ladder —
 the Fuse screen is the likely place.
 
+## Status: Ice is WRITTEN TO THE BOT (v0.6.0)
+
+All 9 Ice treasures below, plus the system rules, are now facts in
+`src/features/ai/seed-facts.ts` under keys `runes-*` and `rune-<name>-*`.
+
+**Every future element pass must also:**
+
+1. Add `rune-<name>-identity` **and** `rune-<name>-tiers` per treasure. The
+   identity key is what puts it on the rune roster — without it, naming the
+   treasure will not pull its ladder into the prompt.
+2. Extend `runes-ice-roster` with a sibling roster fact for that element
+   (`runes-<element>-roster`), mapping hero → attack/defense treasure. Members
+   ask by HERO far more than by treasure name, and the roster fact is the only
+   thing that answers that shape of question.
+3. **Update `runes-coverage-caveat`** to drop that element from the not-captured
+   list. It rides in every prompt; leaving it stale makes the bot deny data it
+   is holding. No test can catch this one — runes have already left the gap
+   fact, so the guard that would have caught it no longer applies.
+4. Re-check the corpus size. It was 122,793 chars after Ice against a 140,000
+   budget, so **the next element pass will push retrieval into selection mode**
+   for the first time in production. That is what the pinning was built for, but
+   verify with `npx tsx src/scripts/retrieval-report.ts` rather than assuming.
+
+Three non-Ice treasures are recorded as identity-only, from the truncated
+summary panel: Aeolian Core and Windlock Casket (Wind, Fabled Lyra), Phoenix
+Gilded Crown (Xenoscape, Monkey King). Their facts say the ladder is uncaptured.
+Capture the full six tiers when the Wind and Xenoscape passes happen and add
+their `-tiers` facts.
+
+## Open question — are Rune and Treasure two different systems?
+
+The old gap fact recorded "runes are a four-socket ring on the EX-Weapon screen"
+and every hero page has its own **Rune** button. The Treasure screen has **12**
+sockets and is account-wide. Those do not reconcile.
+
+Kyle's "the treasure screen which is all runes" may mean the Rune button leads
+to Treasure, or there may genuinely be a separate per-hero rune system we have
+not opened. The facts currently say the distinction is **unverified** rather
+than assuming. **Worth 30 seconds on the phone next session:** open any hero
+page and tap Rune, and see where it lands.
+
 ## Still to capture
 
 - [ ] Collection stats ⓘ — what the three 42.1% figures mean

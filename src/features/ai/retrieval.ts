@@ -60,6 +60,12 @@ const SPINE_KEYS = new Set([
   'strategy-element-team-discipline',
   'roster-by-element',
   'gap-runes-treasures-pantheon',
+  // Runes came out of the gap fact when the Ice treasures were imported, so the
+  // "what I don't know" job for that topic moved here. Coverage is one element
+  // out of five, and a member asking about a Fire treasure must get "not
+  // captured yet" rather than a confident invention — which is exactly what the
+  // gap fact was preventing while it still covered runes.
+  'runes-coverage-caveat',
 ]);
 
 /** Exported so a test can assert every spine key still exists in the corpus. */

@@ -4,6 +4,24 @@ All notable changes to Tempest Bot. The deploy pipeline posts the section
 matching the current package.json version to #changelog automatically —
 if a version has no section here, the git commit message is posted instead.
 
+## [0.6.0] - 2026-08-05
+
+### Treasures — the rune gap starts closing
+
+The bot now knows what runes are. In Wittle Defender the system is called **Treasure**, and the first element is in: **9 Ice treasures with complete six-tier skill ladders**, captured screen by screen from the game.
+
+Per hero, the pattern the guild owner described and the capture confirmed — an **attack** treasure (hero ATK%, then skill damage) and a **defense** one (hero HP%, then a mechanic), plus **one element-wide treasure per element**. Ice covers Polar Captain, Frost Lich and Ice Queen with both; Northern Tyrant and Ice Witch with their attack one; and **Soulfrost Gyro** for the element.
+
+**The system rules too:** 12 carry slots unlocked by player level, one copy of each, fusing for rarity, and a rarity ladder that is *not* the hero one — Uncommon, Excellent, Epic, Legendary, with `+N` levels inside each.
+
+**Why this matters for the Ice core.** The treasures that pay off are not the ones with the biggest ATK numbers. `Frigid Hexblood` gives Polar Captain **+6 initial Tide Count** and a recurring giant tentacle; `Perpetual Blizzard` adds **+1 Frost Wyvern per summon** and shreds enemy Ice Resistance by up to 16%. Northern Tyrant and Frost Lich both scale off allied summon count, so those tiers multiply the whole team. That conclusion is now its own fact, because ranking by raw stats gets it wrong.
+
+**What it will still refuse to do.** Fire, Electro, Wind and Xenoscape are not captured. A permanent caveat fact rides in every prompt saying so, so a question about a Fire treasure gets "not captured yet" rather than an invented ladder — the same guard the old "no rune data" fact provided, narrowed to what is actually still missing.
+
+**Flagged rather than smoothed over:** every hero page has its own **Rune** button, and an earlier capture noted a four-socket ring that doesn't match Treasure's 12 sockets. These may be two different systems, so the bot says the distinction is unverified instead of assuming.
+
+Six retrieval tests now cover rune questions against the real corpus under selection pressure.
+
 ## [0.5.0] - 2026-08-05
 
 ### The Ice summon core, and seven approved member facts
