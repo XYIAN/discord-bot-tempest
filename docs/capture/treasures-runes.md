@@ -917,3 +917,45 @@ Why it happened, so it does not happen again:
 The treasure data captured through the preview before this happened is fine and
 is kept. The incident is recorded here rather than quietly fixed because the
 next session will be tempted by the same catalogue.
+
+## Session state — where to resume
+
+**Treasures captured: 31 with full six-tier ladders.**
+
+| element | count | status |
+|---|---|---|
+| Wind | 15 | **COMPLETE** — 7 hero pairs + element treasure |
+| Ice | 12 | 4 pairs + 3 singles + element treasure |
+| Xenoscape | 4 | partial, from the Shop catalogue |
+| Fire | 0 | **not started** |
+| Electro | 0 | **not started** |
+
+**Known gaps within captured elements:** Northern Tyrant's defense treasure;
+Ice Demon's and Ice Mage's attack treasures; Void Witch's attack treasure;
+Monkey King's defense treasure; the Xenoscape element-wide treasure.
+
+Remember the Wind lesson: two apparent gaps there turned out to be sitting at
+lower rarities further down the grid. **An apparent missing partner means keep
+scrolling, not that it does not exist.**
+
+### Best next move
+
+The Shop **reward preview** is by far the best source — it shows treasures the
+player does not own, so it is game data rather than one inventory. But it is
+behind purchase controls (see the STOP section above). **Ask Kyle to open the
+preview**, then drive only the pool grid inside it.
+
+Failing that, the treasure bag with the Fire and Electro element filters, using
+the long-press + slow-drag method on the Fuse screen, which is safe to drive.
+
+### Do not forget on the next batch
+
+1. `rune-<name>-identity` **and** `rune-<name>-tiers` per treasure — the
+   identity key is what puts it on the retrieval roster.
+2. Add/extend the element roster fact (`runes-<element>-roster`). Members ask by
+   HERO far more than by treasure name. A test enforces that every treasure
+   appears in exactly one roster fact.
+3. **Update `runes-coverage-caveat`** to drop that element from the
+   not-captured list. It rides in every prompt.
+4. Xenoscape Epics give 4.6% where Ice/Wind give 3.8% — element affects the stat
+   contribution. Fire and Electro are unmeasured; do not assume either ladder.
